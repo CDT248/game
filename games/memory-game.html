@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>Memory Match - Brain Challenge</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;padding:20px;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at top,#293a68,#0b1020 70%);
+  color:#fff;font-family:Arial,sans-serif
+}
+.app{width:min(100%,480px);text-align:center}
+h1{margin:0;color:#a5b4fc;font-size:clamp(28px,7vw,40px)}
+.subtitle{color:#b8c3df;margin:8px 0 20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat{background:#ffffff10;border:1px solid #ffffff20;border-radius:13px;padding:11px 5px}
+.stat small{display:block;color:#aebcda;font-size:11px;margin-bottom:6px}
+.stat strong{font-size:22px;color:#c4b5fd}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.card{
+  aspect-ratio:1;min-width:0;border:1px solid #8b9bfa50;
+  border-radius:14px;background:linear-gradient(145deg,#333d75,#20294e);
+  color:transparent;font-size:clamp(25px,8vw,38px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;position:relative;
+  transition:transform .2s,background .2s,border .2s;
+  box-shadow:0 5px 0 #121a37
+}
+.card::before{content:"?";color:#a5b4fc;font-size:clamp(25px,8vw,38px);font-weight:bold}
+.card.open,.card.matched{color:white;background:#eef2ff;border-color:#c7d2fe;transform:rotateY(0)}
+.card.open::before,.card.matched::before{display:none}
+.card.matched{background:#bbf7d0;border-color:#4ade80;cursor:default;box-shadow:0 4px 0 #16804b}
+.card:disabled{opacity:1}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+button.action{
+  border:0;border-radius:12px;padding:12px 18px;
+  background:#a5b4fc;color:#111827;font-weight:bold;
+  font-size:14px;cursor:pointer
+}
+button.action.secondary{background:#263354;color:white;border:1px solid #65749c}
+.message{min-height:25px;margin-top:16px;color:#c4b5fd;font-weight:bold}
+.help{font-size:12px;line-height:1.7;color:#9baac8;margin-top:14px}
+</style>
+</head>
+<body>
+<main class="app">
+  <h1>🧠 MEMORY MATCH</h1>
+  <p class="subtitle">Find all matching pairs and train your brain!</p>
+
+  <section class="stats">
+    <div class="stat"><small>MOVES</small><strong id="moves">0</strong></div>
+    <div class="stat"><small>TIME</small><strong id="time">00:00</strong></div>
+    <div class="stat"><small>BEST MOVES</small><strong id="best">—</strong></div>
+  </section>
+
+  <section class="grid" id="grid" aria-label="Memory cards"></section>
+
+  <div class="message" id="message">Tap any two cards to find a match!</div>
+
+  <div class="actions">
+    <button class="action" id="restart">↻ New Game</button>
+    <button class="action secondary" id="peek">👀 Peek Cards</button>
+  </div>
+
+  <p class="help">
+    🎯 Match all 8 pairs to win.<br>
+    Fewer moves and less time mean a better result!
+  </p>
+</main>
+
+<script>
+(() => {
+  const grid = document.getElementById("grid");
+  const movesEl = document.getElementById("moves");
+  const timeEl = document.getElementById("time");
+  const bestEl = document.getElementById("best");
+  const message = document.getElementById("message");
+  const restartBtn = document.getElementById("restart");
+  const peekBtn = document.getElementById("peek");
+
+  const symbols = ["🍕","🚀","🐼","🎮","🍉","🦊","⚽","🌈"];
+  let cards = [], first = null, second = null;
+  let moves = 0, matches = 0, seconds = 0;
+  let locked = false, started = false, finished = false;
+  let timer = null, peekTimeout = null;
+
+  let best = null;
+  try {
+    const saved = localStorage.getItem("memoryMatchBest");
+    if(saved !== null) best = Number(saved);
+  } catch(e){}
+  showBest();
+
+  function showBest(){
+    bestEl.textContent = best === null ? "—" : best;
+  }
+
+  function formatTime(value){
+    const mins = Math.floor(value/60).toString().padStart(2,"0");
+    const secs = (value%60).toString().padStart(2,"0");
+    return mins + ":" + secs;
+  }
+
+  function startTimer(){
+    if(started) return;
+    started = true;
+    timer = setInterval(()=>{
+      if(finished) return;
+      seconds++;
+      timeEl.textContent = formatTime(seconds);
+    },1000);
+  }
+
+  function stopTimer(){
+    clearInterval(timer);
+    timer = null;
+  }
+
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function newGame(){
+    stopTimer();
+    clearTimeout(peekTimeout);
+    first = second = null;
+    moves = matches = seconds = 0;
+    locked = started = finished = false;
+    movesEl.textContent = "0";
+    timeEl.textContent = "00:00";
+    message.textContent = "Tap any two cards to find a match!";
+    peekBtn.disabled = false;
+    peekBtn.style.opacity = "1";
+
+    cards = shuffle([...symbols,...symbols]);
+    grid.innerHTML = "";
+
+    cards.forEach((symbol,index)=>{
+      const btn = document.createElement("button");
+      btn.className = "card";
+      btn.type = "button";
+      btn.dataset.symbol = symbol;
+      btn.dataset.index = index;
+      btn.setAttribute("aria-label","Hidden card");
+      btn.addEventListener("click",()=>flipCard(btn));
+      grid.appendChild(btn);
+    });
+  }
+
+  function reveal(card){
+    card.classList.add("open");
+    card.textContent = card.dataset.symbol;
+    card.setAttribute("aria-label",card.dataset.symbol);
+  }
+
+  function hide(card){
+    card.classList.remove("open");
+    card.textContent = "";
+    card.setAttribute("aria-label","Hidden card");
+  }
+
+  function flipCard(card){
+    if(locked || finished || card.classList.contains("matched") ||
+       card === first || card.classList.contains("open")) return;
+
+    startTimer();
+    reveal(card);
+
+    if(!first){
+      first = card;
+      return;
+    }
+
+    second = card;
+    moves++;
+    movesEl.textContent = moves;
+
+    if(first.dataset.symbol === second.dataset.symbol){
+      first.classList.remove("open");
+      second.classList.remove("open");
+      first.classList.add("matched");
+      second.classList.add("matched");
+      first.disabled = second.disabled = true;
+      matches++;
+      first = second = null;
+
+      message.textContent = "✨ Great match! Keep going!";
+
+      if(matches === symbols.length){
+        finishGame();
+      }
+    }else{
+      locked = true;
+      message.textContent = "Not a match — try again!";
+      const a = first, b = second;
+
+      peekTimeout = setTimeout(()=>{
+        hide(a);
+        hide(b);
+        first = second = null;
+        locked = false;
+      },800);
+    }
+  }
+
+  function finishGame(){
+    finished = true;
+    stopTimer();
+
+    if(best === null || moves < best){
+      best = moves;
+      try { localStorage.setItem("memoryMatchBest",String(best)); } catch(e){}
+      showBest();
+      message.textContent = "🏆 Amazing! New best: " + moves + " moves in " + formatTime(seconds) + "!";
+    }else{
+      message.textContent = "🎉 You won in " + moves + " moves and " + formatTime(seconds) + "!";
+    }
+  }
+
+  function peekCards(){
+    if(locked || finished) return;
+    startTimer();
+    locked = true;
+    const all = [...grid.children];
+
+    all.forEach(card=>{
+      if(!card.classList.contains("matched")) reveal(card);
+    });
+
+    peekBtn.disabled = true;
+    peekBtn.style.opacity = ".5";
+    message.textContent = "👀 Remember their positions!";
+
+    peekTimeout = setTimeout(()=>{
+      all.forEach(card=>{
+        if(!card.classList.contains("matched") &&
+           card !== first && card !== second) hide(card);
+      });
+      locked = false;
+      peekBtn.disabled = false;
+      peekBtn.style.opacity = "1";
+      message.textContent = "Now find the matching pairs!";
+    },1200);
+  }
+
+  restartBtn.addEventListener("click",newGame);
+  peekBtn.addEventListener("click",peekCards);
+
+  newGame();
+})();
+</script>
+</body>
+</html>
