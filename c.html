@@ -1,106 +1,429 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f">
-<title>Fahim | Admin Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Fahim Admin Panel</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/17163/17163834.png">
 <style>
-:root{--bg:#06101e;--panel:#0b192b;--panel2:#10213a;--text:#f3f7ff;--muted:#a7bad2;--line:#203b5c;--green:#13e99a;--blue:#16c9ff;--red:#ff617a}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{width:min(1150px,93%);margin:auto}.top{border-bottom:1px solid var(--line);padding:17px 0;background:#091629;position:sticky;top:0;z-index:5}.topin{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;font-size:21px}.brand span{color:var(--green)}.btn{border:0;border-radius:9px;background:linear-gradient(100deg,var(--green),#27d9c6);color:#041b20;padding:10px 15px;font-weight:800;font-size:13px}.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}.btn.danger{background:#4b1e2b;color:#ffd8df;border:1px solid #8d3448}.hero{padding:28px 0 18px}.hero h1{font-size:clamp(27px,4vw,38px)}.hero p{color:var(--muted);font-size:13px;margin-top:6px}.warning{margin:16px 0;padding:13px 15px;border:1px solid #7b6332;background:#332913;border-radius:10px;color:#ffe5a0;font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px}.stat strong{display:block;font-size:25px;color:var(--green)}.stat span{font-size:12px;color:var(--muted)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px 14px;border-radius:9px}.tab.active{color:#031b17;background:var(--green);border-color:var(--green);font-weight:800}.panel h2{font-size:20px;margin-bottom:5px}.hint{font-size:12px;color:var(--muted);margin-bottom:15px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted)}input,textarea,select{width:100%;padding:11px;border-radius:8px;border:1px solid var(--line);background:#071321;color:var(--text)}textarea{min-height:75px;resize:vertical}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.list{display:grid;gap:10px;margin-top:15px}.item{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#081525}.icon{width:43px;height:43px;border-radius:9px;background:var(--panel2);display:grid;place-items:center;font-size:22px;flex-shrink:0}.item-main{flex:1;min-width:0}.item-main strong{display:block;overflow-wrap:anywhere}.item-main small{display:block;color:var(--muted);overflow-wrap:anywhere;font-size:11px}.item-actions{display:flex;gap:6px;flex-wrap:wrap}.item-actions button{padding:7px 10px;font-size:11px}.badge{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:3px 8px;font-size:10px;color:var(--muted);margin-top:4px}.badge.hidden{color:#ffb7c3;border-color:#8d3448}.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}.footer{color:var(--muted);font-size:11px;padding:25px 0;text-align:center}.toast{position:fixed;right:18px;bottom:18px;background:var(--green);color:#041b20;font-weight:800;padding:12px 16px;border-radius:10px;box-shadow:0 8px 30px #0005;display:none;z-index:20}.login{max-width:390px;margin:70px auto;padding:24px}.login h2{margin-bottom:6px}.login p{color:var(--muted);font-size:12px;margin-bottom:15px}.login input{margin:6px 0 12px}.hidden{display:none!important}@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.item{align-items:flex-start;flex-wrap:wrap}.item-main{min-width:65%}.item-actions{width:100%}.item-actions button{flex:1}}
+:root{--bg:#101827;--card:#1b2638;--text:#f3f6fc;--muted:#a8b4c8;--accent:#7c5cff;--border:#303d52;--red:#ef4444;--green:#16a34a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.5}
+body.light{--bg:#f3f6fb;--card:#fff;--text:#172033;--muted:#59677b;--border:#dce3ee}
+header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:5}
+.nav{max-width:1150px;margin:auto;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-size:20px;font-weight:900;color:var(--accent)}
+.container{width:min(1100px,94%);margin:25px auto}
+h1{font-size:clamp(26px,5vw,38px);margin:10px 0}
+h2{margin:0 0 14px}
+.muted,small{color:var(--muted)}
+.btn{border:0;border-radius:9px;background:var(--accent);color:#fff;padding:10px 14px;cursor:pointer;font-weight:bold}
+.btn.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.btn.danger{background:var(--red)}
+.btn.success{background:var(--green)}
+input,textarea,select{width:100%;padding:11px;border-radius:9px;border:1px solid var(--border);background:var(--bg);color:var(--text);margin:5px 0 12px}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:13px;font-weight:bold;color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:15px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.tab{padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}
+.tab.active{background:var(--accent);color:white}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row>*{flex:1}
+.item{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
+.item:last-child{border-bottom:0}
+.icon{font-size:28px;min-width:36px}
+.item-main{flex:1;min-width:0}
+.item-main strong{display:block}
+.item-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.item-actions .btn{padding:7px 10px;font-size:12px}
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;background:#16a34a22;color:#22c55e;font-size:12px}
+.hidden-badge{background:#ef444422;color:#f87171}
+#dashboard{display:none}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111827;color:white;padding:12px 18px;border-radius:10px;box-shadow:0 8px 30px #0006;display:none;z-index:20;max-width:90%;text-align:center}
+pre{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.panel{padding:15px}.nav{padding:12px}.item{flex-wrap:wrap}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap topin"><a class="brand" href="index.html"><span>🎮</span> Fahim <span>Admin Portal</span></a><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn secondary" href="index.html">↗ View Website</a><button class="btn secondary" id="logoutBtn">Log Out</button></div></div></header>
-<main class="wrap">
-<section id="loginPanel" class="panel login">
-<h2>🔐 Admin Login</h2><p>This simple gate is only a convenience for local editing, not secure authentication.</p>
-<label for="pass">Admin password</label><input id="pass" type="password" placeholder="Enter password">
-<button class="btn" id="loginBtn" style="width:100%">Open Admin Portal</button>
-<p style="margin-top:12px">Default password: <b>change-me-123</b>. Change it in the code before publishing.</p>
-</section>
-<div id="dashboard" class="hidden">
-<section class="hero"><h1>Admin Portal ⚙️</h1><p>Edit your website text, profile details, projects, and control all 50 game cards from one place.</p>
-<div class="warning"><b>Important:</b> This static HTML version saves settings in this browser's localStorage. It does not sync to other devices and the password check is not secure. For real multi-device administration, connect a server/database and real authentication.</div></section>
-<div class="stats"><div class="stat"><strong id="projectStat">0</strong><span>Visible projects</span></div><div class="stat"><strong id="gameStat">50</strong><span>Visible game cards</span></div><div class="stat"><strong id="hiddenStat">0</strong><span>Hidden games</span></div></div>
-<div class="tabs"><button class="tab active" data-tab="content">✏️ Website Content</button><button class="tab" data-tab="projects">🌐 Featured Projects</button><button class="tab" data-tab="games">🎮 Game Cards</button><button class="tab" data-tab="settings">⚙️ Settings & Backup</button></div>
-<section class="panel" id="contentPanel"><h2>Edit Main Website</h2><p class="hint">Edit the text shown on index.html. Save changes, then refresh the portfolio page. Keep social links as full https:// URLs.</p><form id="contentForm"><div class="form-grid"><div class="field"><label for="c_navHome">Navigation: Home</label><input id="c_navHome" placeholder="Home"></div><div class="field"><label for="c_navGames">Navigation: Games</label><input id="c_navGames" placeholder="Games"></div><div class="field"><label for="c_navAbout">Navigation: About</label><input id="c_navAbout" placeholder="About"></div><div class="field"><label for="c_navSkills">Navigation: Skills</label><input id="c_navSkills" placeholder="Skills"></div><div class="field"><label for="c_navProjects">Navigation: Projects</label><input id="c_navProjects" placeholder="Projects"></div><div class="field"><label for="c_navContact">Navigation: Contact</label><input id="c_navContact" placeholder="Contact"></div><div class="field"><label for="c_gamesHeading">Games section heading</label><input id="c_gamesHeading" placeholder="🎮 Play Fun Games"></div><div class="field"><label for="c_gamesSubtitle">Games section description</label><input id="c_gamesSubtitle" placeholder="50 fun mini-games..."></div><div class="field"><label for="c_heroName">Main name / logo</label><input id="c_heroName" placeholder="Fahim"></div><div class="field"><label for="c_heroTitle">Hero title</label><input id="c_heroTitle" placeholder="Web Developer & Game Lover"></div><div class="field full"><label for="c_heroDescription">Hero description</label><textarea id="c_heroDescription" rows="2" placeholder="Short intro shown under your title"></textarea></div><div class="field full"><label for="c_heroQuote">Hero quote</label><textarea id="c_heroQuote" rows="2" placeholder="Your favorite quote"></textarea></div><div class="field"><label for="c_quoteAuthor">Quote author</label><input id="c_quoteAuthor" placeholder="— Fahim"></div><div class="field"><label for="c_aboutHeading">About section heading</label><input id="c_aboutHeading" placeholder="About Me"></div><div class="field full"><label for="c_aboutText">About text</label><textarea id="c_aboutText" rows="2" placeholder="Write about yourself"></textarea></div><div class="field"><label for="c_skillsHeading">Skills section heading</label><input id="c_skillsHeading" placeholder="My Skills"></div><div class="field full"><label for="c_skills">Skills (comma separated)</label><textarea id="c_skills" rows="2" placeholder="HTML, CSS, JavaScript"></textarea></div><div class="field"><label for="c_projectsHeading">Projects section heading</label><input id="c_projectsHeading" placeholder="Featured Projects"></div><div class="field"><label for="c_contactHeading">Contact section heading</label><input id="c_contactHeading" placeholder="Get In Touch"></div><div class="field full"><label for="c_contactText">Contact description</label><textarea id="c_contactText" rows="2" placeholder="Contact intro"></textarea></div><div class="field"><label for="c_email">Contact email</label><input id="c_email" placeholder="you@example.com"></div><div class="field"><label for="c_location">Location</label><input id="c_location" placeholder="Bangladesh"></div><div class="field"><label for="c_availability">Availability status</label><input id="c_availability" placeholder="Available for work"></div><div class="field"><label for="c_sendMessageText">Contact button text</label><input id="c_sendMessageText" placeholder="Send Message"></div><div class="field"><label for="c_statProjects">Projects stat value</label><input id="c_statProjects" placeholder="5+"></div><div class="field"><label for="c_statProjectsLabel">Projects stat label</label><input id="c_statProjectsLabel" placeholder="Projects"></div><div class="field"><label for="c_statPassion">Passion stat value</label><input id="c_statPassion" placeholder="100%"></div><div class="field"><label for="c_statPassionLabel">Passion stat label</label><input id="c_statPassionLabel" placeholder="Passion"></div><div class="field"><label for="c_footerTagline">Footer tagline</label><input id="c_footerTagline" placeholder="Play · Build · Grow"></div><div class="field"><label for="c_footerName">Footer name</label><input id="c_footerName" placeholder="Fahim"></div><div class="field"><label for="c_footerCopyright">Footer copyright text</label><input id="c_footerCopyright" placeholder="All rights reserved."></div><div class="field"><label for="c_footerBuilt">Footer extra text</label><input id="c_footerBuilt" placeholder="Built with ❤️ and JavaScript"></div><div class="field"><label for="c_githubUrl">GitHub URL</label><input id="c_githubUrl" placeholder="https://github.com/"></div><div class="field"><label for="c_youtubeUrl">YouTube URL</label><input id="c_youtubeUrl" placeholder="https://youtube.com/"></div><div class="field"><label for="c_facebookUrl">Facebook URL</label><input id="c_facebookUrl" placeholder="https://facebook.com/"></div></div><div class="actions"><button class="btn" type="submit">💾 Save Website Text</button><button class="btn secondary" type="button" id="resetContentBtn">Reset Website Text</button></div></form></section>
-<section class="panel hidden" id="projectsPanel">
-<h2>Featured Projects</h2><p class="hint">Add, edit, delete, or hide project links shown on index.html.</p>
-<form id="projectForm"><input type="hidden" id="projectId">
-<div class="formgrid">
-<div class="field"><label for="pName">Project name *</label><input id="pName" required maxlength="90" placeholder="My Website"></div>
-<div class="field"><label for="pIcon">Icon / emoji</label><input id="pIcon" maxlength="8" value="🌐" placeholder="🌐"></div>
-<div class="field full"><label for="pDesc">Short description</label><input id="pDesc" maxlength="150" placeholder="Website, app or project description"></div>
-<div class="field full"><label for="pUrl">Project URL *</label><input id="pUrl" type="url" required placeholder="https://example.com"></div>
-<div class="field"><label for="pVisible">Visibility</label><select id="pVisible"><option value="yes">Visible on website</option><option value="no">Hidden on website</option></select></div>
-</div><div class="actions"><button class="btn" type="submit" id="saveProjectBtn">＋ Add Project</button><button class="btn secondary" type="button" id="clearFormBtn">Clear Form</button></div>
-</form><div class="list" id="projectsList"></div>
-</section>
-<section class="panel hidden" id="gamesPanel">
-<h2>Game Card Controls</h2><p class="hint">Hide cards from the public portfolio without deleting the game. Hidden games can be restored anytime.</p>
-<div class="actions"><button class="btn secondary" id="showAllGames">Show All Games</button><button class="btn secondary" id="hideAllGames">Hide All Games</button></div>
-<div class="list" id="gamesList"></div>
-</section>
-<section class="panel hidden" id="settingsPanel">
-<h2>Settings & Backup</h2><p class="hint">Export a backup of projects and hidden-game settings, or restore a backup JSON file.</p>
-<div class="actions"><button class="btn" id="exportBtn">⬇ Export Backup</button><button class="btn secondary" id="resetBtn">Reset to Default Projects</button></div>
-<div class="field" style="margin-top:18px"><label for="importFile">Import backup JSON</label><input id="importFile" type="file" accept=".json,application/json"></div>
-<div class="actions"><button class="btn secondary" id="importBtn">Import Backup</button></div>
-<p class="hint" style="margin-top:15px">Storage keys: <code>fahim_projects</code>, <code>fahim_hidden_games</code>. The portfolio and admin page must be opened in the same browser and same origin for localStorage to be shared.</p>
-</section>
-</div>
-</main>
-<div class="footer">Fahim Portfolio Admin Portal · Local browser storage</div><div class="toast" id="toast"></div>
-<script>
-const ADMIN_PASSWORD='change-me-123'; // CHANGE THIS BEFORE PUBLISHING. NOT SECURE AUTHENTICATION.
-const GAMES=[
-['bird','🐤','Flappy Bird'],['2048','🔢','2048'],['memory','🧠','Memory Match'],['ttt','❌','Tic Tac Toe'],['reaction','⚡','Reaction Test'],
-['rps','✊','Rock Paper Scissors'],['guess','🎯','Number Guess'],['dice','🎲','Dice Duel'],['coin','🪙','Coin Flip'],['click','🖱️','Click Challenge'],
-['math','➗','Math Sprint'],['color','🎨','Color Match'],['typing','⌨️','Typing Speed'],['whack','🔨','Whack-a-Mole'],['snake','🐍','Snake'],
-['pong','🏓','Mini Pong'],['hangman','🔤','Word Guess'],['scramble','🔀','Word Scramble'],['simon','🟢','Simon Says'],['countdown','⏱️','Stop the Timer'],
-['higher','📈','Higher or Lower'],['gridtap','🟦','Grid Tap'],['odd','🧩','Odd One Out'],['pattern','🔢','Sequence Memory'],['safe','🔐','Lucky Lock'],
-['quiz','🧠','Quick Quiz'],['balloon','🎈','Balloon Pop'],['basket','🧺','Emoji Catch'],['dodge','💥','Dodge It'],['target','🎯','Target Practice'],['cups','🥤','Find the Ball'],['lottery','🎟️','Lucky Lottery'],['maze','🌀','Mini Maze'],['tapcolor','🌈','Tap the Color'],['squares','🟩','Color Flood'],['mines','💣','Mini Mines'],['connect','🔴','Connect Four Mini'],['reflex','👆','Reflex Trainer'],['dice21','🎲','Dice 21'],['wordquiz','🔠','Emoji Riddle'],['sort','📦','Sort the Numbers'],['puzzle','🧩','Sliding Puzzle'],['coinrace','🪙','Coin Race'],['mathduel','➕','Math Duel'],['catchstars','⭐','Star Catcher'],['truefalse','✅','True or False'],['sprint','🏃','Button Sprint'],['lockpick','🔓','Code Breaker'],['emojiMatch','💞','Emoji Pair Rush'],['quickdraw','🤠','Quick Draw']];
-const DEFAULT_PROJECTS=[
-{id:'p1',name:'Grow Up Communication',desc:'ISP Website (GitHub Pages)',url:'https://github.com/CDT248/GrowUp-Communication',icon:'🌐'},
-{id:'p2',name:'RS NETWORK',desc:'Invoice & Email System',url:'https://github.com/',icon:'📡'},
-{id:'p3',name:'Multi Drive Storage',desc:'Cloud Storage App',url:'https://github.com/',icon:'☁️'},
-{id:'p4',name:'Captive Portal',desc:'ISP Customer Management',url:'https://github.com/',icon:'📶'}];
-const $=s=>document.querySelector(s);
-const read=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}};
-const save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));window.dispatchEvent(new StorageEvent('storage',{key:k,newValue:JSON.stringify(v)}))};
-let toastTimer;
-function toast(msg){const t=$('#toast');t.textContent=msg;t.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',2300)}
-function getProjects(){let p=read('fahim_projects',null);if(!Array.isArray(p)){p=DEFAULT_PROJECTS.map(x=>({...x}));save('fahim_projects',p)}return p}
-function getHidden(){const v=read('fahim_hidden_games',[]);return Array.isArray(v)?v:[]}
-function showDashboard(){sessionStorage.setItem('fahim_admin_session','yes');$('#loginPanel').classList.add('hidden');$('#dashboard').classList.remove('hidden');renderAll()}
-function checkSession(){if(sessionStorage.getItem('fahim_admin_session')==='yes')showDashboard()}
-$('#loginBtn').onclick=()=>{if($('#pass').value===ADMIN_PASSWORD)showDashboard();else toast('Incorrect password')};
-$('#pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('#loginBtn').click()});
-$('#logoutBtn').onclick=()=>{sessionStorage.removeItem('fahim_admin_session');$('#dashboard').classList.add('hidden');$('#loginPanel').classList.remove('hidden');$('#pass').value=''};
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['content','projects','games','settings'].forEach(id=>$('#'+id+'Panel').classList.toggle('hidden',id!==b.dataset.tab))});
-function renderStats(){const p=getProjects(),h=getHidden();$('#projectStat').textContent=p.filter(x=>x.visible!==false).length;$('#gameStat').textContent=GAMES.length-h.length;$('#hiddenStat').textContent=h.length}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function renderProjects(){const list=$('#projectsList'),p=getProjects();list.innerHTML='';if(!p.length){list.innerHTML='<div class="empty">No projects yet. Add your first project above.</div>';return}p.forEach(item=>{const row=document.createElement('div');row.className='item';row.innerHTML=`<div class="icon">${esc(item.icon||'🌐')}</div><div class="item-main"><strong>${esc(item.name)}</strong><small>${esc(item.desc||'Project')} · ${esc(item.url)}</small><span class="badge ${item.visible===false?'hidden':''}">${item.visible===false?'Hidden':'Visible'}</span></div><div class="item-actions"><button class="btn secondary" data-action="edit">Edit</button><button class="btn secondary" data-action="toggle">${item.visible===false?'Show':'Hide'}</button><button class="btn danger" data-action="delete">Delete</button></div>`;row.querySelector('[data-action=edit]').onclick=()=>editProject(item.id);row.querySelector('[data-action=toggle]').onclick=()=>{const a=getProjects(),x=a.find(y=>y.id===item.id);x.visible=x.visible===false?true:false;save('fahim_projects',a);renderAll();toast(x.visible?'Project shown':'Project hidden')};row.querySelector('[data-action=delete]').onclick=()=>{if(confirm('Delete project "'+item.name+'"?')){save('fahim_projects',getProjects().filter(x=>x.id!==item.id));renderAll();toast('Project deleted')}};list.append(row)})}
-function clearForm(){$('#projectId').value='';$('#pName').value='';$('#pIcon').value='🌐';$('#pDesc').value='';$('#pUrl').value='';$('#pVisible').value='yes';$('#saveProjectBtn').textContent='＋ Add Project'}
-function editProject(id){const p=getProjects().find(x=>x.id===id);if(!p)return;$('#projectId').value=p.id;$('#pName').value=p.name;$('#pIcon').value=p.icon||'🌐';$('#pDesc').value=p.desc||'';$('#pUrl').value=p.url;$('#pVisible').value=p.visible===false?'no':'yes';$('#saveProjectBtn').textContent='Save Changes';$('#projectsPanel').scrollIntoView({behavior:'smooth'})}
-$('#clearFormBtn').onclick=clearForm;
-$('#projectForm').onsubmit=e=>{e.preventDefault();let url;try{url=new URL($('#pUrl').value.trim());if(!['http:','https:'].includes(url.protocol))throw 0}catch(_){toast('Enter a valid http:// or https:// URL');return}const a=getProjects(),id=$('#projectId').value;const item={id:id||('p'+Date.now()),name:$('#pName').value.trim(),icon:$('#pIcon').value.trim()||'🌐',desc:$('#pDesc').value.trim(),url:url.href,visible:$('#pVisible').value==='yes'};if(!item.name){toast('Project name is required');return}if(id){const i=a.findIndex(x=>x.id===id);if(i>=0)a[i]=item}else a.push(item);save('fahim_projects',a);clearForm();renderAll();toast(id?'Project updated':'Project added')};
-function renderGames(){const list=$('#gamesList'),hidden=getHidden();list.innerHTML='';GAMES.forEach(g=>{const isHidden=hidden.includes(g[0]),row=document.createElement('div');row.className='item';row.innerHTML=`<div class="icon">${g[1]}</div><div class="item-main"><strong>${esc(g[2])}</strong><small>Game ID: ${esc(g[0])}</small><div class="game-edit" style="display:grid;grid-template-columns:repeat(3,minmax(70px,1fr));gap:6px;margin:8px 0"><input aria-label="Game icon" data-icon value="${esc((read('fahim_game_content',{})[g[0]]||{}).icon||g[1])}" maxlength="8" style="width:100%;min-width:0;padding:7px"><input aria-label="Game title" data-title value="${esc((read('fahim_game_content',{})[g[0]]||{}).title||g[2])}" style="width:100%;min-width:0;padding:7px"><input aria-label="Game description" data-desc value="${esc((read('fahim_game_content',{})[g[0]]||{}).desc||'')}" placeholder="Description" style="width:100%;min-width:0;padding:7px"></div><span class="badge ${isHidden?'hidden':''}">${isHidden?'Hidden from website':'Visible on website'}</span></div><div class="item-actions"><button class="btn secondary" data-save>Save Text</button><button class="btn ${isHidden?'':'secondary'}" data-toggle>${isHidden?'Show Card':'Hide Card'}</button></div>`;row.querySelector('[data-save]').onclick=()=>{const all=read('fahim_game_content',{});all[g[0]]={icon:row.querySelector('[data-icon]').value.trim()||g[1],title:row.querySelector('[data-title]').value.trim()||g[2],desc:row.querySelector('[data-desc]').value.trim()||g[3]};save('fahim_game_content',all);toast('Game text saved')};row.querySelector('[data-toggle]').onclick=()=>{let h=getHidden();h=isHidden?h.filter(x=>x!==g[0]):[...h,g[0]];save('fahim_hidden_games',h);renderAll();toast(isHidden?'Game card shown':'Game card hidden')};list.append(row)})}
-$('#showAllGames').onclick=()=>{save('fahim_hidden_games',[]);renderAll();toast('All game cards are visible')};
-$('#hideAllGames').onclick=()=>{if(confirm('Hide all 50 game cards from the portfolio?')){save('fahim_hidden_games',GAMES.map(g=>g[0]));renderAll();toast('All game cards hidden')}};
-function renderAll(){renderStats();renderProjects();renderGames()}
-$('#exportBtn').onclick=()=>{const data={version:2,exportedAt:new Date().toISOString(),projects:getProjects(),hiddenGames:getHidden(),content:getContent(),gameContent:read('fahim_game_content',{})};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='fahim-portfolio-backup.json';a.click();URL.revokeObjectURL(url);toast('Backup exported')};
-$('#resetBtn').onclick=()=>{if(confirm('Replace project list with the default projects? Game visibility will not change.')){save('fahim_projects',DEFAULT_PROJECTS.map(x=>({...x})));renderAll();toast('Default projects restored')}};
-$('#importBtn').onclick=async()=>{const file=$('#importFile').files[0];if(!file){toast('Choose a backup JSON file first');return}try{const data=JSON.parse(await file.text());if(!Array.isArray(data.projects)||!Array.isArray(data.hiddenGames))throw new Error('Invalid backup');if(!confirm('Import backup and replace current settings?'))return;save('fahim_projects',data.projects);save('fahim_hidden_games',data.hiddenGames.filter(id=>GAMES.some(g=>g[0]===id)));if(data.content&&typeof data.content==='object')save('fahim_site_content',data.content);if(data.gameContent&&typeof data.gameContent==='object')save('fahim_game_content',data.gameContent);loadContentForm();renderAll();toast('Backup imported')}catch(e){toast('Invalid backup file')}};
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">🎮 FAHIM ADMIN</a>
+    <div class="row" style="flex:0;min-width:max-content">
+      <button class="btn secondary" id="themeBtn" type="button">☀️</button>
+      <a class="btn" href="index.html">View Website ↗</a>
+    </div>
+  </div>
+</header>
 
-const CONTENT_DEFAULTS={navHome:'Home',navGames:'Games',navAbout:'About',navSkills:'Skills',navProjects:'Projects',navContact:'Contact',gamesHeading:'🎮 Play Fun Games',gamesSubtitle:'50 fun mini-games that run right in your browser. No downloads needed!',heroName:'Fahim',heroTitle:'Web Developer & Game Lover 🎮',heroDescription:'I create modern websites, web apps and fun browser games. This is my portfolio — where code meets creativity!',heroQuote:'“Good code, good vibes, and great games!”',quoteAuthor:'— Fahim',aboutHeading:'About Me',aboutText:'I am Fahim, a passionate web developer and game enthusiast. I enjoy building useful websites, solving problems with code, and playing fun browser games.',skillsHeading:'My Skills',skills:'HTML, CSS, JavaScript, Python, Google Apps Script, Git & GitHub, Responsive Design, Firebase, UI/UX Design',projectsHeading:'Featured Projects',contactHeading:'Get In Touch',contactText:'Have a project in mind? Feel free to contact me!',email:'fahim@example.com',location:'Bangladesh',availability:'Available for work',sendMessageText:'➤ Send Message',statProjects:'5+',statProjectsLabel:'Projects',statPassion:'100%',statPassionLabel:'Passion',footerTagline:'Play · Build · Grow',footerName:'Fahim',footerCopyright:'All rights reserved.',footerBuilt:'Built with ❤️ and JavaScript',githubUrl:'https://github.com/',youtubeUrl:'https://youtube.com/',facebookUrl:'https://facebook.com/'};
-function getContent(){return {...CONTENT_DEFAULTS,...read('fahim_site_content',{})}}
-function loadContentForm(){const c=getContent();Object.keys(CONTENT_DEFAULTS).forEach(k=>{const el=$('#c_'+k);if(el)el.value=c[k]??''})}
-$('#contentForm').onsubmit=e=>{e.preventDefault();const c={};Object.keys(CONTENT_DEFAULTS).forEach(k=>{const el=$('#c_'+k);c[k]=el?el.value.trim():CONTENT_DEFAULTS[k]});for(const k of ['githubUrl','youtubeUrl','facebookUrl']){try{const u=new URL(c[k]);if(!['http:','https:'].includes(u.protocol))throw 0;c[k]=u.href}catch(_){toast('Enter valid https:// social URLs');return}}if(c.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)){toast('Enter a valid email address');return}save('fahim_site_content',c);toast('Website content saved')};
-$('#resetContentBtn').onclick=()=>{if(confirm('Reset all website text to defaults?')){save('fahim_site_content',CONTENT_DEFAULTS);loadContentForm();toast('Website text reset')}};
-loadContentForm();checkSession();
+<main class="container">
+  <section id="loginPanel" class="panel" style="max-width:440px;margin:65px auto">
+    <h1>🔐 Admin Login</h1>
+    <p class="muted">Sign in to manage your portfolio website.</p>
+    <form id="loginForm">
+      <label for="password">Admin Password</label>
+      <input id="password" type="password" autocomplete="current-password" required placeholder="Enter admin password">
+      <button class="btn" style="width:100%" type="submit">Login</button>
+    </form>
+    <p class="muted" style="font-size:12px">Initial password: <code>change-me-123</code></p>
+  </section>
+
+  <section id="dashboard">
+    <h1>Admin Dashboard</h1>
+    <p class="muted">Manage website content and game cards.</p>
+    <div class="tabs">
+      <button class="tab active" data-tab="site">Website Settings</button>
+      <button class="tab" data-tab="games">Games</button>
+      <button class="tab" data-tab="projects">Projects</button>
+      <button class="tab" data-tab="backup">Backup</button>
+    </div>
+
+    <section id="tab-site">
+      <div class="panel">
+        <h2>🏠 Home Page Content</h2>
+        <form id="siteForm">
+          <label>Display Name</label><input id="siteName" required>
+          <label>Main Heading</label><input id="siteTitle" required>
+          <label>Hero Description</label><textarea id="siteDescription"></textarea>
+          <label>About Me</label><textarea id="siteAbout"></textarea>
+          <label>Contact Email</label><input id="siteEmail" type="email">
+          <label>Location</label><input id="siteLocation">
+          <label>GitHub URL</label><input id="siteGithub" type="url" placeholder="https://github.com/">
+          <label>Footer Text</label><input id="siteFooter">
+          <button class="btn" type="submit">Save Website Settings</button>
+        </form>
+        <p class="muted">These settings are saved in this browser. The current index.html must read the same settings for them to appear on the public website.</p>
+      </div>
+    </section>
+
+    <section id="tab-games" hidden>
+      <div class="panel">
+        <h2>🎮 Manage Games</h2>
+        <input id="gameSearch" placeholder="Search game by name or ID...">
+        <p class="muted">Edit a game's title, icon and description, or hide it from the public list.</p>
+        <div id="gamesList"></div>
+      </div>
+    </section>
+
+    <section id="tab-projects" hidden>
+      <div class="grid">
+        <div class="panel">
+          <h2>➕ Add / Edit Project</h2>
+          <form id="projectForm">
+            <input id="projectId" type="hidden">
+            <label>Project Name</label><input id="pName" required>
+            <label>Icon / Emoji</label><input id="pIcon" value="🌐" maxlength="8">
+            <label>Description</label><textarea id="pDesc"></textarea>
+            <label>Project URL</label><input id="pUrl" type="url" required placeholder="https://example.com">
+            <label>Visibility</label>
+            <select id="pVisible"><option value="yes">Visible</option><option value="no">Hidden</option></select>
+            <div class="row">
+              <button class="btn" type="submit" id="saveProjectBtn">Add Project</button>
+              <button class="btn secondary" type="button" id="clearFormBtn">Clear</button>
+            </div>
+          </form>
+        </div>
+        <div class="panel">
+          <h2>📁 Project List</h2>
+          <div id="projectsList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-backup" hidden>
+      <div class="panel">
+        <h2>💾 Backup & Restore</h2>
+        <p class="muted">Export this browser's saved admin data or restore a previously exported JSON backup.</p>
+        <button class="btn" id="exportBtn" type="button">⬇ Export Backup</button>
+        <label style="margin-top:18px">Restore JSON Backup</label>
+        <input id="backupFile" type="file" accept=".json,application/json">
+        <button class="btn secondary" id="importBtn" type="button">Restore Backup</button>
+        <hr style="border-color:var(--border);margin:22px 0">
+        <button class="btn danger" id="resetBtn" type="button">Reset Admin Data</button>
+      </div>
+    </section>
+
+    <div class="panel">
+      <div class="row">
+        <div><strong>Storage</strong><div class="muted" id="storageInfo">Local browser storage</div></div>
+        <button class="btn secondary" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const GAME_DATA=[
+['snake','🐍','Snake','Eat food and grow longer.'],
+['bird','🐤','Flappy Bird','Fly through the pipes.'],
+['car-racing','🏎️','Car Racing','Avoid traffic and race.'],
+['memory','🧠','Memory Match','Find matching pairs.'],
+['2048','🔢','2048','Merge tiles to reach 2048.'],
+['puzzle','🧩','Sliding Puzzle','Arrange the tiles in order.'],
+['tictactoe','❌','Tic Tac Toe','Play against a friend.'],
+['pong','🏓','Pong','Keep the ball in play.'],
+['breakout','🧱','Brick Breaker','Break every brick.'],
+['flappy','🪽','Flying Bird','Avoid obstacles in the sky.'],
+['memory-cards','🎴','Card Match','Test your memory.'],
+['reaction','⚡','Reaction Test','Test your reaction speed.'],
+['math','➗','Math Challenge','Solve quick math questions.'],
+['typing','⌨️','Typing Speed','Test your typing speed.'],
+['whack','🔨','Whack-a-Mole','Hit the mole quickly.'],
+['hangman','🔤','Hangman','Guess the hidden word.'],
+['guess','🎯','Number Guess','Guess the secret number.'],
+['dice','🎲','Dice Roll','Roll the dice.'],
+['rps','✊','Rock Paper Scissors','Challenge the computer.'],
+['color','🎨','Color Match','Match the right color.'],
+['simon','🟢','Simon Says','Repeat the sequence.'],
+['maze','🌀','Maze Runner','Find the way out.'],
+['mines','💣','Mine Finder','Avoid hidden mines.'],
+['connect','🔴','Connect Four','Connect four pieces.'],
+['wordquiz','📚','Word Quiz','Test your vocabulary.'],
+['quiz','❓','Trivia Quiz','Answer the questions.'],
+['balloon','🎈','Balloon Pop','Pop the balloons.'],
+['basket','🏀','Basket Catch','Catch falling balls.'],
+['dodge','💨','Dodge It','Avoid incoming objects.'],
+['target','🎯','Target Hit','Hit the target.'],
+['cups','🥤','Cup Shuffle','Follow the hidden ball.'],
+['lottery','🎟️','Lucky Number','Try your luck.'],
+['tapcolor','🌈','Tap the Color','Tap the matching color.'],
+['squares','🟦','Square Click','Click the right square.'],
+['coinrace','🪙','Coin Race','Collect the coins.'],
+['mathduel','🧮','Math Duel','Race to solve equations.'],
+['catchstars','⭐','Catch Stars','Collect falling stars.'],
+['truefalse','✅','True or False','Choose the right answer.'],
+['sprint','🏃','Speed Sprint','Race against the clock.'],
+['lockpick','🔐','Unlock Code','Crack the secret code.'],
+['emojimatch','😀','Emoji Match','Find matching emojis.'],
+['quickdraw','⚔️','Quick Draw','React at the right time.'],
+['higher','📈','Higher or Lower','Guess the next number.'],
+['coin','🪙','Coin Flip','Heads or tails?'],
+['countdown','⏱️','Countdown','Beat the timer.'],
+['pattern','🔷','Pattern Memory','Remember the pattern.'],
+['odd','🔍','Odd One Out','Find the different item.'],
+['safe','🗝️','Safe Cracker','Find the correct combination.'],
+['gridtap','🔲','Grid Tap','Tap the requested tile.'],
+['scramble','🔠','Word Scramble','Unscramble the word.']
+];
+const DEFAULT_SITE={
+ name:'Fahim',
+ title:'Web Developer & Gamer',
+ description:'I create websites, explore technology, and enjoy browser games.',
+ about:'I am Fahim, a web developer and game enthusiast.',
+ email:'fahim@example.com',
+ location:'Bangladesh',
+ github:'https://github.com/',
+ footer:'Play · Build · Grow'
+};
+const DEFAULT_PROJECTS=[
+ {id:'sample1',name:'Portfolio Website',icon:'🌐',desc:'My personal portfolio website.',url:'https://github.com/',visible:true},
+ {id:'sample2',name:'Browser Games',icon:'🎮',desc:'A collection of browser games.',url:'https://github.com/',visible:true}
+];
+function read(key,fallback){
+ try{const v=JSON.parse(localStorage.getItem(key));return v==null?fallback:v}catch(e){return fallback}
+}
+function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let toastTimer;
+function toast(msg){
+ const el=$('#toast');el.textContent=msg;el.style.display='block';
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display='none',2600);
+}
+function getSite(){return {...DEFAULT_SITE,...read('fahim_site_content',{})}}
+function getProjects(){return read('fahim_projects',DEFAULT_PROJECTS)}
+function getHidden(){return read('fahim_hidden_games',[])}
+function getGameContent(){return read('fahim_game_content',{})}
+function setField(id,value){$('#'+id).value=value??''}
+function loadSite(){
+ const s=getSite();
+ setField('siteName',s.name);setField('siteTitle',s.title);
+ setField('siteDescription',s.description);setField('siteAbout',s.about);
+ setField('siteEmail',s.email);setField('siteLocation',s.location);
+ setField('siteGithub',s.github);setField('siteFooter',s.footer);
+}
+function renderGames(){
+ const list=$('#gamesList'),hidden=getHidden(),overrides=getGameContent();
+ const q=$('#gameSearch').value.toLowerCase().trim();
+ list.innerHTML='';
+ GAME_DATA.filter(g=>{
+  const o=overrides[g[0]]||{};
+  return (g[2]+' '+g[0]+' '+(o.title||'')).toLowerCase().includes(q);
+ }).forEach(g=>{
+  const o=overrides[g[0]]||{},isHidden=hidden.includes(g[0]);
+  const row=document.createElement('div');row.className='item';
+  row.innerHTML=`
+    <div class="icon">${esc(o.icon||g[1])}</div>
+    <div class="item-main">
+      <strong>${esc(o.title||g[2])}</strong>
+      <small>ID: ${esc(g[0])} · ${isHidden?'<span class="badge hidden-badge">Hidden</span>':'<span class="badge">Visible</span>'}</small>
+      <label>Icon</label><input data-icon value="${esc(o.icon||g[1])}" maxlength="8">
+      <label>Game Title</label><input data-title value="${esc(o.title||g[2])}">
+      <label>Description</label><input data-desc value="${esc(o.desc||g[3])}">
+      <div class="item-actions">
+        <button class="btn" data-action="save">Save</button>
+        <button class="btn secondary" data-action="toggle">${isHidden?'Show':'Hide'}</button>
+      </div>
+    </div>`;
+  row.querySelector('[data-action="save"]').onclick=()=>{
+   const all=getGameContent();
+   all[g[0]]={
+    icon:row.querySelector('[data-icon]').value.trim()||g[1],
+    title:row.querySelector('[data-title]').value.trim()||g[2],
+    desc:row.querySelector('[data-desc]').value.trim()||g[3]
+   };
+   save('fahim_game_content',all);renderGames();toast('Game settings saved');
+  };
+  row.querySelector('[data-action="toggle"]').onclick=()=>{
+   const arr=getHidden(),idx=arr.indexOf(g[0]);
+   if(idx<0)arr.push(g[0]);else arr.splice(idx,1);
+   save('fahim_hidden_games',arr);renderGames();toast(idx<0?'Game hidden':'Game shown');
+  };
+  list.appendChild(row);
+ });
+ if(!list.children.length)list.innerHTML='<p class="muted">No games found.</p>';
+}
+function renderProjects(){
+ const list=$('#projectsList');list.innerHTML='';
+ getProjects().forEach(p=>{
+  const row=document.createElement('div');row.className='item';
+  row.innerHTML=`
+   <div class="icon">${esc(p.icon||'🌐')}</div>
+   <div class="item-main">
+    <strong>${esc(p.name)}</strong>
+    <small>${esc(p.url)}</small><br>
+    <span class="badge ${p.visible===false?'hidden-badge':''}">${p.visible===false?'Hidden':'Visible'}</span>
+    <div class="item-actions">
+     <button class="btn" data-edit>Edit</button>
+     <button class="btn secondary" data-toggle>${p.visible===false?'Show':'Hide'}</button>
+     <button class="btn danger" data-delete>Delete</button>
+    </div>
+   </div>`;
+  row.querySelector('[data-edit]').onclick=()=>{
+   setField('projectId',p.id);setField('pName',p.name);setField('pIcon',p.icon||'🌐');
+   setField('pDesc',p.desc||'');setField('pUrl',p.url);
+   setField('pVisible',p.visible===false?'no':'yes');
+   $('#saveProjectBtn').textContent='Save Changes';
+   $('#tab-projects').scrollIntoView({behavior:'smooth'});
+  };
+  row.querySelector('[data-toggle]').onclick=()=>{
+   const a=getProjects(),x=a.find(v=>v.id===p.id);x.visible=x.visible===false?true:false;
+   save('fahim_projects',a);renderProjects();toast('Project visibility updated');
+  };
+  row.querySelector('[data-delete]').onclick=()=>{
+   if(confirm('Delete project "'+p.name+'"?')){
+    save('fahim_projects',getProjects().filter(v=>v.id!==p.id));
+    renderProjects();toast('Project deleted');
+   }
+  };
+  list.appendChild(row);
+ });
+ if(!list.children.length)list.innerHTML='<p class="muted">No projects yet.</p>';
+}
+function clearProjectForm(){
+ $('#projectForm').reset();setField('projectId','');setField('pIcon','🌐');setField('pVisible','yes');
+ $('#saveProjectBtn').textContent='Add Project';
+}
+function openDashboard(){
+ $('#loginPanel').style.display='none';$('#dashboard').style.display='block';
+ loadSite();renderGames();renderProjects();updateStorageInfo();
+}
+function updateStorageInfo(){
+ let bytes=0;
+ for(let i=0;i<localStorage.length;i++){
+  const k=localStorage.key(i);bytes+=(k.length+(localStorage.getItem(k)||'').length)*2;
+ }
+ $('#storageInfo').textContent='Local browser storage · Approx. '+(bytes/1024).toFixed(1)+' KB used';
+}
+$('#loginForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const pass=$('#password').value;
+ const stored=localStorage.getItem('fahim_admin_password')||'change-me-123';
+ if(pass===stored){sessionStorage.setItem('fahim_admin_session','yes');openDashboard();toast('Login successful')}
+ else toast('Incorrect password');
+});
+if(sessionStorage.getItem('fahim_admin_session')==='yes')openDashboard();
+
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b===btn));
+ ['site','games','projects','backup'].forEach(id=>$('#tab-'+id).hidden=id!==btn.dataset.tab);
+}));
+$('#siteForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const s={
+  name:$('#siteName').value.trim(),title:$('#siteTitle').value.trim(),
+  description:$('#siteDescription').value.trim(),about:$('#siteAbout').value.trim(),
+  email:$('#siteEmail').value.trim(),location:$('#siteLocation').value.trim(),
+  github:$('#siteGithub').value.trim(),footer:$('#siteFooter').value.trim()
+ };
+ save('fahim_site_content',s);updateStorageInfo();toast('Website settings saved');
+});
+$('#gameSearch').addEventListener('input',renderGames);
+$('#projectForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ let url;
+ try{url=new URL($('#pUrl').value.trim());if(!['http:','https:'].includes(url.protocol))throw Error()}
+ catch(_){toast('Enter a valid http:// or https:// URL');return}
+ const a=getProjects(),id=$('#projectId').value;
+ const p={
+  id:id||('p'+Date.now()),name:$('#pName').value.trim(),
+  icon:$('#pIcon').value.trim()||'🌐',desc:$('#pDesc').value.trim(),
+  url:url.href,visible:$('#pVisible').value==='yes'
+ };
+ if(!p.name){toast('Project name is required');return}
+ const i=a.findIndex(x=>x.id===id);
+ if(id&&i>=0)a[i]=p;else a.push(p);
+ save('fahim_projects',a);clearProjectForm();renderProjects();updateStorageInfo();
+ toast(id?'Project updated':'Project added');
+});
+$('#clearFormBtn').addEventListener('click',clearProjectForm);
+$('#exportBtn').addEventListener('click',()=>{
+ const keys=['fahim_site_content','fahim_projects','fahim_hidden_games','fahim_game_content','fahim_admin_password'];
+ const data={version:1,exportedAt:new Date().toISOString(),data:{}};
+ keys.forEach(k=>{if(localStorage.getItem(k)!==null)data.data[k]=localStorage.getItem(k)});
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='fahim-admin-backup.json';a.click();URL.revokeObjectURL(url);
+ toast('Backup exported');
+});
+$('#importBtn').addEventListener('click',()=>{
+ const file=$('#backupFile').files[0];if(!file){toast('Choose a backup JSON file first');return}
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const obj=JSON.parse(reader.result),data=obj.data||obj;
+   const allowed=['fahim_site_content','fahim_projects','fahim_hidden_games','fahim_game_content','fahim_admin_password'];
+   allowed.forEach(k=>{if(Object.prototype.hasOwnProperty.call(data,k)){
+    const v=data[k];if(typeof v==='string')localStorage.setItem(k,v);else localStorage.setItem(k,JSON.stringify(v));
+   }});
+   loadSite();renderGames();renderProjects();updateStorageInfo();toast('Backup restored');
+  }catch(e){toast('Invalid backup JSON')}
+ };
+ reader.readAsText(file);
+});
+$('#resetBtn').addEventListener('click',()=>{
+ if(!confirm('Reset saved website, games and projects data in this browser?'))return;
+ ['fahim_site_content','fahim_projects','fahim_hidden_games','fahim_game_content'].forEach(k=>localStorage.removeItem(k));
+ loadSite();renderGames();renderProjects();updateStorageInfo();toast('Admin data reset');
+});
+$('#logoutBtn').addEventListener('click',()=>{
+ sessionStorage.removeItem('fahim_admin_session');
+ $('#dashboard').style.display='none';$('#loginPanel').style.display='block';
+ $('#password').value='';toast('Logged out');
+});
+$('#themeBtn').addEventListener('click',()=>{
+ document.body.classList.toggle('light');
+ const light=document.body.classList.contains('light');
+ $('#themeBtn').textContent=light?'🌙':'☀️';
+ localStorage.setItem('fahim_admin_theme',light?'light':'dark');
+});
+if(localStorage.getItem('fahim_admin_theme')==='light'){
+ document.body.classList.add('light');$('#themeBtn').textContent='🌙';
+}
 </script>
 </body>
 </html>
