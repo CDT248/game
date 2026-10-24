@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>Fahim | Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06101e;--panel:#0b192b;--panel2:#10213a;--text:#f3f7ff;--muted:#a7bad2;--line:#203b5c;--green:#13e99a;--blue:#16c9ff;--red:#ff617a}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{width:min(1150px,93%);margin:auto}.top{border-bottom:1px solid var(--line);padding:17px 0;background:#091629;position:sticky;top:0;z-index:5}.topin{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;font-size:21px}.brand span{color:var(--green)}.btn{border:0;border-radius:9px;background:linear-gradient(100deg,var(--green),#27d9c6);color:#041b20;padding:10px 15px;font-weight:800;font-size:13px}.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}.btn.danger{background:#4b1e2b;color:#ffd8df;border:1px solid #8d3448}.hero{padding:28px 0 18px}.hero h1{font-size:clamp(27px,4vw,38px)}.hero p{color:var(--muted);font-size:13px;margin-top:6px}.warning{margin:16px 0;padding:13px 15px;border:1px solid #7b6332;background:#332913;border-radius:10px;color:#ffe5a0;font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px}.stat strong{display:block;font-size:25px;color:var(--green)}.stat span{font-size:12px;color:var(--muted)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px 14px;border-radius:9px}.tab.active{color:#031b17;background:var(--green);border-color:var(--green);font-weight:800}.panel h2{font-size:20px;margin-bottom:5px}.hint{font-size:12px;color:var(--muted);margin-bottom:15px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted)}input,textarea,select{width:100%;padding:11px;border-radius:8px;border:1px solid var(--line);background:#071321;color:var(--text)}textarea{min-height:75px;resize:vertical}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.list{display:grid;gap:10px;margin-top:15px}.item{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#081525}.icon{width:43px;height:43px;border-radius:9px;background:var(--panel2);display:grid;place-items:center;font-size:22px;flex-shrink:0}.item-main{flex:1;min-width:0}.item-main strong{display:block;overflow-wrap:anywhere}.item-main small{display:block;color:var(--muted);overflow-wrap:anywhere;font-size:11px}.item-actions{display:flex;gap:6px;flex-wrap:wrap}.item-actions button{padding:7px 10px;font-size:11px}.badge{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:3px 8px;font-size:10px;color:var(--muted);margin-top:4px}.badge.hidden{color:#ffb7c3;border-color:#8d3448}.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}.footer{color:var(--muted);font-size:11px;padding:25px 0;text-align:center}.toast{position:fixed;right:18px;bottom:18px;background:var(--green);color:#041b20;font-weight:800;padding:12px 16px;border-radius:10px;box-shadow:0 8px 30px #0005;display:none;z-index:20}.login{max-width:390px;margin:70px auto;padding:24px}.login h2{margin-bottom:6px}.login p{color:var(--muted);font-size:12px;margin-bottom:15px}.login input{margin:6px 0 12px}.hidden{display:none!important}@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.item{align-items:flex-start;flex-wrap:wrap}.item-main{min-width:65%}.item-actions{width:100%}.item-actions button{flex:1}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap topin"><a class="brand" href="index.html"><span>🎮</span> Fahim <span>Admin Portal</span></a><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn secondary" href="index.html">↗ View Website</a><button class="btn secondary" id="logoutBtn">Log Out</button></div></div></header>
+<main class="wrap">
+<section id="loginPanel" class="panel login">
+<h2>🔐 Admin Login</h2><p>This simple gate is only a convenience for local editing, not secure authentication.</p>
+<label for="pass">Admin password</label><input id="pass" type="password" placeholder="Enter password">
+<button class="btn" id="loginBtn" style="width:100%">Open Admin Portal</button>
+<p style="margin-top:12px">Default password: <b>change-me-123</b>. Change it in the code before publishing.</p>
+</section>
+<div id="dashboard" class="hidden">
+<section class="hero"><h1>Admin Portal ⚙️</h1><p>Manage your Featured Projects and control which game cards appear on your portfolio.</p>
+<div class="warning"><b>Important:</b> This static HTML version saves settings in this browser's localStorage. It does not sync to other devices and the password check is not secure. For real multi-device administration, connect a server/database and real authentication.</div></section>
+<div class="stats"><div class="stat"><strong id="projectStat">0</strong><span>Visible projects</span></div><div class="stat"><strong id="gameStat">25</strong><span>Visible game cards</span></div><div class="stat"><strong id="hiddenStat">0</strong><span>Hidden games</span></div></div>
+<div class="tabs"><button class="tab active" data-tab="projects">🌐 Featured Projects</button><button class="tab" data-tab="games">🎮 Game Cards</button><button class="tab" data-tab="settings">⚙️ Settings & Backup</button></div>
+<section class="panel" id="projectsPanel">
+<h2>Featured Projects</h2><p class="hint">Add, edit, delete, or hide project links shown on index.html.</p>
+<form id="projectForm"><input type="hidden" id="projectId">
+<div class="formgrid">
+<div class="field"><label for="pName">Project name *</label><input id="pName" required maxlength="90" placeholder="My Website"></div>
+<div class="field"><label for="pIcon">Icon / emoji</label><input id="pIcon" maxlength="8" value="🌐" placeholder="🌐"></div>
+<div class="field full"><label for="pDesc">Short description</label><input id="pDesc" maxlength="150" placeholder="Website, app or project description"></div>
+<div class="field full"><label for="pUrl">Project URL *</label><input id="pUrl" type="url" required placeholder="https://example.com"></div>
+<div class="field"><label for="pVisible">Visibility</label><select id="pVisible"><option value="yes">Visible on website</option><option value="no">Hidden on website</option></select></div>
+</div><div class="actions"><button class="btn" type="submit" id="saveProjectBtn">＋ Add Project</button><button class="btn secondary" type="button" id="clearFormBtn">Clear Form</button></div>
+</form><div class="list" id="projectsList"></div>
+</section>
+<section class="panel hidden" id="gamesPanel">
+<h2>Game Card Controls</h2><p class="hint">Hide cards from the public portfolio without deleting the game. Hidden games can be restored anytime.</p>
+<div class="actions"><button class="btn secondary" id="showAllGames">Show All Games</button><button class="btn secondary" id="hideAllGames">Hide All Games</button></div>
+<div class="list" id="gamesList"></div>
+</section>
+<section class="panel hidden" id="settingsPanel">
+<h2>Settings & Backup</h2><p class="hint">Export a backup of projects and hidden-game settings, or restore a backup JSON file.</p>
+<div class="actions"><button class="btn" id="exportBtn">⬇ Export Backup</button><button class="btn secondary" id="resetBtn">Reset to Default Projects</button></div>
+<div class="field" style="margin-top:18px"><label for="importFile">Import backup JSON</label><input id="importFile" type="file" accept=".json,application/json"></div>
+<div class="actions"><button class="btn secondary" id="importBtn">Import Backup</button></div>
+<p class="hint" style="margin-top:15px">Storage keys: <code>fahim_projects</code>, <code>fahim_hidden_games</code>. The portfolio and admin page must be opened in the same browser and same origin for localStorage to be shared.</p>
+</section>
+</div>
+</main>
+<div class="footer">Fahim Portfolio Admin Portal · Local browser storage</div><div class="toast" id="toast"></div>
+<script>
+const ADMIN_PASSWORD='change-me-123'; // CHANGE THIS BEFORE PUBLISHING. NOT SECURE AUTHENTICATION.
+const GAMES=[
+['bird','🐤','Flappy Bird'],['2048','🔢','2048'],['memory','🧠','Memory Match'],['ttt','❌','Tic Tac Toe'],['reaction','⚡','Reaction Test'],
+['rps','✊','Rock Paper Scissors'],['guess','🎯','Number Guess'],['dice','🎲','Dice Duel'],['coin','🪙','Coin Flip'],['click','🖱️','Click Challenge'],
+['math','➗','Math Sprint'],['color','🎨','Color Match'],['typing','⌨️','Typing Speed'],['whack','🔨','Whack-a-Mole'],['snake','🐍','Snake'],
+['pong','🏓','Mini Pong'],['hangman','🔤','Word Guess'],['scramble','🔀','Word Scramble'],['simon','🟢','Simon Says'],['countdown','⏱️','Stop the Timer'],
+['higher','📈','Higher or Lower'],['gridtap','🟦','Grid Tap'],['odd','🧩','Odd One Out'],['pattern','🔢','Sequence Memory'],['safe','🔐','Lucky Lock']];
+const DEFAULT_PROJECTS=[
+{id:'p1',name:'Grow Up Communication',desc:'ISP Website (GitHub Pages)',url:'https://github.com/CDT248/GrowUp-Communication',icon:'🌐'},
+{id:'p2',name:'RS NETWORK',desc:'Invoice & Email System',url:'https://github.com/',icon:'📡'},
+{id:'p3',name:'Multi Drive Storage',desc:'Cloud Storage App',url:'https://github.com/',icon:'☁️'},
+{id:'p4',name:'Captive Portal',desc:'ISP Customer Management',url:'https://github.com/',icon:'📶'}];
+const $=s=>document.querySelector(s);
+const read=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}};
+const save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));window.dispatchEvent(new StorageEvent('storage',{key:k,newValue:JSON.stringify(v)}))};
+let toastTimer;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',2300)}
+function getProjects(){let p=read('fahim_projects',null);if(!Array.isArray(p)){p=DEFAULT_PROJECTS.map(x=>({...x}));save('fahim_projects',p)}return p}
+function getHidden(){const v=read('fahim_hidden_games',[]);return Array.isArray(v)?v:[]}
+function showDashboard(){sessionStorage.setItem('fahim_admin_session','yes');$('#loginPanel').classList.add('hidden');$('#dashboard').classList.remove('hidden');renderAll()}
+function checkSession(){if(sessionStorage.getItem('fahim_admin_session')==='yes')showDashboard()}
+$('#loginBtn').onclick=()=>{if($('#pass').value===ADMIN_PASSWORD)showDashboard();else toast('Incorrect password')};
+$('#pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('#loginBtn').click()});
+$('#logoutBtn').onclick=()=>{sessionStorage.removeItem('fahim_admin_session');$('#dashboard').classList.add('hidden');$('#loginPanel').classList.remove('hidden');$('#pass').value=''};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['projects','games','settings'].forEach(id=>$('#'+id+'Panel').classList.toggle('hidden',id!==b.dataset.tab))});
+function renderStats(){const p=getProjects(),h=getHidden();$('#projectStat').textContent=p.filter(x=>x.visible!==false).length;$('#gameStat').textContent=GAMES.length-h.length;$('#hiddenStat').textContent=h.length}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderProjects(){const list=$('#projectsList'),p=getProjects();list.innerHTML='';if(!p.length){list.innerHTML='<div class="empty">No projects yet. Add your first project above.</div>';return}p.forEach(item=>{const row=document.createElement('div');row.className='item';row.innerHTML=`<div class="icon">${esc(item.icon||'🌐')}</div><div class="item-main"><strong>${esc(item.name)}</strong><small>${esc(item.desc||'Project')} · ${esc(item.url)}</small><span class="badge ${item.visible===false?'hidden':''}">${item.visible===false?'Hidden':'Visible'}</span></div><div class="item-actions"><button class="btn secondary" data-action="edit">Edit</button><button class="btn secondary" data-action="toggle">${item.visible===false?'Show':'Hide'}</button><button class="btn danger" data-action="delete">Delete</button></div>`;row.querySelector('[data-action=edit]').onclick=()=>editProject(item.id);row.querySelector('[data-action=toggle]').onclick=()=>{const a=getProjects(),x=a.find(y=>y.id===item.id);x.visible=x.visible===false?true:false;save('fahim_projects',a);renderAll();toast(x.visible?'Project shown':'Project hidden')};row.querySelector('[data-action=delete]').onclick=()=>{if(confirm('Delete project "'+item.name+'"?')){save('fahim_projects',getProjects().filter(x=>x.id!==item.id));renderAll();toast('Project deleted')}};list.append(row)})}
+function clearForm(){$('#projectId').value='';$('#pName').value='';$('#pIcon').value='🌐';$('#pDesc').value='';$('#pUrl').value='';$('#pVisible').value='yes';$('#saveProjectBtn').textContent='＋ Add Project'}
+function editProject(id){const p=getProjects().find(x=>x.id===id);if(!p)return;$('#projectId').value=p.id;$('#pName').value=p.name;$('#pIcon').value=p.icon||'🌐';$('#pDesc').value=p.desc||'';$('#pUrl').value=p.url;$('#pVisible').value=p.visible===false?'no':'yes';$('#saveProjectBtn').textContent='Save Changes';$('#projectsPanel').scrollIntoView({behavior:'smooth'})}
+$('#clearFormBtn').onclick=clearForm;
+$('#projectForm').onsubmit=e=>{e.preventDefault();let url;try{url=new URL($('#pUrl').value.trim());if(!['http:','https:'].includes(url.protocol))throw 0}catch(_){toast('Enter a valid http:// or https:// URL');return}const a=getProjects(),id=$('#projectId').value;const item={id:id||('p'+Date.now()),name:$('#pName').value.trim(),icon:$('#pIcon').value.trim()||'🌐',desc:$('#pDesc').value.trim(),url:url.href,visible:$('#pVisible').value==='yes'};if(!item.name){toast('Project name is required');return}if(id){const i=a.findIndex(x=>x.id===id);if(i>=0)a[i]=item}else a.push(item);save('fahim_projects',a);clearForm();renderAll();toast(id?'Project updated':'Project added')};
+function renderGames(){const list=$('#gamesList'),hidden=getHidden();list.innerHTML='';GAMES.forEach(g=>{const isHidden=hidden.includes(g[0]),row=document.createElement('div');row.className='item';row.innerHTML=`<div class="icon">${g[1]}</div><div class="item-main"><strong>${esc(g[2])}</strong><small>Game ID: ${esc(g[0])}</small><span class="badge ${isHidden?'hidden':''}">${isHidden?'Hidden from website':'Visible on website'}</span></div><div class="item-actions"><button class="btn ${isHidden?'':'secondary'}" data-toggle>${isHidden?'Show Card':'Hide Card'}</button></div>`;row.querySelector('[data-toggle]').onclick=()=>{let h=getHidden();h=isHidden?h.filter(x=>x!==g[0]):[...h,g[0]];save('fahim_hidden_games',h);renderAll();toast(isHidden?'Game card shown':'Game card hidden')};list.append(row)})}
+$('#showAllGames').onclick=()=>{save('fahim_hidden_games',[]);renderAll();toast('All game cards are visible')};
+$('#hideAllGames').onclick=()=>{if(confirm('Hide all 25 game cards from the portfolio?')){save('fahim_hidden_games',GAMES.map(g=>g[0]));renderAll();toast('All game cards hidden')}};
+function renderAll(){renderStats();renderProjects();renderGames()}
+$('#exportBtn').onclick=()=>{const data={version:1,exportedAt:new Date().toISOString(),projects:getProjects(),hiddenGames:getHidden()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='fahim-portfolio-backup.json';a.click();URL.revokeObjectURL(url);toast('Backup exported')};
+$('#resetBtn').onclick=()=>{if(confirm('Replace project list with the default projects? Game visibility will not change.')){save('fahim_projects',DEFAULT_PROJECTS.map(x=>({...x})));renderAll();toast('Default projects restored')}};
+$('#importBtn').onclick=async()=>{const file=$('#importFile').files[0];if(!file){toast('Choose a backup JSON file first');return}try{const data=JSON.parse(await file.text());if(!Array.isArray(data.projects)||!Array.isArray(data.hiddenGames))throw new Error('Invalid backup');if(!confirm('Import backup and replace current settings?'))return;save('fahim_projects',data.projects);save('fahim_hidden_games',data.hiddenGames.filter(id=>GAMES.some(g=>g[0]===id)));renderAll();toast('Backup imported')}catch(e){toast('Invalid backup file')}};
+checkSession();
+</script>
+</body>
+</html>
