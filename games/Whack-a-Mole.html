@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#10152b">
+<title>Whack-a-Mole | Fahim Games</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:radial-gradient(circle at top,#283b70,#10152b 70%);
+  font-family:Arial,Helvetica,sans-serif;color:#fff
+}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.app{width:100%;max-width:490px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
+.logo{font-size:clamp(18px,5vw,23px);font-weight:900}
+.logo span{color:#a78bfa}
+.pill{font-size:11px;background:#ffffff12;border:1px solid #ffffff25;padding:8px 10px;border-radius:20px;color:#d9d6fe}
+.card{padding:20px;background:#171e39;border:1px solid #ffffff1b;border-radius:23px;box-shadow:0 20px 60px #0004}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:17px}
+.stat{text-align:center;background:#ffffff09;border:1px solid #ffffff13;border-radius:13px;padding:11px 4px}
+.stat small{display:block;color:#aab5d3;font-size:11px;margin-bottom:5px}
+.stat strong{font-size:23px}
+.stat:nth-child(1) strong{color:#a78bfa}
+.stat:nth-child(2) strong{color:#67e8f9}
+.stat:nth-child(3) strong{color:#fcd34d}
+.status{text-align:center;color:#c6d0ed;font-size:13px;min-height:22px;margin:3px 0 12px}
+.board{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
+  padding:12px;border-radius:18px;background:linear-gradient(145deg,#293d55,#182a3b);
+  border:2px solid #ffffff15;overflow:hidden
+}
+.hole{
+  position:relative;aspect-ratio:1/1;border:0;border-radius:50%;
+  background:radial-gradient(ellipse at center,#101525 0%,#080d1b 57%,#344b58 60%,#18283a 73%);
+  overflow:hidden;isolation:isolate;user-select:none;-webkit-tap-highlight-color:transparent
+}
+.hole:active{transform:scale(.96)}
+.mole{
+  position:absolute;left:50%;bottom:-100%;transform:translateX(-50%);
+  width:76%;height:79%;display:flex;align-items:center;justify-content:center;
+  border-radius:48% 48% 35% 35%;font-size:clamp(31px,9vw,48px);
+  background:linear-gradient(145deg,#e5b18c,#9a5c3e);
+  border:3px solid #75412e;transition:bottom .13s ease;
+  pointer-events:none;filter:drop-shadow(0 -3px 2px #0003)
+}
+.hole.up .mole{bottom:4%}
+.hole.hit .mole{filter:brightness(1.5);transform:translateX(-50%) scale(.8)}
+.hole .mole::before{
+  content:"";position:absolute;top:10%;left:18%;width:22%;height:13%;
+  background:#ffffff40;border-radius:50%;transform:rotate(-30deg)
+}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.btn{padding:13px 10px;border-radius:12px;border:0;font-weight:900}
+.primary{color:#10152b;background:linear-gradient(135deg,#a7f3d0,#34d399);box-shadow:0 4px #14835d}
+.secondary{background:#ffffff10;color:#e8eaff;border:1px solid #ffffff20}
+.btn:active{transform:translateY(2px)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.note{text-align:center;font-size:11px;color:#9eaccd;margin-top:14px;line-height:1.6}
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:#080d1bdc;z-index:5}
+.overlay.hidden{display:none}
+.modal{width:100%;max-width:350px;padding:27px;border-radius:22px;background:#1a2140;border:1px solid #ffffff25;text-align:center}
+.modal .emoji{font-size:48px;margin-bottom:8px}
+.modal h2{font-size:29px;margin-bottom:10px}
+.modal p{color:#c4cde4;line-height:1.7;margin-bottom:20px}
+@media(max-width:360px){.card{padding:13px}.board{gap:6px;padding:7px}.stats{gap:5px}.stat strong{font-size:20px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <div class="logo">🔨 WHACK-<span>A-MOLE</span></div>
+    <div class="pill">🎮 ARCADE</div>
+  </header>
+
+  <section class="card">
+    <div class="stats">
+      <div class="stat"><small>SCORE</small><strong id="score">0</strong></div>
+      <div class="stat"><small>TIME</small><strong id="time">30</strong></div>
+      <div class="stat"><small>BEST</small><strong id="best">0</strong></div>
+    </div>
+
+    <div class="status" id="status" aria-live="polite">Start the game and catch the moles!</div>
+
+    <div class="board" id="board" aria-label="Whack a Mole game board"></div>
+
+    <div class="controls">
+      <button class="btn primary" id="startBtn">▶ START GAME</button>
+      <button class="btn secondary" id="restartBtn">↻ RESTART</button>
+    </div>
+
+    <div class="note">
+      🐹 Hit a mole: +10 points<br>
+      💣 Hit a bomb: −5 points<br>
+      Be quick — the moles won't wait!
+    </div>
+  </section>
+</main>
+
+<div class="overlay hidden" id="overlay">
+  <div class="modal">
+    <div class="emoji" id="endEmoji">🏆</div>
+    <h2 id="endTitle">Time's Up!</h2>
+    <p id="endText">Your score: 0</p>
+    <button class="btn primary" style="width:100%" id="againBtn">▶ PLAY AGAIN</button>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+const board = $("board");
+const scoreEl = $("score");
+const timeEl = $("time");
+const bestEl = $("best");
+const statusEl = $("status");
+const startBtn = $("startBtn");
+const overlay = $("overlay");
+
+const HOLES = 9;
+let score = 0;
+let timeLeft = 30;
+let best = 0;
+let running = false;
+let timer = null;
+let moleTimer = null;
+let currentHole = -1;
+let currentType = "mole";
+let lastHole = -1;
+let moleSpeed = 850;
+let audioContext = null;
+
+try { best = Number(localStorage.getItem("whackMoleBest") || 0); } catch(e) {}
+bestEl.textContent = best;
+
+const holes = [];
+
+for (let i = 0; i < HOLES; i++) {
+  const hole = document.createElement("button");
+  hole.className = "hole";
+  hole.type = "button";
+  hole.setAttribute("aria-label", "Hole " + (i + 1));
+
+  const mole = document.createElement("span");
+  mole.className = "mole";
+  mole.textContent = "🐹";
+
+  hole.appendChild(mole);
+  board.appendChild(hole);
+  holes.push(hole);
+
+  hole.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    hitHole(i);
+  });
+}
+
+function beep(freq=500, duration=.07) {
+  try {
+    audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioContext.state === "suspended") audioContext.resume();
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(.06, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    osc.start();
+    osc.stop(audioContext.currentTime + duration);
+  } catch(e) {}
+}
+
+function updateStats() {
+  scoreEl.textContent = score;
+  timeEl.textContent = timeLeft;
+}
+
+function hideAll() {
+  holes.forEach(h => h.classList.remove("up", "hit"));
+  currentHole = -1;
+}
+
+function showRandomMole() {
+  if (!running) return;
+
+  hideAll();
+
+  let index = Math.floor(Math.random() * HOLES);
+  if (HOLES > 1 && index === lastHole) index = (index + 1 + Math.floor(Math.random() * (HOLES - 1))) % HOLES;
+  lastHole = index;
+  currentHole = index;
+
+  // Bombs appear occasionally; the rest are moles.
+  currentType = Math.random() < 0.15 ? "bomb" : "mole";
+
+  const mole = holes[index].querySelector(".mole");
+  mole.textContent = currentType === "bomb" ? "💣" : "🐹";
+  holes[index].classList.add("up");
+
+  clearTimeout(moleTimer);
+  const duration = Math.max(400, moleSpeed - Math.floor(score / 30) * 35);
+  moleTimer = setTimeout(() => {
+    if (!running) return;
+    holes[index].classList.remove("up");
+    currentHole = -1;
+    moleTimer = setTimeout(showRandomMole, 130);
+  }, duration);
+}
+
+function hitHole(index) {
+  if (!running || index !== currentHole) return;
+
+  const hitType = currentType;
+  const hole = holes[index];
+
+  clearTimeout(moleTimer);
+  hole.classList.add("hit");
+  hole.classList.remove("up");
+  currentHole = -1;
+
+  if (hitType === "bomb") {
+    score = Math.max(0, score - 5);
+    statusEl.textContent = "💣 Oops! Bomb! −5 points";
+    beep(170, .12);
+  } else {
+    score += 10;
+    statusEl.textContent = "🎯 Great hit! +10 points";
+    beep(720, .07);
+  }
+
+  updateStats();
+  saveBest();
+
+  moleTimer = setTimeout(() => {
+    hole.classList.remove("hit");
+    if (running) showRandomMole();
+  }, 170);
+}
+
+function saveBest() {
+  if (score > best) {
+    best = score;
+    bestEl.textContent = best;
+    try { localStorage.setItem("whackMoleBest", String(best)); } catch(e) {}
+  }
+}
+
+function startGame() {
+  clearInterval(timer);
+  clearTimeout(moleTimer);
+
+  score = 0;
+  timeLeft = 30;
+  moleSpeed = 850;
+  lastHole = -1;
+  running = true;
+
+  overlay.classList.add("hidden");
+  hideAll();
+  updateStats();
+
+  statusEl.textContent = "Go! Catch the moles!";
+  startBtn.textContent = "🎯 GAME RUNNING";
+  startBtn.disabled = true;
+
+  showRandomMole();
+
+  timer = setInterval(() => {
+    if (!running) return;
+
+    timeLeft--;
+    timeEl.textContent = timeLeft;
+
+    if (timeLeft <= 10) {
+      timeEl.style.color = "#fb7185";
+      moleSpeed = 600;
+    }
+
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function endGame() {
+  running = false;
+  clearInterval(timer);
+  clearTimeout(moleTimer);
+  hideAll();
+  saveBest();
+
+  timeEl.style.color = "";
+  startBtn.disabled = false;
+  startBtn.textContent = "▶ START GAME";
+
+  $("endEmoji").textContent = score >= 150 ? "🏆" : "🎮";
+  $("endTitle").textContent = "TIME'S UP!";
+  $("endText").textContent = "Your score: " + score + " points. Best score: " + best + ".";
+  overlay.classList.remove("hidden");
+  statusEl.textContent = "Game over! Play again to beat your best.";
+  beep(300, .18);
+}
+
+startBtn.addEventListener("click", startGame);
+$("restartBtn").addEventListener("click", startGame);
+$("againBtn").addEventListener("click", startGame);
+
+updateStats();
+})();
+</script>
+</body>
+</html>
