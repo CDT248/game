@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d1c">
+<title>Memory Game | Coming Soon</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2103/2103633.png">
+<style>
+*{box-sizing:border-box}
+:root{--bg:#090d1c;--purple:#9b87ff;--blue:#55c7ff;--text:#f5f5ff;--muted:#a6aec9}
+body{
+ margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;
+ font-family:Arial,Helvetica,sans-serif;color:var(--text);
+ background:radial-gradient(ellipse at top left,#352064 0,transparent 45%),
+ radial-gradient(ellipse at bottom right,#103c60 0,transparent 45%),var(--bg)
+}
+.card{
+ width:min(100%,520px);padding:38px 25px;text-align:center;
+ border:1px solid #ffffff20;border-radius:28px;
+ background:#12182bd9;box-shadow:0 25px 80px #0008;
+ backdrop-filter:blur(15px)
+}
+.logo{
+ width:100px;height:100px;margin:0 auto 24px;display:grid;place-items:center;
+ border-radius:27px;font-size:48px;
+ background:linear-gradient(135deg,#a78bfa,#38bdf8);
+ box-shadow:0 12px 40px #8b5cf655
+}
+.tag{
+ display:inline-block;padding:8px 13px;border-radius:30px;
+ color:#c4b5fd;background:#8b5cf622;border:1px solid #a78bfa44;
+ font-size:12px;font-weight:bold;letter-spacing:1.5px
+}
+h1{font-size:clamp(27px,6vw,40px);margin:19px 0 12px;line-height:1.2}
+h1 span{
+ background:linear-gradient(90deg,#c4b5fd,#67e8f9);
+ -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.description{color:var(--muted);font-size:15px;line-height:1.8;margin:0 auto;max-width:390px}
+.progress{
+ height:7px;background:#ffffff12;border-radius:20px;margin:28px 0 12px;overflow:hidden
+}
+.progress span{
+ display:block;height:100%;width:65%;border-radius:20px;
+ background:linear-gradient(90deg,#a78bfa,#38bdf8);
+ animation:glow 2s ease-in-out infinite alternate
+}
+@keyframes glow{from{opacity:.65}to{opacity:1}}
+.status{font-size:12px;color:#c4b5fd;letter-spacing:1px}
+.cards{display:flex;justify-content:center;gap:12px;margin:27px 0}
+.tile{
+ width:58px;height:65px;display:grid;place-items:center;border-radius:14px;
+ border:1px solid #a78bfa40;background:#a78bfa12;font-size:25px
+}
+.tile:nth-child(2),.tile:nth-child(4){transform:translateY(-7px);background:#38bdf812}
+.footer{margin-top:26px;color:#6f7899;font-size:11px}
+</style>
+</head>
+<body>
+<main class="card">
+ <div class="logo">🧠</div>
+ <div class="tag">GAME DEVELOPMENT</div>
+
+ <!-- Change the game name below whenever needed -->
+ <h1><span>Memory Game</span></h1>
+
+ <p class="description">
+   Something exciting is being created!
+   <br>
+   We are working on this game. Please check back soon
+   to experience the full game.
+ </p>
+
+ <div class="cards" aria-hidden="true">
+   <div class="tile">🎮</div>
+   <div class="tile">✨</div>
+   <div class="tile">🧩</div>
+   <div class="tile">🚀</div>
+ </div>
+
+ <div class="progress"><span></span></div>
+ <div class="status">UNDER DEVELOPMENT · COMING SOON</div>
+
+ <div class="footer">
+   © <span id="year"></span> Memory Game · All Rights Reserved
+ </div>
+</main>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
