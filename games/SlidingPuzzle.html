@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#10152b">
+<title>Sliding Puzzle | Fahim Games</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:radial-gradient(circle at top,#30477d,#10152b 72%);
+  color:#f8fafc;font-family:Arial,Helvetica,sans-serif
+}
+button{font:inherit;touch-action:manipulation;cursor:pointer}
+.app{width:100%;max-width:460px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
+.logo{font-size:clamp(18px,5vw,23px);font-weight:900}
+.logo span{color:#67e8f9}
+.pill{font-size:11px;background:#ffffff12;border:1px solid #ffffff25;padding:8px 10px;border-radius:20px;color:#dbeafe}
+.card{padding:20px;background:#171e39;border:1px solid #ffffff1c;border-radius:23px;box-shadow:0 20px 60px #0005}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.stat{text-align:center;background:#ffffff09;border:1px solid #ffffff14;border-radius:13px;padding:11px 4px}
+.stat small{display:block;color:#aab5d3;font-size:11px;margin-bottom:5px}
+.stat strong{font-size:22px}
+.stat:nth-child(1) strong{color:#a78bfa}
+.stat:nth-child(2) strong{color:#67e8f9}
+.stat:nth-child(3) strong{color:#fcd34d}
+.instruction{text-align:center;color:#cbd5e1;font-size:13px;line-height:1.6;margin-bottom:15px}
+.board{
+  width:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;padding:9px;border-radius:17px;background:#0b1127;
+  border:1px solid #ffffff20;touch-action:manipulation
+}
+.tile{
+  border:0;border-radius:12px;color:white;font-size:clamp(28px,8vw,42px);
+  font-weight:900;background:linear-gradient(145deg,#8b5cf6,#6336c8);
+  box-shadow:0 4px 0 #40248b;transition:transform .12s,filter .12s;
+  user-select:none;-webkit-tap-highlight-color:transparent
+}
+.tile:not(.empty):hover{filter:brightness(1.12)}
+.tile:active{transform:scale(.96)}
+.tile.empty{background:#ffffff05;box-shadow:none;border:1px dashed #ffffff15;cursor:default}
+.tile.correct{background:linear-gradient(145deg,#34d399,#059669);box-shadow:0 4px 0 #065f46}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn{padding:13px 10px;border-radius:12px;border:0;font-weight:900}
+.primary{color:#10152b;background:linear-gradient(135deg,#a5f3fc,#67e8f9);box-shadow:0 4px #138aa2}
+.secondary{background:#ffffff10;color:#e8eaff;border:1px solid #ffffff20}
+.btn:active{transform:translateY(2px)}
+.message{text-align:center;min-height:26px;padding-top:14px;font-size:13px;color:#aab5d3;line-height:1.5}
+.message.good{color:#6ee7b7}
+.note{text-align:center;color:#9eaccd;font-size:11px;margin-top:14px;line-height:1.6}
+.overlay{position:fixed;inset:0;background:#080d1bdc;display:flex;align-items:center;justify-content:center;padding:20px;z-index:5}
+.overlay.hidden{display:none}
+.modal{width:100%;max-width:350px;padding:27px;border-radius:22px;background:#1a2140;border:1px solid #ffffff25;text-align:center}
+.modal .emoji{font-size:48px;margin-bottom:8px}
+.modal h2{font-size:29px;margin-bottom:10px}
+.modal p{color:#c4cde4;line-height:1.7;margin-bottom:20px}
+@media(max-width:360px){.card{padding:13px}.board{gap:6px;padding:7px}.stats{gap:5px}.stat strong{font-size:19px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <div class="logo">🧩 SLIDING <span>PUZZLE</span></div>
+    <div class="pill">🧠 BRAIN GAME</div>
+  </header>
+
+  <section class="card">
+    <div class="stats">
+      <div class="stat"><small>MOVES</small><strong id="moves">0</strong></div>
+      <div class="stat"><small>TIME</small><strong id="time">00:00</strong></div>
+      <div class="stat"><small>BEST MOVES</small><strong id="best">—</strong></div>
+    </div>
+
+    <p class="instruction">Arrange the numbers from 1 to 8.<br>Tap a tile next to the empty space to slide it.</p>
+
+    <div class="board" id="board" aria-label="Sliding puzzle board"></div>
+
+    <div class="controls">
+      <button class="btn primary" id="shuffleBtn">🔀 SHUFFLE</button>
+      <button class="btn secondary" id="restartBtn">↻ RESTART</button>
+    </div>
+
+    <div class="message" id="message" aria-live="polite">Ready? Shuffle the puzzle to start!</div>
+    <div class="note">🎯 Fewer moves are better<br>💡 Every puzzle is solvable</div>
+  </section>
+</main>
+
+<div class="overlay hidden" id="overlay">
+  <div class="modal">
+    <div class="emoji">🏆</div>
+    <h2>PUZZLE SOLVED!</h2>
+    <p id="result">Great job!</p>
+    <button class="btn primary" style="width:100%" id="playAgain">▶ PLAY AGAIN</button>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+const boardEl = $("board");
+const movesEl = $("moves");
+const timeEl = $("time");
+const bestEl = $("best");
+const messageEl = $("message");
+const overlay = $("overlay");
+
+const SIZE = 3;
+const SOLVED = [1,2,3,4,5,6,7,8,0];
+
+let board = [...SOLVED];
+let moves = 0;
+let seconds = 0;
+let timer = null;
+let started = false;
+let finished = false;
+let best = null;
+
+try {
+  const stored = localStorage.getItem("slidingPuzzleBestMoves");
+  if (stored !== null && Number.isFinite(Number(stored))) best = Number(stored);
+} catch(e) {}
+
+bestEl.textContent = best === null ? "—" : best;
+
+function formatTime(value) {
+  const m = Math.floor(value / 60).toString().padStart(2,"0");
+  const s = (value % 60).toString().padStart(2,"0");
+  return m + ":" + s;
+}
+
+function updateStats() {
+  movesEl.textContent = moves;
+  timeEl.textContent = formatTime(seconds);
+  bestEl.textContent = best === null ? "—" : best;
+}
+
+function isSolved() {
+  return board.every((v,i) => v === SOLVED[i]);
+}
+
+function emptyIndex() {
+  return board.indexOf(0);
+}
+
+function neighbors(index) {
+  const r = Math.floor(index / SIZE);
+  const c = index % SIZE;
+  const result = [];
+  if (r > 0) result.push(index - SIZE);
+  if (r < SIZE - 1) result.push(index + SIZE);
+  if (c > 0) result.push(index - 1);
+  if (c < SIZE - 1) result.push(index + 1);
+  return result;
+}
+
+function render() {
+  boardEl.innerHTML = "";
+  board.forEach((value,index) => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "tile";
+    if (value === 0) {
+      tile.classList.add("empty");
+      tile.setAttribute("aria-label","Empty space");
+      tile.disabled = true;
+    } else {
+      tile.textContent = value;
+      tile.setAttribute("aria-label","Tile "+value);
+      if (value === index + 1) tile.classList.add("correct");
+      tile.addEventListener("click", () => moveTile(index));
+    }
+    boardEl.appendChild(tile);
+  });
+}
+
+function startTimer() {
+  if (timer || !started || finished) return;
+  timer = setInterval(() => {
+    if (!started || finished) return;
+    seconds++;
+    timeEl.textContent = formatTime(seconds);
+  },1000);
+}
+
+function stopTimer() {
+  clearInterval(timer);
+  timer = null;
+}
+
+function moveTile(index) {
+  if (finished) return;
+  const empty = emptyIndex();
+  if (!neighbors(empty).includes(index)) {
+    messageEl.textContent = "Choose a tile next to the empty space.";
+    return;
+  }
+
+  if (!started) {
+    started = true;
+    startTimer();
+  }
+
+  [board[index],board[empty]] = [board[empty],board[index]];
+  moves++;
+  updateStats();
+  render();
+
+  if (isSolved()) winGame();
+}
+
+function shuffle() {
+  stopTimer();
+  board = [...SOLVED];
+  moves = 0;
+  seconds = 0;
+  started = false;
+  finished = false;
+  overlay.classList.add("hidden");
+
+  // Shuffle by making legal moves from the solved state.
+  // This guarantees the generated board is solvable.
+  let previousEmpty = -1;
+  const steps = 120 + Math.floor(Math.random() * 81);
+
+  for (let i=0;i<steps;i++) {
+    const empty = emptyIndex();
+    let choices = neighbors(empty).filter(index => index !== previousEmpty);
+    if (!choices.length) choices = neighbors(empty);
+    const selected = choices[Math.floor(Math.random()*choices.length)];
+
+    [board[selected],board[empty]] = [board[empty],board[selected]];
+    previousEmpty = empty;
+  }
+
+  if (isSolved()) {
+    const empty = emptyIndex();
+    const selected = neighbors(empty)[0];
+    [board[selected],board[empty]] = [board[empty],board[selected]];
+  }
+
+  updateStats();
+  render();
+  messageEl.className = "message";
+  messageEl.textContent = "Puzzle shuffled! Start sliding the tiles.";
+}
+
+function restart() {
+  stopTimer();
+  board = [...SOLVED];
+  moves = 0;
+  seconds = 0;
+  started = false;
+  finished = false;
+  overlay.classList.add("hidden");
+  updateStats();
+  render();
+  messageEl.className = "message";
+  messageEl.textContent = "Puzzle reset. Press SHUFFLE to play!";
+}
+
+function winGame() {
+  finished = true;
+  started = false;
+  stopTimer();
+
+  if (best === null || moves < best) {
+    best = moves;
+    try { localStorage.setItem("slidingPuzzleBestMoves",String(best)); } catch(e) {}
+  }
+
+  updateStats();
+  messageEl.className = "message good";
+  messageEl.textContent = "🎉 Congratulations! Puzzle solved!";
+  $("result").textContent = "You solved it in "+moves+" moves and "+formatTime(seconds)+". Best moves: "+best+".";
+  overlay.classList.remove("hidden");
+}
+
+$("shuffleBtn").addEventListener("click",shuffle);
+$("restartBtn").addEventListener("click",restart);
+$("playAgain").addEventListener("click",shuffle);
+
+render();
+updateStats();
+})();
+</script>
+</body>
+</html>
