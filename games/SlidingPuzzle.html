@@ -3,289 +3,497 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#10152b">
-<title>Sliding Puzzle | Fahim Games</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1020">
+<title>Sliding Puzzle | RS Games</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2997/2997933.png">
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:16px;background:radial-gradient(circle at top,#30477d,#10152b 72%);
-  color:#f8fafc;font-family:Arial,Helvetica,sans-serif
+:root {
+  --bg: #0b1020;
+  --panel: #151f35;
+  --tile: #34466d;
+  --accent: #8294ff;
+  --text: #f5f7ff;
+  --muted: #a3b0cc;
+  --green: #42e6aa;
 }
-button{font:inherit;touch-action:manipulation;cursor:pointer}
-.app{width:100%;max-width:460px}
-.header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
-.logo{font-size:clamp(18px,5vw,23px);font-weight:900}
-.logo span{color:#67e8f9}
-.pill{font-size:11px;background:#ffffff12;border:1px solid #ffffff25;padding:8px 10px;border-radius:20px;color:#dbeafe}
-.card{padding:20px;background:#171e39;border:1px solid #ffffff1c;border-radius:23px;box-shadow:0 20px 60px #0005}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.stat{text-align:center;background:#ffffff09;border:1px solid #ffffff14;border-radius:13px;padding:11px 4px}
-.stat small{display:block;color:#aab5d3;font-size:11px;margin-bottom:5px}
-.stat strong{font-size:22px}
-.stat:nth-child(1) strong{color:#a78bfa}
-.stat:nth-child(2) strong{color:#67e8f9}
-.stat:nth-child(3) strong{color:#fcd34d}
-.instruction{text-align:center;color:#cbd5e1;font-size:13px;line-height:1.6;margin-bottom:15px}
-.board{
-  width:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);
-  gap:8px;padding:9px;border-radius:17px;background:#0b1127;
-  border:1px solid #ffffff20;touch-action:manipulation
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: radial-gradient(ellipse at top, #24345a, transparent 60%), var(--bg);
 }
-.tile{
-  border:0;border-radius:12px;color:white;font-size:clamp(28px,8vw,42px);
-  font-weight:900;background:linear-gradient(145deg,#8b5cf6,#6336c8);
-  box-shadow:0 4px 0 #40248b;transition:transform .12s,filter .12s;
-  user-select:none;-webkit-tap-highlight-color:transparent
+.app { width: 100%; max-width: 580px; margin: auto; }
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 24px;
 }
-.tile:not(.empty):hover{filter:brightness(1.12)}
-.tile:active{transform:scale(.96)}
-.tile.empty{background:#ffffff05;box-shadow:none;border:1px dashed #ffffff15;cursor:default}
-.tile.correct{background:linear-gradient(145deg,#34d399,#059669);box-shadow:0 4px 0 #065f46}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.btn{padding:13px 10px;border-radius:12px;border:0;font-weight:900}
-.primary{color:#10152b;background:linear-gradient(135deg,#a5f3fc,#67e8f9);box-shadow:0 4px #138aa2}
-.secondary{background:#ffffff10;color:#e8eaff;border:1px solid #ffffff20}
-.btn:active{transform:translateY(2px)}
-.message{text-align:center;min-height:26px;padding-top:14px;font-size:13px;color:#aab5d3;line-height:1.5}
-.message.good{color:#6ee7b7}
-.note{text-align:center;color:#9eaccd;font-size:11px;margin-top:14px;line-height:1.6}
-.overlay{position:fixed;inset:0;background:#080d1bdc;display:flex;align-items:center;justify-content:center;padding:20px;z-index:5}
-.overlay.hidden{display:none}
-.modal{width:100%;max-width:350px;padding:27px;border-radius:22px;background:#1a2140;border:1px solid #ffffff25;text-align:center}
-.modal .emoji{font-size:48px;margin-bottom:8px}
-.modal h2{font-size:29px;margin-bottom:10px}
-.modal p{color:#c4cde4;line-height:1.7;margin-bottom:20px}
-@media(max-width:360px){.card{padding:13px}.board{gap:6px;padding:7px}.stats{gap:5px}.stat strong{font-size:19px}}
+.brand {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.badge {
+  border: 1px solid #334568;
+  background: #192540;
+  color: #d5dfff;
+  border-radius: 30px;
+  padding: 8px 11px;
+  font-size: 11px;
+}
+header { text-align: center; }
+h1 {
+  margin: 0;
+  font-size: clamp(32px, 7vw, 48px);
+  letter-spacing: -1px;
+}
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 12px 0 24px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin-bottom: 18px;
+}
+.stat {
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid #293956;
+  padding: 14px 6px;
+  border-radius: 14px;
+}
+.stat-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .8px;
+}
+.stat-value {
+  font-size: clamp(19px, 4vw, 25px);
+  font-weight: 800;
+  margin-top: 7px;
+}
+.controls {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+button, select {
+  font: inherit;
+}
+select, .action {
+  min-height: 43px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+select {
+  color: var(--text);
+  background: #192540;
+  border: 1px solid #3b4d70;
+}
+.action {
+  cursor: pointer;
+  border: 1px solid #3b4d70;
+  color: white;
+  background: #202f4e;
+}
+.action.primary {
+  background: linear-gradient(135deg, #7388ff, #975df5);
+  border: 0;
+}
+.action:disabled { opacity: .4; cursor: not-allowed; }
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  width: 100%;
+  max-width: 470px;
+  margin: auto;
+  padding: 10px;
+  background: #202c45;
+  border: 1px solid #3b4b67;
+  border-radius: 17px;
+  touch-action: manipulation;
+}
+.tile {
+  aspect-ratio: 1;
+  min-width: 0;
+  border: 1px solid #536a99;
+  border-radius: 11px;
+  color: white;
+  background: linear-gradient(145deg, #435b8b, #2a3b60);
+  box-shadow: 0 4px 9px #0002;
+  font-size: clamp(23px, 6vw, 38px);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .12s, background .12s;
+}
+.tile:hover:not(:disabled) {
+  background: linear-gradient(145deg, #607cba, #354d7a);
+}
+.tile:active:not(:disabled) { transform: scale(.96); }
+.tile:disabled { cursor: default; }
+.tile.empty {
+  background: #111a2c;
+  border: 1px dashed #364661;
+  box-shadow: none;
+  cursor: default;
+}
+.tile.correct {
+  border-color: #42e6aa;
+}
+.message {
+  min-height: 30px;
+  margin: 17px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.message.success { color: var(--green); font-weight: 800; }
+.howto {
+  margin-top: 23px;
+  padding: 17px;
+  background: var(--panel);
+  border: 1px solid #293956;
+  border-radius: 15px;
+}
+.howto h3 { margin: 0 0 10px; font-size: 14px; }
+.howto p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.footer {
+  text-align: center;
+  color: #7483a0;
+  font-size: 11px;
+  margin: 22px 0 5px;
+}
+@media (max-width: 380px) {
+  body { padding: 12px; }
+  .board { gap: 6px; padding: 7px; }
+  .tile { border-radius: 8px; }
+  .controls { gap: 6px; }
+  select, .action { padding: 10px 8px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
 </style>
 </head>
+
 <body>
 <main class="app">
-  <header class="header">
-    <div class="logo">🧩 SLIDING <span>PUZZLE</span></div>
-    <div class="pill">🧠 BRAIN GAME</div>
+  <div class="topbar">
+    <div class="brand">🧩 RS GAMES</div>
+    <div class="badge">BRAIN CHALLENGE</div>
+  </div>
+
+  <header>
+    <h1>Sliding Puzzle</h1>
+    <p class="subtitle">Arrange the numbers in order. Can you solve it?</p>
   </header>
 
-  <section class="card">
-    <div class="stats">
-      <div class="stat"><small>MOVES</small><strong id="moves">0</strong></div>
-      <div class="stat"><small>TIME</small><strong id="time">00:00</strong></div>
-      <div class="stat"><small>BEST MOVES</small><strong id="best">—</strong></div>
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-label">Moves</div>
+      <div class="stat-value" id="moves">0</div>
     </div>
-
-    <p class="instruction">Arrange the numbers from 1 to 8.<br>Tap a tile next to the empty space to slide it.</p>
-
-    <div class="board" id="board" aria-label="Sliding puzzle board"></div>
-
-    <div class="controls">
-      <button class="btn primary" id="shuffleBtn">🔀 SHUFFLE</button>
-      <button class="btn secondary" id="restartBtn">↻ RESTART</button>
+    <div class="stat">
+      <div class="stat-label">Time</div>
+      <div class="stat-value" id="time">00:00</div>
     </div>
-
-    <div class="message" id="message" aria-live="polite">Ready? Shuffle the puzzle to start!</div>
-    <div class="note">🎯 Fewer moves are better<br>💡 Every puzzle is solvable</div>
+    <div class="stat">
+      <div class="stat-label">Best Moves</div>
+      <div class="stat-value" id="best">—</div>
+    </div>
   </section>
-</main>
 
-<div class="overlay hidden" id="overlay">
-  <div class="modal">
-    <div class="emoji">🏆</div>
-    <h2>PUZZLE SOLVED!</h2>
-    <p id="result">Great job!</p>
-    <button class="btn primary" style="width:100%" id="playAgain">▶ PLAY AGAIN</button>
+  <div class="controls">
+    <select id="size" aria-label="Puzzle size">
+      <option value="3">Easy · 3 × 3</option>
+      <option value="4" selected>Normal · 4 × 4</option>
+    </select>
+    <button class="action primary" id="shuffle">🔀 New Puzzle</button>
+    <button class="action" id="undo" disabled>↶ Undo</button>
   </div>
-</div>
+
+  <section class="board" id="board" aria-label="Sliding puzzle board"></section>
+
+  <div class="message" id="message" aria-live="polite">
+    Tap a tile next to the empty space to move it.
+  </div>
+
+  <section class="howto">
+    <h3>🎯 How to Play</h3>
+    <p>
+      1. Move tiles into the empty space.<br>
+      2. Arrange the numbers from left to right, top to bottom.<br>
+      3. The empty space should be at the bottom-right corner.<br>
+      4. Solve the puzzle using as few moves as possible!
+    </p>
+  </section>
+
+  <div class="footer">SLIDING PUZZLE • THINK • SLIDE • WIN</div>
+</main>
 
 <script>
 (() => {
-"use strict";
+  "use strict";
 
-const $ = id => document.getElementById(id);
-const boardEl = $("board");
-const movesEl = $("moves");
-const timeEl = $("time");
-const bestEl = $("best");
-const messageEl = $("message");
-const overlay = $("overlay");
+  const board = document.getElementById("board");
+  const movesEl = document.getElementById("moves");
+  const timeEl = document.getElementById("time");
+  const bestEl = document.getElementById("best");
+  const message = document.getElementById("message");
+  const sizeSelect = document.getElementById("size");
+  const shuffleBtn = document.getElementById("shuffle");
+  const undoBtn = document.getElementById("undo");
 
-const SIZE = 3;
-const SOLVED = [1,2,3,4,5,6,7,8,0];
+  let size = 4;
+  let tiles = [];
+  let moves = 0;
+  let startTime = null;
+  let timer = null;
+  let elapsed = 0;
+  let started = false;
+  let finished = false;
+  let previous = null;
 
-let board = [...SOLVED];
-let moves = 0;
-let seconds = 0;
-let timer = null;
-let started = false;
-let finished = false;
-let best = null;
+  function bestKey() {
+    return "slidingPuzzleBest" + size;
+  }
 
-try {
-  const stored = localStorage.getItem("slidingPuzzleBestMoves");
-  if (stored !== null && Number.isFinite(Number(stored))) best = Number(stored);
-} catch(e) {}
-
-bestEl.textContent = best === null ? "—" : best;
-
-function formatTime(value) {
-  const m = Math.floor(value / 60).toString().padStart(2,"0");
-  const s = (value % 60).toString().padStart(2,"0");
-  return m + ":" + s;
-}
-
-function updateStats() {
-  movesEl.textContent = moves;
-  timeEl.textContent = formatTime(seconds);
-  bestEl.textContent = best === null ? "—" : best;
-}
-
-function isSolved() {
-  return board.every((v,i) => v === SOLVED[i]);
-}
-
-function emptyIndex() {
-  return board.indexOf(0);
-}
-
-function neighbors(index) {
-  const r = Math.floor(index / SIZE);
-  const c = index % SIZE;
-  const result = [];
-  if (r > 0) result.push(index - SIZE);
-  if (r < SIZE - 1) result.push(index + SIZE);
-  if (c > 0) result.push(index - 1);
-  if (c < SIZE - 1) result.push(index + 1);
-  return result;
-}
-
-function render() {
-  boardEl.innerHTML = "";
-  board.forEach((value,index) => {
-    const tile = document.createElement("button");
-    tile.type = "button";
-    tile.className = "tile";
-    if (value === 0) {
-      tile.classList.add("empty");
-      tile.setAttribute("aria-label","Empty space");
-      tile.disabled = true;
-    } else {
-      tile.textContent = value;
-      tile.setAttribute("aria-label","Tile "+value);
-      if (value === index + 1) tile.classList.add("correct");
-      tile.addEventListener("click", () => moveTile(index));
+  function loadBest() {
+    try {
+      const value = localStorage.getItem(bestKey());
+      bestEl.textContent = value ? value : "—";
+    } catch (e) {
+      bestEl.textContent = "—";
     }
-    boardEl.appendChild(tile);
-  });
-}
-
-function startTimer() {
-  if (timer || !started || finished) return;
-  timer = setInterval(() => {
-    if (!started || finished) return;
-    seconds++;
-    timeEl.textContent = formatTime(seconds);
-  },1000);
-}
-
-function stopTimer() {
-  clearInterval(timer);
-  timer = null;
-}
-
-function moveTile(index) {
-  if (finished) return;
-  const empty = emptyIndex();
-  if (!neighbors(empty).includes(index)) {
-    messageEl.textContent = "Choose a tile next to the empty space.";
-    return;
   }
 
-  if (!started) {
+  function formatTime(seconds) {
+    return String(Math.floor(seconds / 60)).padStart(2, "0") + ":" +
+           String(seconds % 60).padStart(2, "0");
+  }
+
+  function stopTimer() {
+    if (timer !== null) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  function startTimer() {
+    if (started) return;
     started = true;
+    startTime = Date.now() - elapsed * 1000;
+
+    timer = setInterval(() => {
+      elapsed = Math.floor((Date.now() - startTime) / 1000);
+      timeEl.textContent = formatTime(elapsed);
+    }, 250);
+  }
+
+  function solved(arr = tiles) {
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (arr[i] !== i + 1) return false;
+    }
+    return arr[arr.length - 1] === 0;
+  }
+
+  function savePrevious() {
+    previous = {
+      tiles: tiles.slice(),
+      moves,
+      elapsed,
+      started
+    };
+    undoBtn.disabled = false;
+  }
+
+  function render() {
+    board.replaceChildren();
+    board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+
+    tiles.forEach((value, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "tile";
+      button.setAttribute("aria-label",
+        value === 0 ? "Empty space" : "Tile " + value);
+
+      if (value === 0) {
+        button.classList.add("empty");
+        button.textContent = "";
+        button.disabled = true;
+      } else {
+        button.textContent = value;
+
+        if (value === index + 1) {
+          button.classList.add("correct");
+        }
+
+        button.addEventListener("click", () => moveTile(index));
+      }
+
+      board.appendChild(button);
+    });
+
+    movesEl.textContent = String(moves);
+    timeEl.textContent = formatTime(elapsed);
+    undoBtn.disabled = !previous || finished;
+  }
+
+  function neighbors(index) {
+    const row = Math.floor(index / size);
+    const col = index % size;
+    const result = [];
+
+    if (row > 0) result.push(index - size);
+    if (row < size - 1) result.push(index + size);
+    if (col > 0) result.push(index - 1);
+    if (col < size - 1) result.push(index + 1);
+
+    return result;
+  }
+
+  function moveTile(index) {
+    if (finished) return;
+
+    const emptyIndex = tiles.indexOf(0);
+    if (!neighbors(emptyIndex).includes(index)) {
+      message.textContent = "Choose a tile next to the empty space.";
+      return;
+    }
+
+    savePrevious();
     startTimer();
+
+    [tiles[index], tiles[emptyIndex]] =
+      [tiles[emptyIndex], tiles[index]];
+
+    moves++;
+    render();
+
+    if (solved()) {
+      finished = true;
+      stopTimer();
+
+      try {
+        const key = bestKey();
+        const oldBest = Number(localStorage.getItem(key));
+        if (!oldBest || moves < oldBest) {
+          localStorage.setItem(key, String(moves));
+        }
+      } catch (e) {}
+
+      loadBest();
+      undoBtn.disabled = true;
+      previous = null;
+      message.className = "message success";
+      message.textContent =
+        "🏆 Puzzle solved in " + moves + " moves and " +
+        formatTime(elapsed) + "! Great job!";
+    } else {
+      message.className = "message";
+      message.textContent = "Keep going! Arrange all numbers in order.";
+    }
   }
 
-  [board[index],board[empty]] = [board[empty],board[index]];
-  moves++;
-  updateStats();
-  render();
+  function undoMove() {
+    if (!previous || finished) return;
 
-  if (isSolved()) winGame();
-}
+    stopTimer();
+    tiles = previous.tiles.slice();
+    moves = previous.moves;
+    elapsed = previous.elapsed;
+    started = previous.started;
+    startTime = started ? Date.now() - elapsed * 1000 : null;
 
-function shuffle() {
-  stopTimer();
-  board = [...SOLVED];
-  moves = 0;
-  seconds = 0;
-  started = false;
-  finished = false;
-  overlay.classList.add("hidden");
+    previous = null;
+    render();
 
-  // Shuffle by making legal moves from the solved state.
-  // This guarantees the generated board is solvable.
-  let previousEmpty = -1;
-  const steps = 120 + Math.floor(Math.random() * 81);
+    if (started) {
+      timer = setInterval(() => {
+        elapsed = Math.floor((Date.now() - startTime) / 1000);
+        timeEl.textContent = formatTime(elapsed);
+      }, 250);
+    }
 
-  for (let i=0;i<steps;i++) {
-    const empty = emptyIndex();
-    let choices = neighbors(empty).filter(index => index !== previousEmpty);
-    if (!choices.length) choices = neighbors(empty);
-    const selected = choices[Math.floor(Math.random()*choices.length)];
-
-    [board[selected],board[empty]] = [board[empty],board[selected]];
-    previousEmpty = empty;
+    message.className = "message";
+    message.textContent = "Last move undone.";
   }
 
-  if (isSolved()) {
-    const empty = emptyIndex();
-    const selected = neighbors(empty)[0];
-    [board[selected],board[empty]] = [board[empty],board[selected]];
+  function shufflePuzzle() {
+    stopTimer();
+
+    size = Number(sizeSelect.value);
+    const count = size * size;
+    tiles = Array.from({ length: count }, (_, i) =>
+      i === count - 1 ? 0 : i + 1
+    );
+
+    // Shuffle by legal moves, so the puzzle is always solvable.
+    let empty = count - 1;
+    let previousEmpty = -1;
+    const shuffleSteps = size === 3 ? 100 : 180;
+
+    for (let step = 0; step < shuffleSteps; step++) {
+      let options = neighbors(empty).filter(i => i !== previousEmpty);
+
+      if (!options.length) options = neighbors(empty);
+
+      const chosen = options[Math.floor(Math.random() * options.length)];
+      [tiles[empty], tiles[chosen]] = [tiles[chosen], tiles[empty]];
+
+      previousEmpty = empty;
+      empty = chosen;
+    }
+
+    if (solved()) {
+      const options = neighbors(empty);
+      const chosen = options[0];
+      [tiles[empty], tiles[chosen]] = [tiles[chosen], tiles[empty]];
+    }
+
+    moves = 0;
+    elapsed = 0;
+    startTime = null;
+    started = false;
+    finished = false;
+    previous = null;
+
+    message.className = "message";
+    message.textContent = "Puzzle shuffled! Find the correct order.";
+    render();
+    loadBest();
   }
 
-  updateStats();
-  render();
-  messageEl.className = "message";
-  messageEl.textContent = "Puzzle shuffled! Start sliding the tiles.";
-}
+  shuffleBtn.addEventListener("click", shufflePuzzle);
+  undoBtn.addEventListener("click", undoMove);
+  sizeSelect.addEventListener("change", shufflePuzzle);
 
-function restart() {
-  stopTimer();
-  board = [...SOLVED];
-  moves = 0;
-  seconds = 0;
-  started = false;
-  finished = false;
-  overlay.classList.add("hidden");
-  updateStats();
-  render();
-  messageEl.className = "message";
-  messageEl.textContent = "Puzzle reset. Press SHUFFLE to play!";
-}
-
-function winGame() {
-  finished = true;
-  started = false;
-  stopTimer();
-
-  if (best === null || moves < best) {
-    best = moves;
-    try { localStorage.setItem("slidingPuzzleBestMoves",String(best)); } catch(e) {}
-  }
-
-  updateStats();
-  messageEl.className = "message good";
-  messageEl.textContent = "🎉 Congratulations! Puzzle solved!";
-  $("result").textContent = "You solved it in "+moves+" moves and "+formatTime(seconds)+". Best moves: "+best+".";
-  overlay.classList.remove("hidden");
-}
-
-$("shuffleBtn").addEventListener("click",shuffle);
-$("restartBtn").addEventListener("click",restart);
-$("playAgain").addEventListener("click",shuffle);
-
-render();
-updateStats();
+  shufflePuzzle();
 })();
 </script>
 </body>
