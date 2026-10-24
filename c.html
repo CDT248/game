@@ -4,196 +4,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#07111f">
 <title>Fahim | Website Admin</title>
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/528/528111.png">
 <style>
-:root{--bg:#0b1220;--panel:#131f32;--panel2:#0e1929;--border:#293950;--text:#e5edf7;--muted:#9aaac0;--accent:#38bdf8;--green:#22c55e;--red:#f87171}
+:root{--bg:#07111f;--panel:#0d1b2d;--line:#263d58;--text:#edf5ff;--muted:#9fb2ca;--accent:#20e6a0;--blue:#38bdf8;--red:#ff7085}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-.hidden{display:none!important}
 button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0;border-radius:9px;padding:11px 15px;font-weight:700}
-.primary{background:var(--accent);color:#082f49}
-.secondary{background:#334155;color:#fff}
-.danger{background:#7f1d1d;color:#fee2e2}
-.success{background:#14532d;color:#dcfce7}
-.wrap{width:min(1200px,calc(100% - 28px));margin:28px auto}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:22px}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 13px;font-weight:bold}
+input,textarea,select{width:100%;background:#071321;color:white;border:1px solid var(--line);padding:11px;border-radius:8px;outline:none}
+input:focus,textarea:focus{border-color:var(--blue)}
+textarea{min-height:75px;resize:vertical}
+label{display:block;color:var(--muted);font-size:12px;margin:13px 0 6px}
+.wrap{width:min(1150px,94%);margin:25px auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px}
+.hidden{display:none!important}
 .login{max-width:390px;margin:12vh auto}
 h1{font-size:25px;margin:0 0 8px}
-h2{font-size:20px;margin:0 0 14px}
+h2{font-size:20px;margin:0 0 8px}
 h3{font-size:16px;margin:0 0 10px}
-p{line-height:1.6}
-.muted,.hint{color:var(--muted);font-size:13px;line-height:1.6}
-label{display:block;font-size:13px;margin:15px 0 7px;color:#cbd5e1}
-input,textarea,select{width:100%;padding:12px;background:var(--panel2);color:var(--text);border:1px solid #394b63;border-radius:8px;outline:none}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-textarea{min-height:80px;resize:vertical}
-button:hover{filter:brightness(1.1)}
-.full{width:100%;margin-top:16px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.tab{background:#1e293b;color:#cbd5e1}
-.tab.active{background:var(--accent);color:#082f49}
+p,.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.primary{background:var(--accent);color:#04251b}
+.secondary{background:#20334a;color:white}
+.danger{background:#672536;color:#ffe1e7}
+.blue{background:#075985;color:white}
+.full{width:100%;margin-top:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{background:#1a2a40;color:#cbd5e1}
+.tab.active{background:var(--accent);color:#04251b}
 .panel{display:none}
 .panel.active{display:block}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .field{min-width:0}
-.item{padding:15px;border:1px solid var(--border);border-radius:11px;background:var(--panel2);margin-top:12px;overflow-wrap:anywhere}
-.item-title{font-weight:bold;font-size:16px;margin-bottom:7px}
-.item-url{color:#7dd3fc;font-size:13px;overflow-wrap:anywhere;margin:6px 0}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.actions button{font-size:12px;padding:9px 11px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-.notice{padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);font-size:13px;line-height:1.7;color:var(--muted);margin:12px 0}
-.status{font-size:13px;line-height:1.6;margin-top:12px}
+.item{border:1px solid var(--line);background:#081626;border-radius:10px;padding:14px;margin-top:11px;overflow-wrap:anywhere}
+.itemhead{display:flex;align-items:flex-start;gap:10px}
+.emoji{font-size:25px}
+.itembody{flex:1;min-width:0}
+.itembody strong{display:block;font-size:15px}
+.path{color:#7dd3fc;font-size:12px;margin-top:5px;overflow-wrap:anywhere}
+.badge{display:inline-block;font-size:11px;color:#86efac;margin-top:6px}
+.badge.off{color:#fca5a5}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.actions button{font-size:12px;padding:9px 11px}
+.status{font-size:13px;margin-top:10px;line-height:1.5}
 .good{color:#86efac}.bad{color:#fca5a5}
-hr{border:0;border-top:1px solid var(--border);margin:22px 0}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#e2e8f0;color:#0f172a;padding:12px 18px;border-radius:10px;display:none;z-index:10;max-width:90%;font-size:14px}
-@media(max-width:650px){.grid{grid-template-columns:1fr}.wrap{margin:15px auto}.card{padding:16px}.login{margin-top:10vh}.tab{flex:1}}
+.notice{background:#182a3e;border:1px solid var(--line);border-radius:9px;padding:12px;margin:12px 0;color:var(--muted);font-size:12px;line-height:1.7}
+hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#e2e8f0;color:#07111f;padding:12px 18px;border-radius:9px;display:none;z-index:20;max-width:90%}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.card{padding:15px}.wrap{margin:14px auto}.itemhead{flex-wrap:wrap}.itembody{min-width:65%}}
 </style>
 </head>
 <body>
+<main class="wrap">
 
-<div class="wrap">
+<!-- LOGIN -->
+<section id="loginPanel" class="card login">
+  <h1>🔐 Website Admin</h1>
+  <p>Login to manage your website and all game locations.</p>
+  <form id="loginForm">
+    <label for="password">Admin Password</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <button class="primary full" type="submit">Login</button>
+    <div id="loginStatus" class="status"></div>
+  </form>
+</section>
 
-  <!-- LOGIN -->
-  <section id="loginPanel" class="card login">
-    <h1>🔐 Website Admin</h1>
-    <p class="muted">Login to control your website.</p>
-    <form id="loginForm">
-      <label for="password">Admin Password</label>
-      <input id="password" type="password" autocomplete="current-password" required placeholder="Enter admin password">
-      <button class="primary full" type="submit">Login</button>
-      <div id="loginStatus" class="status" role="status"></div>
+<!-- ADMIN DASHBOARD -->
+<section id="dashboard" class="hidden">
+  <header class="top">
+    <div>
+      <h1>⚙️ Website Control Panel</h1>
+      <p>Website Content · Projects · All Games</p>
+    </div>
+    <button class="secondary" id="logoutBtn" type="button">Logout</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-panel="gamesPanel" type="button">🎮 Games Manager</button>
+    <button class="tab" data-panel="contentPanel" type="button">✏️ Website Content</button>
+    <button class="tab" data-panel="projectsPanel" type="button">🌐 Projects</button>
+    <button class="tab" data-panel="backupPanel" type="button">💾 Backup</button>
+    <button class="tab" data-panel="settingsPanel" type="button">⚙️ Settings</button>
+  </nav>
+
+  <!-- ALL GAMES IN ONE SYSTEM -->
+  <section id="gamesPanel" class="panel active card">
+    <h2>🎮 Games Manager</h2>
+    <p>Built-in games এবং আলাদা HTML ফাইলের গেম একই তালিকায় পরিচালনা করো।</p>
+
+    <div class="notice">
+      নতুন ফাইলের উদাহরণ: <b>games/snake.html</b><br>
+      এই তালিকায় Built-in games-এর পাশাপাশি নতুন game location যোগ করতে পারবে।
+      কোনো game edit করলে তার নাম, description এবং location পরিবর্তন করা যাবে।
+    </div>
+
+    <h3 id="gameFormHeading">Add New Game</h3>
+    <form id="gameForm">
+      <input id="gameId" type="hidden">
+
+      <div class="grid">
+        <div class="field">
+          <label for="gameName">Game Name *</label>
+          <input id="gameName" required maxlength="100" placeholder="Snake Game">
+        </div>
+        <div class="field">
+          <label for="gameIcon">Game Icon / Emoji</label>
+          <input id="gameIcon" maxlength="12" placeholder="🎮">
+        </div>
+        <div class="field">
+          <label for="gameLocation">Game Location / URL *</label>
+          <input id="gameLocation" required maxlength="1000"
+                 placeholder="games/snake.html">
+        </div>
+        <div class="field">
+          <label for="gameType">Game Type</label>
+          <select id="gameType">
+            <option value="external">Separate HTML File</option>
+            <option value="builtin">Built-in Website Game</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="gameDescription">Game Description</label>
+      <textarea id="gameDescription" maxlength="500" placeholder="Describe this game..."></textarea>
+
+      <div class="grid">
+        <div class="field">
+          <label for="gameVisibility">Visibility</label>
+          <select id="gameVisibility">
+            <option value="yes">Visible on website</option>
+            <option value="no">Hidden on website</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="gameCategory">Category</label>
+          <input id="gameCategory" maxlength="60" placeholder="Arcade, Puzzle, Racing...">
+        </div>
+      </div>
+
+      <button class="primary full" id="saveGameBtn" type="submit">＋ Add Game</button>
+      <button class="secondary full hidden" id="cancelGameEdit" type="button">Cancel Edit</button>
+      <div id="gameStatus" class="status"></div>
+    </form>
+
+    <hr>
+    <h3>All Games (<span id="gameCount">0</span>)</h3>
+    <div class="toolbar">
+      <button class="secondary" id="showAll" type="button">Show All</button>
+      <button class="secondary" id="hideAll" type="button">Hide All</button>
+      <button class="secondary" id="exportGames" type="button">Export Games</button>
+    </div>
+    <label for="gameSearch">Search games</label>
+    <input id="gameSearch" placeholder="Search by name, location or description...">
+    <div id="gameList"></div>
+  </section>
+
+  <!-- WEBSITE CONTENT -->
+  <section id="contentPanel" class="panel card">
+    <h2>Website Content</h2>
+    <p>Edit the text used by your existing index.html.</p>
+    <form id="contentForm">
+      <div id="contentFields" class="grid"></div>
+      <button class="primary full" type="submit">Save Website Content</button>
+      <button class="secondary full" id="resetContent" type="button">Reset Content</button>
     </form>
   </section>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="hidden">
-    <header class="top">
-      <div>
-        <h1>⚙️ Website Control Panel</h1>
-        <div class="muted">Manage website content, projects and games.</div>
+  <!-- PROJECTS -->
+  <section id="projectsPanel" class="panel card">
+    <h2>Projects Manager</h2>
+    <p>Add, edit, hide, show or delete featured projects.</p>
+    <form id="projectForm">
+      <input id="projectId" type="hidden">
+      <div class="grid">
+        <div><label for="projectName">Project Name *</label><input id="projectName" required maxlength="100"></div>
+        <div><label for="projectIcon">Icon</label><input id="projectIcon" maxlength="12" placeholder="🌐"></div>
+        <div><label for="projectUrl">Project URL *</label><input id="projectUrl" required placeholder="https://example.com"></div>
+        <div><label for="projectDescription">Description</label><input id="projectDescription" maxlength="250"></div>
       </div>
-      <button id="logoutBtn" class="secondary" type="button">Logout</button>
-    </header>
-
-    <nav class="tabs" aria-label="Admin sections">
-      <button class="tab active" data-panel="contentPanel" type="button">Website Content</button>
-      <button class="tab" data-panel="projectsPanel" type="button">Projects</button>
-      <button class="tab" data-panel="gamesPanel" type="button">Existing Games</button>
-      <button class="tab" data-panel="newGamesPanel" type="button">Game Location</button>
-      <button class="tab" data-panel="backupPanel" type="button">Backup</button>
-      <button class="tab" data-panel="settingsPanel" type="button">Settings</button>
-    </nav>
-
-    <!-- WEBSITE CONTENT -->
-    <section id="contentPanel" class="panel active card">
-      <h2>Website Content</h2>
-      <p class="muted">Change the text displayed by the existing index.html.</p>
-      <form id="contentForm">
-        <div id="contentFields" class="grid"></div>
-        <button class="primary full" type="submit">Save Website Content</button>
-        <button id="resetContentBtn" class="secondary full" type="button">Reset Content to Defaults</button>
-      </form>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projectsPanel" class="panel card">
-      <h2>Projects Manager</h2>
-      <p class="muted">Add, edit, hide or delete featured projects.</p>
-      <form id="projectForm">
-        <input id="projectId" type="hidden">
-        <div class="grid">
-          <div class="field"><label for="projectName">Project Name *</label><input id="projectName" required maxlength="120"></div>
-          <div class="field"><label for="projectIcon">Icon / Emoji</label><input id="projectIcon" maxlength="20" placeholder="🌐"></div>
-          <div class="field"><label for="projectUrl">Project URL *</label><input id="projectUrl" required placeholder="https://example.com"></div>
-          <div class="field"><label for="projectDesc">Description</label><input id="projectDesc" maxlength="250"></div>
-        </div>
-        <button class="primary full" type="submit" id="projectSaveBtn">Add Project</button>
-        <button class="secondary full hidden" id="projectCancelBtn" type="button">Cancel Edit</button>
-      </form>
-      <hr>
-      <h3>Project List</h3>
-      <div id="projectList"></div>
-    </section>
-
-    <!-- EXISTING GAMES -->
-    <section id="gamesPanel" class="panel card">
-      <h2>Existing Website Games</h2>
-      <p class="muted">Control the built-in games already listed in index.html.</p>
-      <div class="toolbar">
-        <button class="success" id="showAllGames" type="button">Show All</button>
-        <button class="danger" id="hideAllGames" type="button">Hide All</button>
-      </div>
-      <div id="existingGamesList"></div>
-    </section>
-
-    <!-- EXTERNAL GAME LOCATION -->
-    <section id="newGamesPanel" class="panel card">
-      <h2>Game Location Manager</h2>
-      <p class="muted">Store the location of a game file in the games/ folder.</p>
-      <div class="notice">
-        Example file: <b>games/snake.html</b><br>
-        You may also use a full GitHub Pages URL, such as
-        <b>https://yourname.github.io/your-repo/games/snake.html</b>.
-      </div>
-      <form id="externalGameForm">
-        <input id="externalGameId" type="hidden">
-        <div class="grid">
-          <div class="field"><label for="externalGameName">Game Name *</label><input id="externalGameName" required maxlength="100"></div>
-          <div class="field"><label for="externalGameLocation">Game Location / URL *</label><input id="externalGameLocation" required placeholder="games/snake.html"></div>
-        </div>
-        <label for="externalGameDescription">Description</label>
-        <textarea id="externalGameDescription" maxlength="500"></textarea>
-        <button class="primary full" id="externalGameSaveBtn" type="submit">Add Game Location</button>
-        <button class="secondary full hidden" id="externalGameCancelBtn" type="button">Cancel Edit</button>
-      </form>
-      <hr>
-      <h3>Saved Game Locations</h3>
-      <div id="externalGameList"></div>
-      <div class="notice">
-        This panel saves locations in browser storage. The main website will display these games automatically only after index.html is connected to the <b>fahim_external_games</b> key. This panel cannot upload files into GitHub by itself.
-      </div>
-    </section>
-
-    <!-- BACKUP -->
-    <section id="backupPanel" class="panel card">
-      <h2>Backup & Restore</h2>
-      <p class="muted">Export your current admin data to a JSON file or restore a previous backup.</p>
-      <div class="toolbar">
-        <button id="exportBtn" class="primary" type="button">Export Backup</button>
-      </div>
-      <label for="importFile">Import Backup JSON</label>
-      <input id="importFile" type="file" accept=".json,application/json">
-      <button id="importBtn" class="secondary full" type="button">Import Backup</button>
-      <div class="notice">Importing a backup replaces the matching settings stored in this browser.</div>
-    </section>
-
-    <!-- SETTINGS -->
-    <section id="settingsPanel" class="panel card">
-      <h2>Admin Settings</h2>
-      <p class="muted">Change the password used by this browser's admin panel.</p>
-      <form id="passwordForm">
-        <label for="oldPassword">Current Password</label>
-        <input id="oldPassword" type="password" required autocomplete="current-password">
-        <label for="newPassword">New Password</label>
-        <input id="newPassword" type="password" required minlength="8" autocomplete="new-password">
-        <label for="confirmPassword">Confirm New Password</label>
-        <input id="confirmPassword" type="password" required minlength="8" autocomplete="new-password">
-        <button class="primary full" type="submit">Change Password</button>
-      </form>
-      <hr>
-      <h3>Storage Information</h3>
-      <div class="notice">
-        This panel uses localStorage. The same browser and website origin must be used by index.html and c.html. Changes are not automatically shared across different devices. The password is browser-side protection, not secure server authentication.
-      </div>
-      <button id="clearSessionBtn" class="secondary" type="button">End Admin Session</button>
-    </section>
+      <label for="projectVisible">Visibility</label>
+      <select id="projectVisible"><option value="yes">Visible</option><option value="no">Hidden</option></select>
+      <button class="primary full" id="saveProjectBtn" type="submit">Add Project</button>
+      <button class="secondary full hidden" id="cancelProjectEdit" type="button">Cancel Edit</button>
+    </form>
+    <div id="projectList"></div>
   </section>
-</div>
+
+  <!-- BACKUP -->
+  <section id="backupPanel" class="panel card">
+    <h2>Backup & Restore</h2>
+    <p>Export website content, projects, game settings and game locations.</p>
+    <button class="primary full" id="exportBackup" type="button">Export Full Backup</button>
+    <label for="importBackupFile">Select Backup JSON</label>
+    <input id="importBackupFile" type="file" accept=".json,application/json">
+    <button class="secondary full" id="importBackup" type="button">Import Backup</button>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="settingsPanel" class="panel card">
+    <h2>Admin Settings</h2>
+    <form id="passwordForm">
+      <label for="oldPassword">Current Password</label>
+      <input id="oldPassword" type="password" required>
+      <label for="newPassword">New Password (minimum 8 characters)</label>
+      <input id="newPassword" type="password" minlength="8" required>
+      <label for="confirmPassword">Confirm New Password</label>
+      <input id="confirmPassword" type="password" minlength="8" required>
+      <button class="primary full" type="submit">Change Password</button>
+    </form>
+    <div class="notice">
+      This is browser-side admin protection. It is not secure server authentication.
+      Data saved in localStorage is only shared by pages on the same origin and browser.
+    </div>
+  </section>
+</section>
+</main>
 <div id="toast" role="status"></div>
 
 <script>
@@ -205,19 +232,98 @@ const PASSWORD_KEY = "fahim_admin_password";
 const SESSION_KEY = "fahim_admin_session";
 
 const CONTENT_KEY = "fahim_site_content";
-const PROJECTS_KEY = "fahim_projects";
+const PROJECT_KEY = "fahim_projects";
 const HIDDEN_KEY = "fahim_hidden_games";
 const GAME_CONTENT_KEY = "fahim_game_content";
-const EXTERNAL_GAMES_KEY = "fahim_external_games";
+const EXTERNAL_KEY = "fahim_external_games";
+const UNIFIED_KEY = "fahim_all_games_v2";
 
-const DEFAULT_PROJECTS = [
- {id:"p1",name:"Grow Up Communication",desc:"ISP Website (GitHub Pages)",url:"https://github.com/CDT248/GrowUp-Communication",icon:"🌐"},
- {id:"p2",name:"RS NETWORK",desc:"Invoice & Email System",url:"https://github.com/",icon:"📡"},
- {id:"p3",name:"Multi Drive Storage",desc:"Cloud Storage App",url:"https://github.com/",icon:"☁️"},
- {id:"p4",name:"Captive Portal",desc:"ISP Customer Management",url:"https://github.com/",icon:"📶"}
-];
+const $ = id => document.getElementById(id);
+const read = (key, fallback) => {
+  try {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : JSON.parse(value);
+  } catch (e) {
+    return fallback;
+  }
+};
+const save = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    window.dispatchEvent(new StorageEvent("storage", {
+      key, newValue: JSON.stringify(value), storageArea: localStorage
+    }));
+  } catch(e) {}
+};
+let toastTimer;
+function toast(message) {
+  $("toast").textContent = message;
+  $("toast").style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").style.display = "none", 2600);
+}
+function id(prefix="game") {
+  return prefix + "_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,7);
+}
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function validWebUrl(value) {
+  try {
+    const u = new URL(value);
+    return u.protocol === "https:" || u.protocol === "http:";
+  } catch(e) { return false; }
+}
+function validLocation(value) {
+  const v = value.trim();
+  if (!v || v.startsWith("//") || v.includes("\\") || v.includes("..")) return false;
+  if (/^https?:\/\//i.test(v)) return validWebUrl(v);
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(v)) return false;
+  return !v.startsWith("/");
+}
+function getPassword() {
+  return localStorage.getItem(PASSWORD_KEY) || INITIAL_PASSWORD;
+}
+function setStatus(message, good=false) {
+  $("gameStatus").textContent = message;
+  $("gameStatus").className = "status " + (good ? "good" : "bad");
+}
+function showDashboard() {
+  $("loginPanel").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  sessionStorage.setItem(SESSION_KEY, "yes");
+  renderAll();
+}
+function logout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  $("dashboard").classList.add("hidden");
+  $("loginPanel").classList.remove("hidden");
+  $("password").value = "";
+}
+$("loginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  if ($("password").value === getPassword()) {
+    $("loginStatus").textContent = "";
+    showDashboard();
+  } else {
+    $("loginStatus").textContent = "Incorrect password.";
+    $("loginStatus").className = "status bad";
+  }
+});
+$("logoutBtn").addEventListener("click", logout);
 
-const GAMES = [
+/* TABS */
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b === button));
+    document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === button.dataset.panel));
+  });
+});
+
+/* BUILT-IN GAMES: IDs correspond to the original portfolio game catalogue. */
+const BUILTIN = [
 ["snake","🐍","Snake Game"],["bird","🐦","Flappy Bird"],["car-racing","🏎️","Car Racing"],
 ["memory","🧠","Memory Game"],["2048","🔢","2048"],["puzzle","🧩","Sliding Puzzle"],
 ["tictactoe","⭕","Tic Tac Toe"],["pong","🏓","Pong"],["breakout","🧱","Breakout"],
@@ -231,12 +337,408 @@ const GAMES = [
 ["cups","🥤","Cup Shuffle"],["lottery","🎟️","Lucky Draw"],["tapcolor","🟦","Tap Color"],
 ["squares","🟪","Color Squares"],["coinrace","🪙","Coin Race"],["mathduel","➕","Math Duel"],
 ["catchstars","⭐","Star Catcher"],["truefalse","✅","True or False"],["sprint","🏃","Button Sprint"],
-["lockpick","🔓","Code Breaker"],["emojimatch","💞","Emoji Pair Rush"],["quickdraw","🤠","Quick Draw"],
+["lockpick","🔓","Code Breaker"],["emojiMatch","💞","Emoji Pair Rush"],["quickdraw","🤠","Quick Draw"],
 ["higher","📈","Higher or Lower"],["coin","🪙","Coin Flip"],["countdown","⏱️","Countdown"],
 ["pattern","🔷","Pattern Memory"],["odd","🔎","Odd One Out"],["safe","🔐","Safe Cracker"],
 ["gridtap","🔲","Grid Tap"],["scramble","🔤","Word Scramble"]
 ];
 
+function builtinInitial() {
+  const hidden = read(HIDDEN_KEY, []);
+  const content = read(GAME_CONTENT_KEY, {});
+  return BUILTIN.map(([gameId, icon, name]) => ({
+    id: "builtin:" + gameId,
+    builtinId: gameId,
+    type: "builtin",
+    name: content[gameId]?.title || name,
+    icon: content[gameId]?.icon || icon,
+    location: "",
+    description: content[gameId]?.description || content[gameId]?.desc || "",
+    category: "Built-in",
+    active: !hidden.includes(gameId)
+  }));
+}
+
+/* MIGRATE older external game list once into unified list. */
+function getGames() {
+  let games = read(UNIFIED_KEY, null);
+  if (Array.isArray(games)) return games;
+
+  const oldExternal = read(EXTERNAL_KEY, []);
+  const migrated = Array.isArray(oldExternal) ? oldExternal.map(g => ({
+    id: g.id || id(),
+    type: "external",
+    name: g.name || "Untitled Game",
+    icon: g.icon || "🎮",
+    location: g.location || "",
+    description: g.description || "",
+    category: g.category || "External",
+    active: g.active !== false
+  })) : [];
+
+  games = [...builtinInitial(), ...migrated];
+  save(UNIFIED_KEY, games);
+  return games;
+}
+function saveGames(games) {
+  save(UNIFIED_KEY, games);
+
+  // Keep the old location key updated for compatibility with prior admin data.
+  save(EXTERNAL_KEY, games.filter(g => g.type === "external").map(g => ({
+    id:g.id, name:g.name, icon:g.icon, location:g.location,
+    description:g.description, category:g.category, active:g.active
+  })));
+
+  // Keep built-in visibility and labels compatible with index.html's old keys.
+  save(HIDDEN_KEY, games.filter(g => g.type === "builtin" && g.active === false).map(g => g.builtinId));
+  const oldContent = read(GAME_CONTENT_KEY, {});
+  games.filter(g => g.type === "builtin").forEach(g => {
+    oldContent[g.builtinId] = {
+      ...(oldContent[g.builtinId] || {}),
+      title:g.name, icon:g.icon, description:g.description, desc:g.description
+    };
+  });
+  save(GAME_CONTENT_KEY, oldContent);
+}
+
+/* GAME FORM: same form handles ADD and EDIT, including LOCATION. */
+function resetGameForm() {
+  $("gameForm").reset();
+  $("gameId").value = "";
+  $("gameType").value = "external";
+  $("gameVisibility").value = "yes";
+  $("gameFormHeading").textContent = "Add New Game";
+  $("saveGameBtn").textContent = "＋ Add Game";
+  $("cancelGameEdit").classList.add("hidden");
+  $("gameLocation").disabled = false;
+  $("gameType").disabled = false;
+  setStatus("");
+}
+$("cancelGameEdit").addEventListener("click", resetGameForm);
+
+$("gameForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const editId = $("gameId").value;
+  const name = $("gameName").value.trim();
+  const icon = $("gameIcon").value.trim() || "🎮";
+  const location = $("gameLocation").value.trim();
+  const description = $("gameDescription").value.trim();
+  const category = $("gameCategory").value.trim();
+  const type = $("gameType").value;
+  const active = $("gameVisibility").value === "yes";
+
+  if (!name) {
+    setStatus("Game name is required.");
+    return;
+  }
+
+  if (type === "external" && !validLocation(location)) {
+    setStatus("Enter a valid location, e.g. games/snake.html, or an HTTP(S) URL.");
+    return;
+  }
+
+  const games = getGames();
+
+  if (editId) {
+    const index = games.findIndex(g => g.id === editId);
+    if (index < 0) {
+      setStatus("Game not found. Refresh the list and try again.");
+      return;
+    }
+
+    const old = games[index];
+
+    // IMPORTANT: always save the new location and description on edit.
+    games[index] = {
+      ...old,
+      name,
+      icon,
+      location: type === "builtin" ? "" : location,
+      description,
+      category,
+      active,
+      type
+    };
+  } else {
+    games.unshift({
+      id: id(),
+      type,
+      builtinId: "",
+      name,
+      icon,
+      location: type === "builtin" ? "" : location,
+      description,
+      category,
+      active
+    });
+  }
+
+  try {
+    saveGames(games);
+    resetGameForm();
+    renderGames();
+    setStatus(editId ? "Game details and location updated." : "Game added successfully.", true);
+    toast(editId ? "Game updated." : "Game added.");
+  } catch(error) {
+    setStatus("Unable to save. Browser storage may be full or disabled.");
+  }
+});
+
+function editGame(gameId) {
+  const game = getGames().find(g => g.id === gameId);
+  if (!game) {
+    toast("Game not found.");
+    return;
+  }
+
+  $("gameId").value = game.id;
+  $("gameName").value = game.name || "";
+  $("gameIcon").value = game.icon || "🎮";
+  $("gameLocation").value = game.location || "";
+  $("gameDescription").value = game.description || "";
+  $("gameCategory").value = game.category || "";
+  $("gameType").value = game.type === "builtin" ? "builtin" : "external";
+  $("gameVisibility").value = game.active === false ? "no" : "yes";
+
+  // Keep the Location input editable for external games.
+  $("gameLocation").disabled = false;
+  $("gameType").disabled = false;
+  $("gameFormHeading").textContent = "Edit Game";
+  $("saveGameBtn").textContent = "Save Game Changes";
+  $("cancelGameEdit").classList.remove("hidden");
+  $("gamePanel");
+  $("gameName").focus();
+  $("gameForm").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function renderGames() {
+  const list = $("gameList");
+  const games = getGames();
+  const query = $("gameSearch").value.trim().toLowerCase();
+  const shown = games.filter(g =>
+    [g.name,g.location,g.description,g.category,g.type].join(" ").toLowerCase().includes(query)
+  );
+
+  $("gameCount").textContent = games.length;
+  list.replaceChildren();
+
+  if (!shown.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = query ? "No matching games." : "No games available.";
+    list.append(empty);
+    return;
+  }
+
+  shown.forEach(game => {
+    const item = document.createElement("article");
+    item.className = "item";
+
+    const head = document.createElement("div");
+    head.className = "itemhead";
+
+    const icon = document.createElement("div");
+    icon.className = "emoji";
+    icon.textContent = game.icon || "🎮";
+
+    const body = document.createElement("div");
+    body.className = "itembody";
+
+    const title = document.createElement("strong");
+    title.textContent = game.name || "Untitled Game";
+
+    const location = document.createElement("div");
+    location.className = "path";
+    location.textContent = game.type === "builtin"
+      ? "Built-in game · ID: " + (game.builtinId || "")
+      : "Location: " + (game.location || "(not set)");
+
+    const description = document.createElement("p");
+    description.textContent = game.description || "No description";
+    description.style.margin = "6px 0";
+
+    const badge = document.createElement("span");
+    badge.className = "badge" + (game.active === false ? " off" : "");
+    badge.textContent = (game.active === false ? "Hidden" : "Visible") +
+      " · " + (game.type === "builtin" ? "Built-in" : "HTML file");
+
+    body.append(title, location, description, badge);
+    head.append(icon, body);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const edit = document.createElement("button");
+    edit.className = "blue";
+    edit.type = "button";
+    edit.textContent = "Edit Name / Location";
+    edit.addEventListener("click", () => editGame(game.id));
+
+    const toggle = document.createElement("button");
+    toggle.className = "secondary";
+    toggle.type = "button";
+    toggle.textContent = game.active === false ? "Show" : "Hide";
+    toggle.addEventListener("click", () => {
+      saveGames(getGames().map(g => g.id === game.id ? {...g, active:g.active === false} : g));
+      renderGames();
+      toast(game.active === false ? "Game shown." : "Game hidden.");
+    });
+
+    const open = document.createElement("button");
+    open.className = "secondary";
+    open.type = "button";
+    open.textContent = "Open";
+    open.addEventListener("click", () => {
+      if (game.type === "builtin") {
+        toast("Built-in game is opened from its card on the main website.");
+        return;
+      }
+      if (!validLocation(game.location || "")) {
+        toast("Add a valid game location first.");
+        return;
+      }
+      const target = new URL(game.location, window.location.href);
+      window.open(target.href, "_blank", "noopener,noreferrer");
+    });
+
+    const del = document.createElement("button");
+    del.className = "danger";
+    del.type = "button";
+    del.textContent = "Delete";
+    del.addEventListener("click", () => {
+      if (game.type === "builtin") {
+        toast("Built-in games cannot be deleted here. You can Hide them.");
+        return;
+      }
+      if (!confirm('Delete "' + game.name + '" from the game list?')) return;
+      saveGames(getGames().filter(g => g.id !== game.id));
+      if ($("gameId").value === game.id) resetGameForm();
+      renderGames();
+      toast("Game removed from the list.");
+    });
+
+    actions.append(edit, toggle, open, del);
+    item.append(head, actions);
+    list.append(item);
+  });
+}
+$("gameSearch").addEventListener("input", renderGames);
+
+$("showAll").addEventListener("click", () => {
+  saveGames(getGames().map(g => ({...g, active:true})));
+  renderGames();
+  toast("All games shown.");
+});
+$("hideAll").addEventListener("click", () => {
+  if (!confirm("Hide all games from the main website?")) return;
+  saveGames(getGames().map(g => ({...g, active:false})));
+  renderGames();
+  toast("All games hidden.");
+});
+$("exportGames").addEventListener("click", () => {
+  downloadJSON("games-list.json", {games:getGames()});
+});
+
+/* PROJECTS */
+const DEFAULT_PROJECTS = [
+ {id:"p1",name:"Grow Up Communication",desc:"ISP Website (GitHub Pages)",url:"https://github.com/CDT248/GrowUp-Communication",icon:"🌐"},
+ {id:"p2",name:"RS NETWORK",desc:"Invoice & Email System",url:"https://github.com/",icon:"📡"},
+ {id:"p3",name:"Multi Drive Storage",desc:"Cloud Storage App",url:"https://github.com/",icon:"☁️"},
+ {id:"p4",name:"Captive Portal",desc:"ISP Customer Management",url:"https://github.com/",icon:"📶"}
+];
+function getProjects() {
+  const p = read(PROJECT_KEY, null);
+  return Array.isArray(p) ? p : DEFAULT_PROJECTS.map(x=>({...x}));
+}
+function resetProjectForm() {
+  $("projectForm").reset();
+  $("projectId").value = "";
+  $("saveProjectBtn").textContent = "Add Project";
+  $("cancelProjectEdit").classList.add("hidden");
+}
+$("cancelProjectEdit").addEventListener("click", resetProjectForm);
+$("projectForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = $("projectName").value.trim();
+  const url = $("projectUrl").value.trim();
+  if (!name || !validWebUrl(url)) {
+    toast("Enter a project name and valid HTTP(S) URL.");
+    return;
+  }
+  const projects = getProjects();
+  const editId = $("projectId").value;
+  const item = {
+    id:editId || id("project"),
+    name,
+    icon:$("projectIcon").value.trim() || "🌐",
+    url,
+    desc:$("projectDescription").value.trim(),
+    visible:$("projectVisible").value === "yes"
+  };
+  if (editId) {
+    const index = projects.findIndex(p => p.id === editId);
+    if (index < 0) { toast("Project not found."); return; }
+    projects[index] = item;
+  } else projects.unshift(item);
+  save(PROJECT_KEY, projects);
+  resetProjectForm();
+  renderProjects();
+  toast(editId ? "Project updated." : "Project added.");
+});
+function renderProjects() {
+  const box = $("projectList");
+  box.replaceChildren();
+  getProjects().forEach(project => {
+    const item = document.createElement("div");
+    item.className = "item";
+    const name = document.createElement("strong");
+    name.textContent = (project.icon || "🌐") + " " + project.name;
+    const desc = document.createElement("p");
+    desc.textContent = (project.desc || "") + " · " + (project.url || "");
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const edit = document.createElement("button");
+    edit.className = "secondary";
+    edit.textContent = "Edit";
+    edit.onclick = () => {
+      $("projectId").value = project.id;
+      $("projectName").value = project.name || "";
+      $("projectIcon").value = project.icon || "";
+      $("projectUrl").value = project.url || "";
+      $("projectDescription").value = project.desc || "";
+      $("projectVisible").value = project.visible === false ? "no" : "yes";
+      $("saveProjectBtn").textContent = "Save Changes";
+      $("cancelProjectEdit").classList.remove("hidden");
+      $("projectForm").scrollIntoView({behavior:"smooth"});
+    };
+
+    const toggle = document.createElement("button");
+    toggle.className = "secondary";
+    toggle.textContent = project.visible === false ? "Show" : "Hide";
+    toggle.onclick = () => {
+      save(PROJECT_KEY, getProjects().map(p => p.id === project.id
+        ? {...p, visible:p.visible === false} : p));
+      renderProjects();
+    };
+
+    const del = document.createElement("button");
+    del.className = "danger";
+    del.textContent = "Delete";
+    del.onclick = () => {
+      if (!confirm("Delete project " + project.name + "?")) return;
+      save(PROJECT_KEY, getProjects().filter(p => p.id !== project.id));
+      renderProjects();
+      toast("Project deleted.");
+    };
+    actions.append(edit,toggle,del);
+    item.append(name,desc,actions);
+    box.append(item);
+  });
+}
+
+/* WEBSITE CONTENT: keys used by the existing portfolio index.html */
 const CONTENT_DEFAULTS = {
  navHome:"Home",navGames:"Games",navAbout:"About",navSkills:"Skills",
  navProjects:"Projects",navContact:"Contact",
@@ -259,402 +761,114 @@ const CONTENT_DEFAULTS = {
  githubUrl:"https://github.com/",youtubeUrl:"https://youtube.com/",
  facebookUrl:"https://facebook.com/"
 };
-
-const $ = id => document.getElementById(id);
-const read = (key,fallback) => {
-  try {
-    const raw=localStorage.getItem(key);
-    return raw===null ? fallback : JSON.parse(raw);
-  } catch(e) { return fallback; }
-};
-const save = (key,value) => {
-  localStorage.setItem(key,JSON.stringify(value));
-  // Notify same-origin pages that listen for storage updates.
-  window.dispatchEvent(new StorageEvent("storage",{
-    key,
-    newValue:JSON.stringify(value),
-    storageArea:localStorage
-  }));
-};
-let toastTimer;
-function toast(message){
-  $("toast").textContent=message;
-  $("toast").style.display="block";
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>$("toast").style.display="none",2600);
-}
-function getPassword(){
-  return localStorage.getItem(PASSWORD_KEY) || INITIAL_PASSWORD;
-}
-function validHttpUrl(value){
-  try {
-    const u=new URL(value);
-    return u.protocol==="https:" || u.protocol==="http:";
-  } catch(e) { return false; }
-}
-function validGameLocation(value){
-  const v=value.trim();
-  if(!v || v.startsWith("//") || v.includes("\\") || v.includes("..")) return false;
-  if(/^https?:\/\//i.test(v)) return validHttpUrl(v);
-  if(/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(v)) return false;
-  return !v.startsWith("/");
-}
-function makeId(prefix){
-  return prefix+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
-}
-function setLoginStatus(message,type){
-  $("loginStatus").textContent=message;
-  $("loginStatus").className="status "+(type||"");
-}
-function showDashboard(){
-  $("loginPanel").classList.add("hidden");
-  $("dashboard").classList.remove("hidden");
-  sessionStorage.setItem(SESSION_KEY,"yes");
-  renderAll();
-}
-function logout(){
-  sessionStorage.removeItem(SESSION_KEY);
-  $("dashboard").classList.add("hidden");
-  $("loginPanel").classList.remove("hidden");
-  $("password").value="";
-}
-$("loginForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  if($("password").value===getPassword()){
-    setLoginStatus("","");
-    showDashboard();
-  } else setLoginStatus("Incorrect password.","bad");
-});
-$("logoutBtn").addEventListener("click",logout);
-$("clearSessionBtn").addEventListener("click",()=>{logout();toast("Admin session ended");});
-
-document.querySelectorAll(".tab").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===button));
-    document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===button.dataset.panel));
-  });
-});
-
-/* CONTENT EDITOR */
-function buildContentFields(){
-  const box=$("contentFields");
+function buildContentForm() {
+  const box = $("contentFields");
   box.replaceChildren();
-  Object.keys(CONTENT_DEFAULTS).forEach(key=>{
-    const wrap=document.createElement("div");
-    wrap.className="field";
-    const label=document.createElement("label");
-    label.htmlFor="content_"+key;
-    label.textContent=key;
-    const input=document.createElement(
-      ["heroDescription","aboutText","contactText","skills","gamesSubtitle"].includes(key) ? "textarea" : "input"
-    );
-    input.id="content_"+key;
-    input.value="";
-    input.dataset.key=key;
+  Object.entries(CONTENT_DEFAULTS).forEach(([key,value]) => {
+    const wrap = document.createElement("div");
+    const label = document.createElement("label");
+    label.htmlFor = "content_" + key;
+    label.textContent = key;
+    const input = ["heroDescription","heroQuote","aboutText","contactText","skills","gamesSubtitle"].includes(key)
+      ? document.createElement("textarea") : document.createElement("input");
+    input.id = "content_" + key;
+    input.dataset.contentKey = key;
+    input.value = value;
     wrap.append(label,input);
     box.append(wrap);
   });
 }
-function loadContentForm(){
-  const content={...CONTENT_DEFAULTS,...read(CONTENT_KEY,{})};
-  document.querySelectorAll("[data-key]").forEach(el=>{
-    el.value=content[el.dataset.key] ?? "";
+function loadContent() {
+  const content = {...CONTENT_DEFAULTS,...read(CONTENT_KEY,{})};
+  document.querySelectorAll("[data-content-key]").forEach(input => {
+    input.value = content[input.dataset.contentKey] ?? "";
   });
 }
-$("contentForm").addEventListener("submit",e=>{
+$("contentForm").addEventListener("submit", e => {
   e.preventDefault();
-  const current={...CONTENT_DEFAULTS,...read(CONTENT_KEY,{})};
-  document.querySelectorAll("[data-key]").forEach(el=>{
-    current[el.dataset.key]=el.value.trim();
+  const content = {};
+  document.querySelectorAll("[data-content-key]").forEach(input => {
+    content[input.dataset.contentKey] = input.value.trim();
   });
-  for(const key of ["githubUrl","youtubeUrl","facebookUrl"]){
-    if(current[key] && !validHttpUrl(current[key])){
-      toast("Invalid URL in "+key);
+  for (const key of ["githubUrl","youtubeUrl","facebookUrl"]) {
+    if (content[key] && !validWebUrl(content[key])) {
+      toast("Invalid URL in " + key);
       return;
     }
   }
-  if(current.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(current.email)){
-    toast("Please enter a valid email.");
+  if (content.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content.email)) {
+    toast("Enter a valid email.");
     return;
   }
-  save(CONTENT_KEY,current);
+  save(CONTENT_KEY,content);
   toast("Website content saved.");
 });
-$("resetContentBtn").addEventListener("click",()=>{
-  if(!confirm("Reset website text to defaults?"))return;
+$("resetContent").addEventListener("click", () => {
+  if (!confirm("Reset website content to defaults?")) return;
   save(CONTENT_KEY,CONTENT_DEFAULTS);
-  loadContentForm();
-  toast("Website content reset.");
+  loadContent();
+  toast("Content reset.");
 });
-
-/* PROJECTS */
-function getProjects(){
-  const value=read(PROJECTS_KEY,null);
-  return Array.isArray(value) ? value : DEFAULT_PROJECTS.map(x=>({...x}));
-}
-function resetProjectForm(){
-  $("projectForm").reset();
-  $("projectId").value="";
-  $("projectSaveBtn").textContent="Add Project";
-  $("projectCancelBtn").classList.add("hidden");
-}
-$("projectCancelBtn").addEventListener("click",resetProjectForm);
-$("projectForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const name=$("projectName").value.trim();
-  const url=$("projectUrl").value.trim();
-  if(!name || !validHttpUrl(url)){toast("Enter a project name and valid HTTP(S) URL.");return;}
-  const projects=getProjects();
-  const id=$("projectId").value;
-  const item={
-    id:id||makeId("p"),
-    name,
-    desc:$("projectDesc").value.trim(),
-    url,
-    icon:$("projectIcon").value.trim()||"🌐",
-    visible:true
-  };
-  if(id){
-    const index=projects.findIndex(p=>p.id===id);
-    if(index<0){toast("Project not found.");return;}
-    projects[index]={...projects[index],...item,visible:projects[index].visible!==false};
-  }else projects.unshift(item);
-  save(PROJECTS_KEY,projects);
-  resetProjectForm();
-  renderProjects();
-  toast(id?"Project updated.":"Project added.");
-});
-function makeButton(label,cls,fn){
-  const b=document.createElement("button");
-  b.type="button";b.textContent=label;b.className=cls;
-  b.addEventListener("click",fn);
-  return b;
-}
-function renderProjects(){
-  const box=$("projectList");box.replaceChildren();
-  const projects=getProjects();
-  if(!projects.length){box.textContent="No projects added.";return;}
-  projects.forEach(project=>{
-    const item=document.createElement("div");item.className="item";
-    const title=document.createElement("div");title.className="item-title";
-    title.textContent=(project.icon||"🌐")+" "+(project.name||"Untitled");
-    const desc=document.createElement("div");desc.className="muted";
-    desc.textContent=project.desc||"";
-    const url=document.createElement("div");url.className="item-url";
-    url.textContent=project.url||"";
-    const state=document.createElement("div");state.className="hint";
-    state.textContent=project.visible===false?"Hidden from website":"Visible on website";
-    const actions=document.createElement("div");actions.className="actions";
-    actions.append(
-      makeButton("Edit","secondary",()=>{
-        $("projectId").value=project.id;
-        $("projectName").value=project.name||"";
-        $("projectIcon").value=project.icon||"";
-        $("projectUrl").value=project.url||"";
-        $("projectDesc").value=project.desc||"";
-        $("projectSaveBtn").textContent="Save Changes";
-        $("projectCancelBtn").classList.remove("hidden");
-        $("projectName").focus();
-        window.scrollTo({top:0,behavior:"smooth"});
-      }),
-      makeButton(project.visible===false?"Show":"Hide","secondary",()=>{
-        save(PROJECTS_KEY,getProjects().map(p=>p.id===project.id?{...p,visible:p.visible===false}:p));
-        renderProjects();toast("Project visibility updated.");
-      }),
-      makeButton("Delete","danger",()=>{
-        if(!confirm("Delete project "+(project.name||"")+"?"))return;
-        save(PROJECTS_KEY,getProjects().filter(p=>p.id!==project.id));
-        renderProjects();toast("Project deleted.");
-      })
-    );
-    item.append(title,desc,url,state,actions);box.append(item);
-  });
-}
-
-/* BUILT-IN GAMES */
-function getHiddenGames(){
-  const hidden=read(HIDDEN_KEY,[]);
-  return Array.isArray(hidden)?hidden:[];
-}
-function getGameContent(){
-  const value=read(GAME_CONTENT_KEY,{});
-  return value && typeof value==="object" && !Array.isArray(value)?value:{};
-}
-function renderExistingGames(){
-  const box=$("existingGamesList");box.replaceChildren();
-  const hidden=getHiddenGames(),content=getGameContent();
-  GAMES.forEach(([id,icon,name])=>{
-    const custom=content[id]||{};
-    const isHidden=hidden.includes(id);
-    const item=document.createElement("div");item.className="item";
-    const title=document.createElement("div");title.className="item-title";
-    title.textContent=icon+" "+(custom.title||name);
-    const idText=document.createElement("div");idText.className="hint";idText.textContent="ID: "+id;
-    const state=document.createElement("div");state.className="hint";
-    state.textContent=isHidden?"Hidden from website":"Visible on website";
-    const editWrap=document.createElement("div");editWrap.className="grid";
-    const titleField=document.createElement("input");titleField.value=custom.title||name;titleField.setAttribute("aria-label","Game title");
-    const descField=document.createElement("input");descField.value=custom.description||"";descField.placeholder="Game description";descField.setAttribute("aria-label","Game description");
-    editWrap.append(titleField,descField);
-    const actions=document.createElement("div");actions.className="actions";
-    actions.append(
-      makeButton("Save Title / Description","primary",()=>{
-        const all=getGameContent();
-        all[id]={...(all[id]||{}),title:titleField.value.trim()||name,description:descField.value.trim()};
-        save(GAME_CONTENT_KEY,all);renderExistingGames();toast("Game details saved.");
-      }),
-      makeButton(isHidden?"Show":"Hide", "secondary",()=>{
-        const next=getHiddenGames().filter(x=>x!==id);
-        if(!isHidden)next.push(id);
-        save(HIDDEN_KEY,next);renderExistingGames();toast(isHidden?"Game shown.":"Game hidden.");
-      })
-    );
-    item.append(title,idText,state,editWrap,actions);box.append(item);
-  });
-}
-$("showAllGames").addEventListener("click",()=>{
-  save(HIDDEN_KEY,[]);renderExistingGames();toast("All built-in games shown.");
-});
-$("hideAllGames").addEventListener("click",()=>{
-  if(!confirm("Hide all built-in games from the website?"))return;
-  save(HIDDEN_KEY,GAMES.map(g=>g[0]));renderExistingGames();toast("All built-in games hidden.");
-});
-
-/* EXTERNAL GAME FILE LOCATIONS */
-function getExternalGames(){
-  const value=read(EXTERNAL_GAMES_KEY,[]);
-  return Array.isArray(value)?value:[];
-}
-function resetExternalForm(){
-  $("externalGameForm").reset();
-  $("externalGameId").value="";
-  $("externalGameSaveBtn").textContent="Add Game Location";
-  $("externalGameCancelBtn").classList.add("hidden");
-}
-$("externalGameCancelBtn").addEventListener("click",resetExternalForm);
-$("externalGameForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const name=$("externalGameName").value.trim();
-  const location=$("externalGameLocation").value.trim();
-  if(!name || !validGameLocation(location)){
-    toast("Enter a name and a valid relative path or HTTP(S) URL.");
-    return;
-  }
-  const games=getExternalGames();
-  const id=$("externalGameId").value;
-  const game={
-    id:id||makeId("external"),
-    name,
-    location,
-    description:$("externalGameDescription").value.trim(),
-    active:true
-  };
-  if(id){
-    const index=games.findIndex(g=>g.id===id);
-    if(index<0){toast("Game location not found.");return;}
-    games[index]={...games[index],...game,active:games[index].active!==false};
-  }else games.unshift(game);
-  save(EXTERNAL_GAMES_KEY,games);
-  resetExternalForm();renderExternalGames();
-  toast(id?"Game location updated.":"Game location saved.");
-});
-function renderExternalGames(){
-  const box=$("externalGameList");box.replaceChildren();
-  const games=getExternalGames();
-  if(!games.length){box.textContent="No external game locations added.";return;}
-  games.forEach(game=>{
-    const item=document.createElement("div");item.className="item";
-    const title=document.createElement("div");title.className="item-title";title.textContent=game.name||"Untitled Game";
-    const url=document.createElement("div");url.className="item-url";url.textContent=game.location||"";
-    const desc=document.createElement("div");desc.className="muted";desc.textContent=game.description||"";
-    const state=document.createElement("div");state.className="hint";state.textContent=game.active===false?"Hidden":"Active";
-    const actions=document.createElement("div");actions.className="actions";
-    actions.append(
-      makeButton("Edit","secondary",()=>{
-        $("externalGameId").value=game.id;
-        $("externalGameName").value=game.name||"";
-        $("externalGameLocation").value=game.location||"";
-        $("externalGameDescription").value=game.description||"";
-        $("externalGameSaveBtn").textContent="Save Changes";
-        $("externalGameCancelBtn").classList.remove("hidden");
-        window.scrollTo({top:0,behavior:"smooth"});
-      }),
-      makeButton(game.active===false?"Show":"Hide","secondary",()=>{
-        save(EXTERNAL_GAMES_KEY,getExternalGames().map(g=>g.id===game.id?{...g,active:g.active===false}:g));
-        renderExternalGames();toast("Game visibility updated.");
-      }),
-      makeButton("Open","primary",()=>{
-        if(!validGameLocation(game.location||"")){toast("Invalid location.");return;}
-        const url=new URL(game.location,locationForRelative());
-        window.open(url.href,"_blank","noopener,noreferrer");
-      }),
-      makeButton("Delete","danger",()=>{
-        if(!confirm("Delete this saved game location?"))return;
-        save(EXTERNAL_GAMES_KEY,getExternalGames().filter(g=>g.id!==game.id));
-        renderExternalGames();toast("Game location deleted.");
-      })
-    );
-    item.append(title,url,desc,state,actions);box.append(item);
-  });
-}
-function locationForRelative(){return window.location.href}
 
 /* BACKUP */
-$("exportBtn").addEventListener("click",()=>{
-  const backup={
-    version:1,
-    exportedAt:new Date().toISOString(),
-    content:read(CONTENT_KEY,CONTENT_DEFAULTS),
-    projects:getProjects(),
-    hiddenGames:getHiddenGames(),
-    gameContent:getGameContent(),
-    externalGames:getExternalGames()
-  };
-  const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url;a.download="website-admin-backup.json";a.click();
+function downloadJSON(filename,data) {
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
-  toast("Backup exported.");
+}
+$("exportBackup").addEventListener("click", () => {
+  downloadJSON("website-full-backup.json",{
+    version:2,
+    exportedAt:new Date().toISOString(),
+    games:getGames(),
+    projects:getProjects(),
+    content:read(CONTENT_KEY,CONTENT_DEFAULTS)
+  });
 });
-$("importBtn").addEventListener("click",async()=>{
-  const file=$("importFile").files[0];
-  if(!file){toast("Choose a JSON backup file first.");return;}
-  try{
-    const data=JSON.parse(await file.text());
-    if(!data||typeof data!=="object")throw new Error("Invalid backup");
-    if(!confirm("Import this backup and replace saved website settings?"))return;
-    if(data.content&&typeof data.content==="object")save(CONTENT_KEY,data.content);
-    if(Array.isArray(data.projects))save(PROJECTS_KEY,data.projects);
-    if(Array.isArray(data.hiddenGames))save(HIDDEN_KEY,data.hiddenGames);
-    if(data.gameContent&&typeof data.gameContent==="object")save(GAME_CONTENT_KEY,data.gameContent);
-    if(Array.isArray(data.externalGames))save(EXTERNAL_GAMES_KEY,data.externalGames);
-    loadContentForm();renderAll();toast("Backup imported.");
-  }catch(e){toast("Invalid backup file.");}
+$("importBackup").addEventListener("click", async () => {
+  const file = $("importBackupFile").files[0];
+  if (!file) { toast("Choose a JSON backup first."); return; }
+  try {
+    const data = JSON.parse(await file.text());
+    if (!data || typeof data !== "object") throw new Error("Invalid backup");
+    if (!confirm("Import backup and replace the matching data?")) return;
+    if (Array.isArray(data.games)) saveGames(data.games);
+    if (Array.isArray(data.projects)) save(PROJECT_KEY,data.projects);
+    if (data.content && typeof data.content === "object") save(CONTENT_KEY,data.content);
+    renderAll();
+    loadContent();
+    toast("Backup imported.");
+  } catch(e) {
+    toast("Invalid backup file.");
+  }
 });
 
 /* PASSWORD */
-$("passwordForm").addEventListener("submit",e=>{
+$("passwordForm").addEventListener("submit", e => {
   e.preventDefault();
-  const old=$("oldPassword").value;
-  const next=$("newPassword").value;
-  const confirmPass=$("confirmPassword").value;
-  if(old!==getPassword()){toast("Current password is incorrect.");return;}
-  if(next.length<8){toast("New password must be at least 8 characters.");return;}
-  if(next!==confirmPass){toast("New passwords do not match.");return;}
+  if ($("oldPassword").value !== getPassword()) {
+    toast("Current password is incorrect.");
+    return;
+  }
+  const next = $("newPassword").value;
+  if (next.length < 8) { toast("Use at least 8 characters."); return; }
+  if (next !== $("confirmPassword").value) { toast("Passwords do not match."); return; }
   localStorage.setItem(PASSWORD_KEY,next);
   $("passwordForm").reset();
   toast("Password changed in this browser.");
 });
 
-function renderAll(){
-  loadContentForm();
+function renderAll() {
+  renderGames();
   renderProjects();
-  renderExistingGames();
-  renderExternalGames();
+  loadContent();
 }
-buildContentFields();
-if(sessionStorage.getItem(SESSION_KEY)==="yes")showDashboard();
+buildContentForm();
+if (sessionStorage.getItem(SESSION_KEY) === "yes") showDashboard();
 </script>
 </body>
 </html>
