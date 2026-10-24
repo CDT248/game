@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10152b">
+<title>Word Scramble | Fahim Games</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{font-family:Arial,Helvetica,sans-serif;color:#f8fafc}
+body{
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  padding:18px;background:radial-gradient(circle at top,#263a75,#10152b 65%)
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{width:100%;max-width:490px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
+.brand{font-size:21px;font-weight:900;letter-spacing:.4px}
+.brand span{color:#a78bfa}
+.badge{font-size:12px;color:#d8ccff;background:#ffffff12;border:1px solid #ffffff20;padding:8px 11px;border-radius:20px}
+.card{
+  background:#171e39;border:1px solid #ffffff18;border-radius:24px;
+  padding:24px;box-shadow:0 24px 70px #0005
+}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:24px}
+.stat{padding:12px 5px;text-align:center;background:#ffffff08;border:1px solid #ffffff12;border-radius:13px}
+.stat small{display:block;color:#aab5d3;font-size:11px;margin-bottom:6px}
+.stat strong{font-size:23px}
+.stat:nth-child(1) strong{color:#a78bfa}
+.stat:nth-child(2) strong{color:#67e8f9}
+.stat:nth-child(3) strong{color:#fcd34d}
+.label{font-size:12px;color:#9eaccd;letter-spacing:1.4px;text-transform:uppercase;text-align:center}
+.scramble{
+  display:flex;justify-content:center;align-items:center;gap:7px;
+  flex-wrap:wrap;min-height:82px;margin:15px 0 13px
+}
+.letter{
+  display:flex;justify-content:center;align-items:center;
+  width:clamp(34px,8vw,45px);height:clamp(42px,10vw,52px);
+  border-radius:10px;background:linear-gradient(145deg,#8b5cf6,#6d45d9);
+  box-shadow:0 4px 0 #48269b;font-size:23px;font-weight:900;
+  animation:pop .22s ease both
+}
+@keyframes pop{from{transform:translateY(7px);opacity:.3}to{transform:translateY(0);opacity:1}}
+.hint{color:#c3cde7;font-size:14px;text-align:center;line-height:1.6;margin-bottom:20px;min-height:22px}
+.answer{width:100%;padding:15px;border-radius:13px;border:1px solid #ffffff25;
+  outline:none;background:#0e142b;color:white;text-align:center;font-size:18px;
+  letter-spacing:2px;text-transform:uppercase}
+.answer:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #a78bfa20}
+.answer::placeholder{color:#697796;letter-spacing:0;text-transform:none}
+.message{min-height:25px;text-align:center;padding-top:10px;font-size:13px;color:#cbd5e1}
+.message.good{color:#6ee7b7}
+.message.bad{color:#fda4af}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.btn{border:0;border-radius:12px;padding:13px 10px;font-weight:800;transition:.15s}
+.btn:active{transform:scale(.97)}
+.primary{background:linear-gradient(135deg,#a78bfa,#7c3aed);color:white}
+.secondary{background:#ffffff10;border:1px solid #ffffff1c;color:#e7eaff}
+.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.tool{padding:11px 5px;border-radius:11px;border:1px solid #ffffff18;background:#222b4b;color:#dce3ff;font-size:12px;font-weight:bold}
+.tool:hover,.secondary:hover{background:#ffffff20}
+.footer{display:flex;justify-content:space-between;gap:8px;margin-top:18px;font-size:11px;color:#9eaccd}
+.overlay{position:fixed;inset:0;background:#090d1bdc;display:flex;align-items:center;justify-content:center;padding:20px;z-index:5}
+.overlay.hidden{display:none}
+.modal{max-width:360px;width:100%;padding:28px;text-align:center;border-radius:22px;background:#1a2140;border:1px solid #ffffff20}
+.modal h2{font-size:29px;margin-bottom:10px}
+.modal p{color:#c2cbe2;line-height:1.6;margin-bottom:20px}
+@media(max-width:380px){.card{padding:17px}.letter{width:32px;height:40px;font-size:19px}.brand{font-size:18px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <div class="brand">🔤 WORD <span>SCRAMBLE</span></div>
+    <div class="badge">🧠 Brain Game</div>
+  </header>
+
+  <section class="card">
+    <div class="stats">
+      <div class="stat"><small>SCORE</small><strong id="score">0</strong></div>
+      <div class="stat"><small>TIME</small><strong id="time">60</strong></div>
+      <div class="stat"><small>BEST</small><strong id="best">0</strong></div>
+    </div>
+
+    <div class="label">Unscramble this word</div>
+    <div class="scramble" id="scramble" aria-label="Scrambled word"></div>
+    <p class="hint" id="hint">Arrange the letters to find the correct word.</p>
+
+    <form id="answerForm">
+      <input class="answer" id="answer" type="text" placeholder="Type your answer..." autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Your answer">
+      <div class="message" id="message" aria-live="polite">You have 60 seconds. Good luck!</div>
+      <div class="actions">
+        <button class="btn primary" type="submit">✓ CHECK WORD</button>
+        <button class="btn secondary" type="button" id="clear">CLEAR</button>
+      </div>
+    </form>
+
+    <div class="tools">
+      <button class="tool" type="button" id="hintBtn">💡 HINT</button>
+      <button class="tool" type="button" id="skipBtn">⏭ SKIP</button>
+      <button class="tool" type="button" id="restartBtn">↻ RESTART</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>🎯 Correct answer: +10 points</span>
+    <span>Made for Fahim Games</span>
+  </footer>
+</main>
+
+<div class="overlay hidden" id="overlay">
+  <div class="modal">
+    <h2 id="endTitle">⏰ Time's Up!</h2>
+    <p id="endText">Your final score is 0.</p>
+    <button class="btn primary" style="width:100%" id="againBtn">▶ PLAY AGAIN</button>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+const words = [
+  {word:"APPLE",hint:"A fruit that can be red or green."},
+  {word:"BRAIN",hint:"The organ that helps you think."},
+  {word:"CHAIR",hint:"You sit on this."},
+  {word:"DREAM",hint:"Something you may see while sleeping."},
+  {word:"EARTH",hint:"The planet we live on."},
+  {word:"FLAME",hint:"Fire produces this."},
+  {word:"GRAPE",hint:"A small fruit used to make juice."},
+  {word:"HOUSE",hint:"A place where people live."},
+  {word:"JUICE",hint:"A drink made from fruits."},
+  {word:"KNIFE",hint:"A kitchen tool used for cutting."},
+  {word:"LEMON",hint:"A sour yellow citrus fruit."},
+  {word:"MUSIC",hint:"You listen to songs and sounds."},
+  {word:"NIGHT",hint:"The dark part of the day."},
+  {word:"OCEAN",hint:"A huge body of salt water."},
+  {word:"PIANO",hint:"A musical instrument with keys."},
+  {word:"QUEEN",hint:"A female ruler or a king's wife."},
+  {word:"RIVER",hint:"A natural stream of flowing water."},
+  {word:"SMILE",hint:"A happy expression on your face."},
+  {word:"TIGER",hint:"A large striped wild cat."},
+  {word:"WATER",hint:"You need this liquid to survive."},
+  {word:"CLOUD",hint:"A white or grey shape in the sky."},
+  {word:"PHONE",hint:"A device used to call people."},
+  {word:"LIGHT",hint:"It helps you see in the dark."},
+  {word:"PLANT",hint:"A living thing that often grows in soil."},
+  {word:"WORLD",hint:"The Earth and all its people."},
+  {word:"GARDEN",hint:"A place where flowers and plants grow."},
+  {word:"ROCKET",hint:"A vehicle that can travel into space."},
+  {word:"PUZZLE",hint:"A game that tests your thinking."},
+  {word:"BANANA",hint:"A long yellow fruit."},
+  {word:"PLANET",hint:"A large object orbiting a star."},
+  {word:"RAINBOW",hint:"A colorful arc that can appear after rain."},
+  {word:"COMPUTER",hint:"An electronic device used for work and games."},
+  {word:"KEYBOARD",hint:"You use this to type on a computer."},
+  {word:"ELEPHANT",hint:"A very large animal with a trunk."},
+  {word:"MOUNTAIN",hint:"A very high natural landform."},
+  {word:"NOTEBOOK",hint:"A book used for writing notes."},
+  {word:"SUNSHINE",hint:"Light and warmth from the sun."},
+  {word:"BUTTERFLY",hint:"An insect with colorful wings."},
+  {word:"ADVENTURE",hint:"An exciting or unusual experience."},
+  {word:"CHOCOLATE",hint:"A sweet treat made from cocoa."}
+];
+
+let score=0, timeLeft=60, current=null, timer=null;
+let used=[], running=false, hintUsed=false, lastWord="";
+
+let best=0;
+try { best=Number(localStorage.getItem("wordScrambleBest")||0); } catch(e){}
+$("best").textContent=best;
+
+function shuffleWord(word) {
+  let letters=word.split("");
+  if(letters.length<2) return word;
+  for(let attempt=0;attempt<15;attempt++){
+    for(let i=letters.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [letters[i],letters[j]]=[letters[j],letters[i]];
+    }
+    if(letters.join("")!==word) return letters.join("");
+  }
+  return word.split("").reverse().join("");
+}
+
+function showScramble(word) {
+  const box=$("scramble");
+  box.innerHTML="";
+  [...word].forEach((letter,i)=>{
+    const tile=document.createElement("span");
+    tile.className="letter";
+    tile.style.animationDelay=(i*0.035)+"s";
+    tile.textContent=letter;
+    box.appendChild(tile);
+  });
+}
+
+function setMessage(text,type="") {
+  $("message").textContent=text;
+  $("message").className="message"+(type?" "+type:"");
+}
+
+function chooseWord() {
+  if(used.length>=words.length) used=[];
+  let available=words.map((w,i)=>({...w,index:i})).filter(w=>!used.includes(w.index));
+  let candidates=available.filter(w=>w.word!==lastWord);
+  if(candidates.length) available=candidates;
+  const chosen=available[Math.floor(Math.random()*available.length)];
+  current=chosen;
+  used.push(chosen.index);
+  lastWord=chosen.word;
+  hintUsed=false;
+  showScramble(shuffleWord(current.word));
+  $("hint").textContent="Arrange the letters to find the correct word.";
+  $("answer").value="";
+  $("answer").disabled=!running;
+  $("answer").focus({preventScroll:true});
+}
+
+function updateStats() {
+  $("score").textContent=score;
+  $("time").textContent=timeLeft;
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    if(!running) return;
+    timeLeft--;
+    $("time").textContent=timeLeft;
+    if(timeLeft<=0) endGame();
+  },1000);
+}
+
+function startGame() {
+  clearInterval(timer);
+  score=0;
+  timeLeft=60;
+  used=[];
+  lastWord="";
+  running=true;
+  $("overlay").classList.add("hidden");
+  updateStats();
+  chooseWord();
+  setMessage("You have 60 seconds. Good luck!");
+  startTimer();
+}
+
+function endGame() {
+  running=false;
+  clearInterval(timer);
+  $("answer").disabled=true;
+  if(score>best){
+    best=score;
+    $("best").textContent=best;
+    try{localStorage.setItem("wordScrambleBest",String(best));}catch(e){}
+  }
+  $("endTitle").textContent="⏰ Time's Up!";
+  $("endText").textContent="Your final score is "+score+". Best score: "+best+".";
+  $("overlay").classList.remove("hidden");
+}
+
+$("answerForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!running||!current) return;
+  const guess=$("answer").value.trim().toUpperCase().replace(/\s+/g,"");
+  if(!guess){setMessage("Please type your answer first.","bad");return;}
+  if(guess===current.word){
+    score+=hintUsed?5:10;
+    updateStats();
+    setMessage("🎉 Correct! +"+(hintUsed?5:10)+" points!","good");
+    beepCorrect();
+    if(score>best){
+      best=score;
+      $("best").textContent=best;
+      try{localStorage.setItem("wordScrambleBest",String(best));}catch(e){}
+    }
+    setTimeout(()=>{if(running)chooseWord();},650);
+  } else {
+    setMessage("❌ Not quite! Try again.","bad");
+  }
+});
+
+function beepCorrect(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return;
+    const c=new AC(),o=c.createOscillator(),g=c.createGain();
+    o.frequency.value=760;g.gain.value=.07;
+    o.connect(g);g.connect(c.destination);
+    o.start();o.stop(c.currentTime+.12);
+    o.onended=()=>c.close();
+  }catch(e){}
+}
+
+$("clear").addEventListener("click",()=>{
+  $("answer").value="";
+  $("answer").focus();
+  setMessage("Answer cleared.");
+});
+
+$("hintBtn").addEventListener("click",()=>{
+  if(!running||!current)return;
+  hintUsed=true;
+  $("hint").textContent="💡 Hint: "+current.hint;
+  setMessage("Hint used. Correct answer is worth 5 points.");
+});
+
+$("skipBtn").addEventListener("click",()=>{
+  if(!running)return;
+  chooseWord();
+  setMessage("⏭ New word! Keep going.");
+});
+
+$("restartBtn").addEventListener("click",startGame);
+$("againBtn").addEventListener("click",startGame);
+
+chooseWord();
+$("answer").disabled=true;
+})();
+</script>
+</body>
+</html>
