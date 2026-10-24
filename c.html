@@ -3,752 +3,421 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101827">
-<title>Fahim Admin Panel</title>
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/17163/17163834.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Game Admin Panel</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2818/2818765.png">
+
 <style>
-:root{--bg:#101827;--card:#1b2638;--text:#f3f6fc;--muted:#a8b4c8;--accent:#7c5cff;--border:#303d52;--danger:#ef4444;--success:#16a34a}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Arial,sans-serif}
-body.light{--bg:#f3f6fb;--card:#fff;--text:#172033;--muted:#59677b;--border:#dce3ee}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--border)}
-.nav{max-width:1150px;margin:auto;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.logo{font-weight:900;font-size:20px;color:var(--accent)}
-.container{width:min(1100px,94%);margin:25px auto}
-h1{font-size:clamp(27px,5vw,38px);margin:8px 0}
-h2{font-size:21px;margin:0 0 14px}
-p{margin-top:6px}
-.muted,small{color:var(--muted)}
-.btn{display:inline-block;border:0;border-radius:9px;padding:10px 14px;background:var(--accent);color:#fff;font-weight:bold}
-.btn.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
-.btn.danger{background:var(--danger)}
-.btn.success{background:var(--success)}
-.btn.small{padding:7px 10px;font-size:12px}
-.panel{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:15px;margin-bottom:18px;min-width:0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-label{display:block;font-size:13px;font-weight:bold;color:var(--muted);margin-top:9px}
-input,textarea,select{display:block;width:100%;min-width:0;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);margin:5px 0 12px}
-textarea{min-height:85px;resize:vertical}
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
-.tab{padding:10px 14px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text)}
-.tab.active{background:var(--accent);color:white}
-.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.row>*{min-width:0}
-.item{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid var(--border)}
-.item:last-child{border-bottom:0}
-.item-icon{font-size:28px;min-width:35px}
-.item-main{flex:1;min-width:0}
-.item-main strong{display:block;overflow-wrap:anywhere}
-.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
-.badge{display:inline-block;padding:3px 8px;border-radius:20px;background:#16a34a22;color:#22c55e;font-size:12px}
-.badge.hidden{background:#ef444422;color:#f87171}
-#dashboard{display:none}
-#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111827;color:white;padding:12px 18px;border-radius:10px;box-shadow:0 8px 30px #0006;display:none;z-index:30;max-width:92%;text-align:center}
-.empty{color:var(--muted);padding:15px 0}
-hr{border:0;border-top:1px solid var(--border);margin:22px 0}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.panel{padding:15px}.nav{padding:12px}.item{gap:7px}.item-icon{min-width:28px}}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0f172a;
+  color:#e5e7eb;
+  min-height:100vh;
+}
+.hidden{display:none!important}
+.container{
+  width:min(100% - 30px,900px);
+  margin:45px auto;
+}
+.card{
+  background:#172033;
+  border:1px solid #2d3a50;
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 15px 45px #0003;
+}
+.login-card{max-width:400px;margin:10vh auto}
+h1{font-size:25px;margin:0 0 8px}
+.subtitle{color:#9ca3af;font-size:14px;line-height:1.6}
+label{display:block;margin:18px 0 8px;font-size:14px}
+input,textarea{
+  width:100%;
+  padding:13px;
+  background:#0f172a;
+  border:1px solid #39465c;
+  border-radius:9px;
+  color:white;
+  font-size:15px;
+  outline:none;
+}
+input:focus,textarea:focus{border-color:#38bdf8}
+textarea{resize:vertical;min-height:75px}
+button{
+  cursor:pointer;
+  border:0;
+  border-radius:9px;
+  padding:12px 16px;
+  font-weight:bold;
+  font-size:14px;
+}
+.primary{background:#38bdf8;color:#082f49}
+.primary:hover{background:#7dd3fc}
+.danger{background:#7f1d1d;color:#fecaca}
+.secondary{background:#334155;color:white}
+.full{width:100%;margin-top:20px}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:20px
+}
+.section{margin-top:20px}
+.game{
+  background:#101827;border:1px solid #334155;
+  border-radius:12px;padding:16px;margin-top:12px;
+  overflow-wrap:anywhere
+}
+.game-title{font-weight:bold;font-size:17px}
+.game-location{font-size:13px;color:#7dd3fc;margin:8px 0;overflow-wrap:anywhere}
+.game-desc{font-size:14px;color:#cbd5e1;line-height:1.6}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.status{font-size:13px;margin-top:14px;line-height:1.5}
+.error{color:#fca5a5}
+.success{color:#86efac}
+.small{font-size:12px;color:#94a3b8;line-height:1.6}
+hr{border:0;border-top:1px solid #334155;margin:22px 0}
 </style>
 </head>
+
 <body>
-<header>
- <div class="nav">
-  <a class="logo" href="index.html">🎮 FAHIM ADMIN</a>
-  <div class="row">
-   <button class="btn secondary" id="themeBtn" type="button">☀️</button>
-   <a class="btn" href="index.html">View Website ↗</a>
-  </div>
- </div>
-</header>
+<div class="container">
 
-<main class="container">
- <section id="loginPanel" class="panel" style="max-width:440px;margin:65px auto">
-  <h1>🔐 Admin Login</h1>
-  <p class="muted">Sign in to manage the website.</p>
-  <form id="loginForm">
-   <label for="password">Admin Password</label>
-   <input id="password" type="password" autocomplete="current-password" required placeholder="Enter password">
-   <button class="btn" style="width:100%" type="submit">Login</button>
-  </form>
-  <p class="muted" style="font-size:12px">Default password: <code>change-me-123</code></p>
- </section>
+  <!-- LOGIN ONLY -->
+  <section id="loginSection" class="card login-card">
+    <h1>🎮 Game Admin Login</h1>
+    <p class="subtitle">Sign in to manage website games.</p>
 
- <section id="dashboard">
-  <h1>Admin Dashboard</h1>
-  <p class="muted">Manage games, website content, projects and backups.</p>
-
-  <div class="tabs">
-   <button class="tab active" data-tab="site" type="button">Website</button>
-   <button class="tab" data-tab="games" type="button">Games</button>
-   <button class="tab" data-tab="projects" type="button">Projects</button>
-   <button class="tab" data-tab="backup" type="button">Backup</button>
-  </div>
-
-  <section id="tab-site">
-   <div class="panel">
-    <h2>🏠 Website Settings</h2>
-    <form id="siteForm">
-     <label>Display Name</label>
-     <input id="siteName" required>
-     <label>Main Heading</label>
-     <input id="siteTitle" required>
-     <label>Hero Description</label>
-     <textarea id="siteDescription"></textarea>
-     <label>About Me</label>
-     <textarea id="siteAbout"></textarea>
-     <label>Contact Email</label>
-     <input id="siteEmail" type="email">
-     <label>Location</label>
-     <input id="siteLocation">
-     <label>GitHub URL</label>
-     <input id="siteGithub" type="url" placeholder="https://github.com/">
-     <label>Footer Text</label>
-     <input id="siteFooter">
-     <button class="btn" type="submit">Save Website Settings</button>
+    <form id="loginForm">
+      <label for="password">Admin Password</label>
+      <input id="password" type="password" placeholder="Enter admin password"
+             autocomplete="current-password" required>
+      <button class="primary full" type="submit">Login</button>
+      <div id="loginStatus" class="status" role="status"></div>
     </form>
-    <p class="muted">Settings are saved in this browser. The public index.html must read these settings for changes to appear there.</p>
-   </div>
   </section>
 
-  <section id="tab-games" hidden>
-   <div class="panel">
-    <h2>🎮 Game Management</h2>
-    <input id="gameSearch" type="search" placeholder="Search games by name or ID">
-    <p class="muted">Edit game details and choose whether each game is shown on the website.</p>
-    <div id="gamesList"></div>
-   </div>
-  </section>
-
-  <section id="tab-projects" hidden>
-   <div class="grid">
-    <div class="panel">
-     <h2>➕ Add / Edit Project</h2>
-     <form id="projectForm">
-      <input id="projectId" type="hidden">
-      <label>Project Name</label>
-      <input id="pName" required>
-      <label>Icon / Emoji</label>
-      <input id="pIcon" value="🌐" maxlength="8">
-      <label>Description</label>
-      <textarea id="pDesc"></textarea>
-      <label>Project URL</label>
-      <input id="pUrl" type="url" required placeholder="https://example.com">
-      <label>Visibility</label>
-      <select id="pVisible">
-       <option value="yes">Visible</option>
-       <option value="no">Hidden</option>
-      </select>
-      <div class="row">
-       <button class="btn" id="saveProjectBtn" type="submit">Add Project</button>
-       <button class="btn secondary" id="clearFormBtn" type="button">Clear</button>
+  <!-- GAME DASHBOARD ONLY -->
+  <section id="dashboardSection" class="hidden">
+    <div class="topbar">
+      <div>
+        <h1>🎮 Game Dashboard</h1>
+        <div class="subtitle">Add and manage games for your main website.</div>
       </div>
-     </form>
+      <button id="logoutBtn" class="secondary" type="button">Logout</button>
     </div>
-    <div class="panel">
-     <h2>📁 Projects List</h2>
-     <div id="projectsList"></div>
+
+    <div class="card">
+      <h2 id="formTitle">Add New Game</h2>
+      <p class="subtitle">Enter the game file location to add a game.</p>
+
+      <form id="gameForm">
+        <input id="editId" type="hidden">
+
+        <label for="gameName">Game Name *</label>
+        <input id="gameName" required maxlength="100"
+               placeholder="Example: Snake Game">
+
+        <label for="gameLocation">Game Location / URL *</label>
+        <input id="gameLocation" required maxlength="1000"
+               placeholder="games/snake.html">
+
+        <label for="gameDescription">Description</label>
+        <textarea id="gameDescription" maxlength="500"
+                  placeholder="Write a short description"></textarea>
+
+        <button class="primary full" id="saveBtn" type="submit">
+          Add Game
+        </button>
+        <button class="secondary full hidden" id="cancelEditBtn"
+                type="button">Cancel Edit</button>
+
+        <div id="gameStatus" class="status" role="status"></div>
+      </form>
+
+      <hr>
+
+      <h2>Added Games (<span id="gameCount">0</span>)</h2>
+      <div class="small">
+        Game list is saved in this browser. Your main website must use the
+        same storage key and origin to read these games automatically.
+      </div>
+
+      <div id="gameList"></div>
     </div>
-   </div>
   </section>
-
-  <section id="tab-backup" hidden>
-   <div class="panel">
-    <h2>💾 Backup & Restore</h2>
-    <p class="muted">Export or restore the data stored in this browser.</p>
-    <button class="btn" id="exportBtn" type="button">⬇ Export Backup</button>
-    <label>Choose Backup JSON</label>
-    <input id="backupFile" type="file" accept=".json,application/json">
-    <button class="btn secondary" id="importBtn" type="button">Restore Backup</button>
-    <hr>
-    <button class="btn danger" id="resetBtn" type="button">Reset Website / Game / Project Data</button>
-   </div>
-  </section>
-
-  <div class="panel">
-   <div class="row">
-    <div><strong>Storage Information</strong><div class="muted" id="storageInfo">Local browser storage</div></div>
-    <button class="btn secondary" id="logoutBtn" type="button">Logout</button>
-   </div>
-  </div>
- </section>
-</main>
-<div id="toast" role="status" aria-live="polite"></div>
+</div>
 
 <script>
-'use strict';
+"use strict";
 
-const $ = s => document.querySelector(s);
+/*
+  IMPORTANT:
+  1. Change the password below.
+  2. This simple password check is browser-side, not secure authentication.
+  3. For automatic Main Website integration, index.html must read the same
+     game storage key, or use a shared backend.
+*/
 
-const GAME_DATA = [
- ['snake','🐍','Snake','Eat food and grow longer.'],
- ['bird','🐤','Flappy Bird','Fly through the pipes.'],
- ['car-racing','🏎️','Car Racing','Avoid traffic and race.'],
- ['memory','🧠','Memory Match','Find matching pairs.'],
- ['2048','🔢','2048','Merge tiles to reach 2048.'],
- ['puzzle','🧩','Sliding Puzzle','Arrange the tiles in order.'],
- ['tictactoe','❌','Tic Tac Toe','Play against a friend.'],
- ['pong','🏓','Pong','Keep the ball in play.'],
- ['breakout','🧱','Brick Breaker','Break every brick.'],
- ['flappy','🪽','Flying Bird','Avoid obstacles in the sky.'],
- ['memory-cards','🎴','Card Match','Test your memory.'],
- ['reaction','⚡','Reaction Test','Test your reaction speed.'],
- ['math','➗','Math Challenge','Solve quick math questions.'],
- ['typing','⌨️','Typing Speed','Test your typing speed.'],
- ['whack','🔨','Whack-a-Mole','Hit the mole quickly.'],
- ['hangman','🔤','Hangman','Guess the hidden word.'],
- ['guess','🎯','Number Guess','Guess the secret number.'],
- ['dice','🎲','Dice Roll','Roll the dice.'],
- ['rps','✊','Rock Paper Scissors','Challenge the computer.'],
- ['color','🎨','Color Match','Match the right color.'],
- ['simon','🟢','Simon Says','Repeat the sequence.'],
- ['maze','🌀','Maze Runner','Find the way out.'],
- ['mines','💣','Mine Finder','Avoid hidden mines.'],
- ['connect','🔴','Connect Four','Connect four pieces.'],
- ['wordquiz','📚','Word Quiz','Test your vocabulary.'],
- ['quiz','❓','Trivia Quiz','Answer the questions.'],
- ['balloon','🎈','Balloon Pop','Pop the balloons.'],
- ['basket','🏀','Basket Catch','Catch falling balls.'],
- ['dodge','💨','Dodge It','Avoid incoming objects.'],
- ['target','🎯','Target Hit','Hit the target.'],
- ['cups','🥤','Cup Shuffle','Follow the hidden ball.'],
- ['lottery','🎟️','Lucky Number','Try your luck.'],
- ['tapcolor','🌈','Tap the Color','Tap the matching color.'],
- ['squares','🟦','Square Click','Click the right square.'],
- ['coinrace','🪙','Coin Race','Collect the coins.'],
- ['mathduel','🧮','Math Duel','Race to solve equations.'],
- ['catchstars','⭐','Catch Stars','Collect falling stars.'],
- ['truefalse','✅','True or False','Choose the right answer.'],
- ['sprint','🏃','Speed Sprint','Race against the clock.'],
- ['lockpick','🔐','Unlock Code','Crack the secret code.'],
- ['emojimatch','😀','Emoji Match','Find matching emojis.'],
- ['quickdraw','⚔️','Quick Draw','React at the right time.'],
- ['higher','📈','Higher or Lower','Guess the next number.'],
- ['coin','🪙','Coin Flip','Heads or tails?'],
- ['countdown','⏱️','Countdown','Beat the timer.'],
- ['pattern','🔷','Pattern Memory','Remember the pattern.'],
- ['odd','🔍','Odd One Out','Find the different item.'],
- ['safe','🗝️','Safe Cracker','Find the correct combination.'],
- ['gridtap','🔲','Grid Tap','Tap the requested tile.'],
- ['scramble','🔠','Word Scramble','Unscramble the word.']
-];
+const ADMIN_PASSWORD = "change-me-123";
+const GAMES_KEY = "fahim_admin_games";
+const SESSION_KEY = "fahim_game_admin_logged_in";
 
-const DEFAULT_SITE = {
- name:'Fahim',
- title:'Web Developer & Gamer',
- description:'I create websites, explore technology, and enjoy browser games.',
- about:'I am Fahim, a web developer and game enthusiast.',
- email:'fahim@example.com',
- location:'Bangladesh',
- github:'https://github.com/',
- footer:'Play · Build · Grow'
-};
+const $ = id => document.getElementById(id);
 
-const DEFAULT_PROJECTS = [
- {id:'sample1',name:'Portfolio Website',icon:'🌐',desc:'My personal portfolio website.',url:'https://github.com/',visible:true},
- {id:'sample2',name:'Browser Games',icon:'🎮',desc:'A collection of browser games.',url:'https://github.com/',visible:true}
-];
-
-const STORAGE_KEYS = [
- 'fahim_site_content',
- 'fahim_projects',
- 'fahim_hidden_games',
- 'fahim_game_content',
- 'fahim_admin_password'
-];
-
-let toastTimer;
-
-function toast(message){
- const el = $('#toast');
- el.textContent = message;
- el.style.display = 'block';
- clearTimeout(toastTimer);
- toastTimer = setTimeout(()=>el.style.display='none',2600);
-}
-
-function read(key,fallback){
- try{
-  const raw = localStorage.getItem(key);
-  if(raw === null) return fallback;
-  return JSON.parse(raw);
- }catch(error){
-  return fallback;
- }
-}
-
-function save(key,value){
- localStorage.setItem(key,JSON.stringify(value));
-}
-
-function esc(value){
- return String(value ?? '').replace(/[&<>"']/g,ch=>({
-  '&':'&amp;',
-  '<':'&lt;',
-  '>':'&gt;',
-  '"':'&quot;',
-  "'":'&#39;'
- }[ch]));
-}
-
-function setField(id,value){
- $('#'+id).value = value ?? '';
-}
-
-function getSite(){
- return {...DEFAULT_SITE,...read('fahim_site_content',{})};
-}
-
-function getProjects(){
- const saved = read('fahim_projects',null);
- return Array.isArray(saved) ? saved : DEFAULT_PROJECTS.map(p=>({...p}));
-}
-
-function getHidden(){
- const saved = read('fahim_hidden_games',[]);
- return Array.isArray(saved) ? saved : [];
-}
-
-function getGameContent(){
- const saved = read('fahim_game_content',{});
- return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
-}
-
-function updateStorageInfo(){
- let bytes = 0;
- try{
-  for(let i=0;i<localStorage.length;i++){
-   const key = localStorage.key(i);
-   bytes += ((key||'').length+(localStorage.getItem(key)||'').length)*2;
+function safeReadGames(){
+  try{
+    const value = JSON.parse(localStorage.getItem(GAMES_KEY) || "[]");
+    return Array.isArray(value) ? value : [];
+  }catch(error){
+    return [];
   }
-  $('#storageInfo').textContent =
-   'Local browser storage · Approx. '+(bytes/1024).toFixed(1)+' KB used';
- }catch(error){
-  $('#storageInfo').textContent = 'Browser storage unavailable';
- }
 }
 
-function loadSite(){
- const s = getSite();
- setField('siteName',s.name);
- setField('siteTitle',s.title);
- setField('siteDescription',s.description);
- setField('siteAbout',s.about);
- setField('siteEmail',s.email);
- setField('siteLocation',s.location);
- setField('siteGithub',s.github);
- setField('siteFooter',s.footer);
+function saveGames(games){
+  localStorage.setItem(GAMES_KEY, JSON.stringify(games));
 }
 
-function renderGames(){
- const list = $('#gamesList');
- const hidden = getHidden();
- const overrides = getGameContent();
- const query = $('#gameSearch').value.trim().toLowerCase();
-
- list.innerHTML = '';
-
- const filtered = GAME_DATA.filter(g=>{
-  const o = overrides[g[0]] || {};
-  return (g[0]+' '+g[2]+' '+(o.title||'')).toLowerCase().includes(query);
- });
-
- if(!filtered.length){
-  list.innerHTML = '<p class="empty">No games found.</p>';
-  return;
- }
-
- filtered.forEach(g=>{
-  const o = overrides[g[0]] || {};
-  const isHidden = hidden.includes(g[0]);
-  const row = document.createElement('div');
-  row.className = 'item';
-
-  row.innerHTML = `
-   <div class="item-icon">${esc(o.icon || g[1])}</div>
-   <div class="item-main">
-    <strong>${esc(o.title || g[2])}</strong>
-    <small>ID: ${esc(g[0])}</small>
-    <p><span class="badge ${isHidden?'hidden':''}">${isHidden?'Hidden':'Visible'}</span></p>
-    <label>Icon</label>
-    <input data-icon maxlength="8" value="${esc(o.icon || g[1])}">
-    <label>Game Title</label>
-    <input data-title maxlength="100" value="${esc(o.title || g[2])}">
-    <label>Description</label>
-    <input data-desc maxlength="250" value="${esc(o.desc || g[3])}">
-    <div class="item-actions">
-     <button class="btn small" data-action="save" type="button">Save Changes</button>
-     <button class="btn small secondary" data-action="toggle" type="button">${isHidden?'Show Game':'Hide Game'}</button>
-    </div>
-   </div>`;
-
-  row.querySelector('[data-action="save"]').addEventListener('click',()=>{
-   const icon = row.querySelector('[data-icon]').value.trim() || g[1];
-   const title = row.querySelector('[data-title]').value.trim() || g[2];
-   const desc = row.querySelector('[data-desc]').value.trim() || g[3];
-
-   const all = getGameContent();
-   all[g[0]] = {icon,title,desc};
-
-   try{
-    save('fahim_game_content',all);
-    renderGames();
-    updateStorageInfo();
-    toast('Game settings saved.');
-   }catch(error){
-    toast('Could not save. Browser storage may be full.');
-   }
-  });
-
-  row.querySelector('[data-action="toggle"]').addEventListener('click',()=>{
-   const all = getHidden();
-   const index = all.indexOf(g[0]);
-   if(index === -1) all.push(g[0]);
-   else all.splice(index,1);
-
-   try{
-    save('fahim_hidden_games',all);
-    renderGames();
-    updateStorageInfo();
-    toast(index === -1 ? 'Game hidden.' : 'Game shown.');
-   }catch(error){
-    toast('Could not update game visibility.');
-   }
-  });
-
-  list.appendChild(row);
- });
+function makeId(){
+  return "game_" + Date.now().toString(36) +
+         "_" + Math.random().toString(36).slice(2,8);
 }
 
-function renderProjects(){
- const list = $('#projectsList');
- list.innerHTML = '';
- const projects = getProjects();
-
- if(!projects.length){
-  list.innerHTML = '<p class="empty">No projects added yet.</p>';
-  return;
- }
-
- projects.forEach(project=>{
-  const p = {
-   id:String(project.id || ''),
-   name:String(project.name || 'Untitled project'),
-   icon:String(project.icon || '🌐'),
-   desc:String(project.desc || ''),
-   url:String(project.url || ''),
-   visible:project.visible !== false
-  };
-
-  const row = document.createElement('div');
-  row.className = 'item';
-  row.innerHTML = `
-   <div class="item-icon">${esc(p.icon)}</div>
-   <div class="item-main">
-    <strong>${esc(p.name)}</strong>
-    <small>${esc(p.url)}</small>
-    <p><span class="badge ${p.visible?'':'hidden'}">${p.visible?'Visible':'Hidden'}</span></p>
-    <div class="item-actions">
-     <button class="btn small" data-edit type="button">Edit</button>
-     <button class="btn small secondary" data-toggle type="button">${p.visible?'Hide':'Show'}</button>
-     <button class="btn small danger" data-delete type="button">Delete</button>
-    </div>
-   </div>`;
-
-  row.querySelector('[data-edit]').addEventListener('click',()=>{
-   setField('projectId',p.id);
-   setField('pName',p.name);
-   setField('pIcon',p.icon);
-   setField('pDesc',p.desc);
-   setField('pUrl',p.url);
-   setField('pVisible',p.visible?'yes':'no');
-   $('#saveProjectBtn').textContent = 'Save Changes';
-   $('#tab-projects').scrollIntoView({behavior:'smooth',block:'start'});
-  });
-
-  row.querySelector('[data-toggle]').addEventListener('click',()=>{
-   const all = getProjects();
-   const index = all.findIndex(x=>String(x.id)===p.id);
-   if(index < 0) return toast('Project not found.');
-   all[index].visible = all[index].visible === false;
-   try{
-    save('fahim_projects',all);
-    renderProjects();
-    updateStorageInfo();
-    toast('Project visibility updated.');
-   }catch(error){
-    toast('Could not save project changes.');
-   }
-  });
-
-  row.querySelector('[data-delete]').addEventListener('click',()=>{
-   if(!confirm('Delete project "'+p.name+'"?')) return;
-   const all = getProjects().filter(x=>String(x.id)!==p.id);
-   try{
-    save('fahim_projects',all);
-    renderProjects();
-    updateStorageInfo();
-    toast('Project deleted.');
-   }catch(error){
-    toast('Could not delete project.');
-   }
-  });
-
-  list.appendChild(row);
- });
+function showStatus(id, message, type){
+  const element = $(id);
+  element.textContent = message;
+  element.className = "status " + (type || "");
 }
 
-function clearProjectForm(){
- $('#projectForm').reset();
- setField('projectId','');
- setField('pIcon','🌐');
- setField('pVisible','yes');
- $('#saveProjectBtn').textContent = 'Add Project';
-}
-
-function openDashboard(){
- $('#loginPanel').style.display = 'none';
- $('#dashboard').style.display = 'block';
- loadSite();
- renderGames();
- renderProjects();
- updateStorageInfo();
+function showDashboard(){
+  $("loginSection").classList.add("hidden");
+  $("dashboardSection").classList.remove("hidden");
+  renderGames();
 }
 
 function showLogin(){
- sessionStorage.removeItem('fahim_admin_session');
- $('#dashboard').style.display = 'none';
- $('#loginPanel').style.display = 'block';
- $('#password').value = '';
+  $("dashboardSection").classList.add("hidden");
+  $("loginSection").classList.remove("hidden");
+  $("password").value = "";
 }
 
-$('#loginForm').addEventListener('submit',event=>{
- event.preventDefault();
+$("loginForm").addEventListener("submit", function(event){
+  event.preventDefault();
 
- const entered = $('#password').value;
- const stored = localStorage.getItem('fahim_admin_password') || 'change-me-123';
-
- if(entered === stored){
-  sessionStorage.setItem('fahim_admin_session','yes');
-  openDashboard();
-  toast('Login successful.');
- }else{
-  toast('Incorrect password.');
- }
-});
-
-if(sessionStorage.getItem('fahim_admin_session') === 'yes'){
- openDashboard();
-}
-
-document.querySelectorAll('.tab').forEach(button=>{
- button.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b===button));
-  ['site','games','projects','backup'].forEach(id=>{
-   $('#tab-'+id).hidden = id !== button.dataset.tab;
-  });
- });
-});
-
-$('#siteForm').addEventListener('submit',event=>{
- event.preventDefault();
-
- const site = {
-  name:$('#siteName').value.trim(),
-  title:$('#siteTitle').value.trim(),
-  description:$('#siteDescription').value.trim(),
-  about:$('#siteAbout').value.trim(),
-  email:$('#siteEmail').value.trim(),
-  location:$('#siteLocation').value.trim(),
-  github:$('#siteGithub').value.trim(),
-  footer:$('#siteFooter').value.trim()
- };
-
- try{
-  save('fahim_site_content',site);
-  updateStorageInfo();
-  toast('Website settings saved in this browser.');
- }catch(error){
-  toast('Could not save settings. Storage may be full.');
- }
-});
-
-$('#gameSearch').addEventListener('input',renderGames);
-
-$('#projectForm').addEventListener('submit',event=>{
- event.preventDefault();
-
- let url;
- try{
-  url = new URL($('#pUrl').value.trim());
-  if(!['http:','https:'].includes(url.protocol)) throw new Error('Invalid protocol');
- }catch(error){
-  toast('Enter a valid http:// or https:// project URL.');
-  return;
- }
-
- const name = $('#pName').value.trim();
- if(!name){
-  toast('Project name is required.');
-  return;
- }
-
- const id = $('#projectId').value || ('p'+Date.now());
- const project = {
-  id,
-  name,
-  icon:$('#pIcon').value.trim() || '🌐',
-  desc:$('#pDesc').value.trim(),
-  url:url.href,
-  visible:$('#pVisible').value === 'yes'
- };
-
- const all = getProjects();
- const index = all.findIndex(p=>String(p.id)===String(id));
-
- if(index >= 0) all[index] = project;
- else all.push(project);
-
- try{
-  save('fahim_projects',all);
-  clearProjectForm();
-  renderProjects();
-  updateStorageInfo();
-  toast(index >= 0 ? 'Project updated.' : 'Project added.');
- }catch(error){
-  toast('Could not save project. Browser storage may be full.');
- }
-});
-
-$('#clearFormBtn').addEventListener('click',clearProjectForm);
-
-$('#exportBtn').addEventListener('click',()=>{
- const data = {
-  format:'fahim-admin-backup',
-  version:1,
-  exportedAt:new Date().toISOString(),
-  data:{}
- };
-
- STORAGE_KEYS.forEach(key=>{
-  const value = localStorage.getItem(key);
-  if(value !== null) data.data[key] = value;
- });
-
- const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
- const url = URL.createObjectURL(blob);
- const link = document.createElement('a');
- link.href = url;
- link.download = 'fahim-admin-backup.json';
- document.body.appendChild(link);
- link.click();
- link.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
- toast('Backup exported.');
-});
-
-$('#importBtn').addEventListener('click',()=>{
- const file = $('#backupFile').files[0];
- if(!file){
-  toast('Choose a backup JSON file first.');
-  return;
- }
-
- const reader = new FileReader();
-
- reader.onload = ()=>{
-  try{
-   const backup = JSON.parse(reader.result);
-   const data = backup.data || backup;
-
-   if(!data || typeof data !== 'object' || Array.isArray(data)){
-    throw new Error('Invalid backup structure');
-   }
-
-   const allowed = STORAGE_KEYS.filter(k=>
-    Object.prototype.hasOwnProperty.call(data,k)
-   );
-
-   if(!allowed.length){
-    throw new Error('No supported admin data found');
-   }
-
-   const parsed = {};
-
-   allowed.forEach(key=>{
-    let value = data[key];
-    if(typeof value === 'string'){
-     try{value=JSON.parse(value)}catch(error){}
-    }
-
-    if(key==='fahim_projects' && !Array.isArray(value)){
-     throw new Error('Invalid projects data');
-    }
-    if(key==='fahim_hidden_games' && !Array.isArray(value)){
-     throw new Error('Invalid hidden games data');
-    }
-    if(key==='fahim_game_content' && (!value || typeof value!=='object' || Array.isArray(value))){
-     throw new Error('Invalid game settings data');
-    }
-    if(key==='fahim_site_content' && (!value || typeof value!=='object' || Array.isArray(value))){
-     throw new Error('Invalid website settings data');
-    }
-
-    parsed[key] = typeof data[key] === 'string'
-     ? data[key]
-     : JSON.stringify(value);
-   });
-
-   allowed.forEach(key=>localStorage.setItem(key,parsed[key]));
-
-   loadSite();
-   renderGames();
-   renderProjects();
-   updateStorageInfo();
-   toast('Backup restored successfully.');
-  }catch(error){
-   toast('Backup invalid or incompatible: '+error.message);
+  if($("password").value === ADMIN_PASSWORD){
+    sessionStorage.setItem(SESSION_KEY, "yes");
+    showStatus("loginStatus", "", "");
+    showDashboard();
+  }else{
+    showStatus("loginStatus", "Incorrect password. Try again.", "error");
   }
- };
-
- reader.onerror = ()=>toast('Could not read the backup file.');
- reader.readAsText(file);
 });
 
-$('#resetBtn').addEventListener('click',()=>{
- if(!confirm('Reset website settings, games and projects in this browser?')) return;
-
- [
-  'fahim_site_content',
-  'fahim_projects',
-  'fahim_hidden_games',
-  'fahim_game_content'
- ].forEach(key=>localStorage.removeItem(key));
-
- loadSite();
- renderGames();
- renderProjects();
- updateStorageInfo();
- toast('Website, game and project data reset.');
+$("logoutBtn").addEventListener("click", function(){
+  sessionStorage.removeItem(SESSION_KEY);
+  resetForm();
+  showLogin();
 });
 
-$('#logoutBtn').addEventListener('click',()=>{
- showLogin();
- toast('Logged out.');
+function validLocation(value){
+  const location = value.trim();
+
+  if(!location) return false;
+  if(/^\s*javascript:/i.test(location)) return false;
+
+  // Accept relative HTML paths or normal HTTP(S) URLs.
+  if(/^https?:\/\//i.test(location)){
+    try{
+      const url = new URL(location);
+      return url.protocol === "https:" || url.protocol === "http:";
+    }catch(error){
+      return false;
+    }
+  }
+
+  // Reject other URL schemes and protocol-relative URLs.
+  if(/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(location)) return false;
+  if(location.startsWith("//")) return false;
+
+  return !location.includes("..") &&
+         !location.startsWith("/") &&
+         !location.includes("\\");
+}
+
+$("gameForm").addEventListener("submit", function(event){
+  event.preventDefault();
+
+  const name = $("gameName").value.trim();
+  const location = $("gameLocation").value.trim();
+  const description = $("gameDescription").value.trim();
+  const editId = $("editId").value;
+
+  if(!name){
+    showStatus("gameStatus", "Please enter a game name.", "error");
+    return;
+  }
+
+  if(!validLocation(location)){
+    showStatus(
+      "gameStatus",
+      "Enter a valid relative path like games/snake.html or a full HTTP(S) URL.",
+      "error"
+    );
+    return;
+  }
+
+  try{
+    const games = safeReadGames();
+
+    if(editId){
+      const index = games.findIndex(game => game.id === editId);
+      if(index < 0){
+        showStatus("gameStatus", "Game not found.", "error");
+        return;
+      }
+
+      games[index] = {
+        ...games[index],
+        name,
+        location,
+        description,
+        updatedAt: new Date().toISOString()
+      };
+    }else{
+      games.unshift({
+        id: makeId(),
+        name,
+        location,
+        description,
+        active: true,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    saveGames(games);
+    resetForm();
+    renderGames();
+    showStatus("gameStatus", editId ? "Game updated." : "Game added.", "success");
+  }catch(error){
+    showStatus(
+      "gameStatus",
+      "Could not save. Browser storage may be full or disabled.",
+      "error"
+    );
+  }
 });
 
-$('#themeBtn').addEventListener('click',()=>{
- document.body.classList.toggle('light');
- const light = document.body.classList.contains('light');
- $('#themeBtn').textContent = light ? '🌙' : '☀️';
- localStorage.setItem('fahim_admin_theme',light?'light':'dark');
-});
+function resetForm(){
+  $("gameForm").reset();
+  $("editId").value = "";
+  $("formTitle").textContent = "Add New Game";
+  $("saveBtn").textContent = "Add Game";
+  $("cancelEditBtn").classList.add("hidden");
+}
 
-if(localStorage.getItem('fahim_admin_theme') === 'light'){
- document.body.classList.add('light');
- $('#themeBtn').textContent = '🌙';
+$("cancelEditBtn").addEventListener("click", resetForm);
+
+function createButton(label, className, callback){
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = label;
+  button.className = className;
+  button.addEventListener("click", callback);
+  return button;
+}
+
+function renderGames(){
+  const list = $("gameList");
+  const games = safeReadGames();
+
+  $("gameCount").textContent = games.length;
+  list.replaceChildren();
+
+  if(games.length === 0){
+    const empty = document.createElement("p");
+    empty.className = "subtitle";
+    empty.textContent = "No games added yet.";
+    list.appendChild(empty);
+    return;
+  }
+
+  games.forEach(game => {
+    const card = document.createElement("div");
+    card.className = "game";
+
+    const title = document.createElement("div");
+    title.className = "game-title";
+    title.textContent = game.name || "Untitled Game";
+
+    const location = document.createElement("div");
+    location.className = "game-location";
+    location.textContent = game.location || "";
+
+    const description = document.createElement("div");
+    description.className = "game-desc";
+    description.textContent = game.description || "";
+
+    const status = document.createElement("div");
+    status.className = "small";
+    status.textContent = game.active === false ? "Hidden" : "Active";
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    actions.appendChild(createButton("Edit", "secondary", () => {
+      $("editId").value = game.id;
+      $("gameName").value = game.name || "";
+      $("gameLocation").value = game.location || "";
+      $("gameDescription").value = game.description || "";
+      $("formTitle").textContent = "Edit Game";
+      $("saveBtn").textContent = "Save Changes";
+      $("cancelEditBtn").classList.remove("hidden");
+      $("gameName").focus();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }));
+
+    actions.appendChild(createButton(
+      game.active === false ? "Show" : "Hide",
+      "secondary",
+      () => {
+        const updated = safeReadGames().map(item =>
+          item.id === game.id
+            ? {...item, active: item.active === false}
+            : item
+        );
+        saveGames(updated);
+        renderGames();
+      }
+    ));
+
+    actions.appendChild(createButton("Open Game", "primary", () => {
+      if(!validLocation(game.location || "")){
+        alert("Invalid game location.");
+        return;
+      }
+
+      const target = new URL(game.location, window.location.href);
+      if(target.protocol === "http:" || target.protocol === "https:"){
+        window.open(target.href, "_blank", "noopener,noreferrer");
+      }
+    }));
+
+    actions.appendChild(createButton("Delete", "danger", () => {
+      if(!confirm('Delete "' + (game.name || "this game") + '"?')) return;
+      saveGames(safeReadGames().filter(item => item.id !== game.id));
+      if($("editId").value === game.id) resetForm();
+      renderGames();
+    }));
+
+    card.append(title, location, description, status, actions);
+    list.appendChild(card);
+  });
+}
+
+if(sessionStorage.getItem(SESSION_KEY) === "yes"){
+  showDashboard();
+}else{
+  showLogin();
 }
 </script>
 </body>
