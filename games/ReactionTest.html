@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1b">
+<title>Reaction Test | RS Games</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2997/2997933.png">
+
+<style>
+:root {
+  --bg: #080d1b;
+  --panel: #111a2e;
+  --text: #f4f7ff;
+  --muted: #9ba9c5;
+  --blue: #6c7cff;
+  --green: #00e6a0;
+  --red: #ff5263;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at top, #17264b 0%, transparent 55%),
+    var(--bg);
+}
+.app {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+}
+.topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.brand {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+.pill {
+  border: 1px solid #283858;
+  background: #111a2e;
+  color: #c6d2f0;
+  border-radius: 30px;
+  padding: 8px 13px;
+  font-size: 12px;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(32px, 7vw, 54px);
+  letter-spacing: -1.5px;
+}
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 12px 0 24px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.stat {
+  background: rgba(17,26,46,.92);
+  border: 1px solid #243352;
+  border-radius: 16px;
+  padding: 16px 8px;
+}
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.stat-value {
+  margin-top: 9px;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 800;
+  color: white;
+}
+.arena {
+  min-height: 320px;
+  width: 100%;
+  border: 2px solid #2a3959;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #121d35, #0c1426);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .18s, border-color .18s, transform .12s;
+  outline: none;
+}
+.arena:focus-visible {
+  box-shadow: 0 0 0 4px rgba(108,124,255,.35);
+}
+.arena.waiting {
+  background: linear-gradient(145deg, #4c1729, #301020);
+  border-color: #ff5263;
+}
+.arena.ready {
+  background: linear-gradient(145deg, #00bd81, #008b68);
+  border-color: #6affcf;
+  box-shadow: 0 0 40px rgba(0,230,160,.16);
+}
+.arena.result {
+  background: linear-gradient(145deg, #17264a, #111a2e);
+  border-color: var(--blue);
+}
+.arena-content { max-width: 480px; }
+.arena-icon {
+  font-size: 52px;
+  margin-bottom: 14px;
+}
+.arena-title {
+  font-size: clamp(25px, 5vw, 38px);
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+.arena-text {
+  color: rgba(255,255,255,.8);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.ready .arena-title,
+.ready .arena-text { color: #042e24; }
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 22px;
+  min-height: 46px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .15s, opacity .15s;
+}
+button:hover { transform: translateY(-2px); }
+button:active { transform: scale(.98); }
+.primary {
+  color: white;
+  background: linear-gradient(135deg, #7182ff, #8c58f5);
+  box-shadow: 0 8px 24px rgba(108,124,255,.2);
+}
+.secondary {
+  color: #d9e2fa;
+  background: #17233b;
+  border: 1px solid #2b3a5b;
+}
+.message {
+  min-height: 24px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.tips {
+  margin-top: 25px;
+  padding: 18px;
+  border: 1px solid #202e49;
+  border-radius: 16px;
+  background: rgba(17,26,46,.65);
+  text-align: left;
+}
+.tips h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+.tips p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0;
+}
+.footer {
+  margin-top: 20px;
+  color: #657493;
+  font-size: 11px;
+}
+@media (max-width: 480px) {
+  body { padding: 14px; }
+  .arena { min-height: 280px; padding: 18px; }
+  .stat { padding: 14px 5px; }
+  .stats { gap: 7px; }
+  .stat-label { font-size: 9px; letter-spacing: .5px; }
+  .controls button { flex: 1; }
+}
+</style>
+</head>
+
+<body>
+<main class="app">
+  <div class="topline">
+    <div class="brand">⚡ RS GAMES</div>
+    <div class="pill">REACTION CHALLENGE</div>
+  </div>
+
+  <h1>Reaction Test</h1>
+  <p class="subtitle">
+    Test your reflexes. Wait for green, then react as fast as you can!
+  </p>
+
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-label">Last Reaction</div>
+      <div class="stat-value" id="lastTime">— ms</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Best Time</div>
+      <div class="stat-value" id="bestTime">— ms</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Attempts</div>
+      <div class="stat-value" id="attempts">0 / 5</div>
+    </div>
+  </section>
+
+  <div
+    class="arena"
+    id="arena"
+    role="button"
+    tabindex="0"
+    aria-label="Reaction test play area"
+  >
+    <div class="arena-content">
+      <div class="arena-icon" id="arenaIcon">⚡</div>
+      <div class="arena-title" id="arenaTitle">Ready to Test?</div>
+      <div class="arena-text" id="arenaText">
+        Press Start Test, then wait for the screen to turn green.
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="startBtn">▶ Start Test</button>
+    <button class="secondary" id="resetBtn">↻ Reset Scores</button>
+  </div>
+
+  <div class="message" id="message" aria-live="polite">
+    Complete 5 valid reactions to see your average.
+  </div>
+
+  <section class="tips">
+    <h3>🎯 How to Play</h3>
+    <p>
+      1. Press <b>Start Test</b>.<br>
+      2. Wait while the screen is red. Do not click yet!<br>
+      3. As soon as the screen turns green, click or tap it immediately.<br>
+      4. Complete 5 valid reactions to see your average score.<br>
+      5. A lower time means a faster reaction.
+    </p>
+  </section>
+
+  <div class="footer">REACTION TEST • TRAIN YOUR REFLEXES</div>
+</main>
+
+<script>
+(() => {
+  const arena = document.getElementById("arena");
+  const arenaIcon = document.getElementById("arenaIcon");
+  const arenaTitle = document.getElementById("arenaTitle");
+  const arenaText = document.getElementById("arenaText");
+  const startBtn = document.getElementById("startBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const lastTimeEl = document.getElementById("lastTime");
+  const bestTimeEl = document.getElementById("bestTime");
+  const attemptsEl = document.getElementById("attempts");
+  const message = document.getElementById("message");
+
+  const TOTAL_ROUNDS = 5;
+  let state = "idle";
+  let timer = null;
+  let greenAt = 0;
+  let roundStart = 0;
+  let attempts = 0;
+  let scores = [];
+  let best = null;
+
+  try {
+    const savedBest = Number(localStorage.getItem("reactionTestBest"));
+    if (Number.isFinite(savedBest) && savedBest > 0) {
+      best = savedBest;
+      bestTimeEl.textContent = best + " ms";
+    }
+  } catch (e) {}
+
+  function clearWaitTimer() {
+    if (timer !== null) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  }
+
+  function showScreen(screenState, icon, title, text) {
+    arena.className = "arena";
+    if (screenState === "waiting") arena.classList.add("waiting");
+    if (screenState === "ready") arena.classList.add("ready");
+    if (screenState === "result") arena.classList.add("result");
+
+    arenaIcon.textContent = icon;
+    arenaTitle.textContent = title;
+    arenaText.textContent = text;
+  }
+
+  function updateStats() {
+    attemptsEl.textContent = attempts + " / " + TOTAL_ROUNDS;
+  }
+
+  function startTest() {
+    clearWaitTimer();
+    attempts = 0;
+    scores = [];
+    lastTimeEl.textContent = "— ms";
+    updateStats();
+    message.textContent = "Get ready. Don't click before green!";
+    beginRound();
+  }
+
+  function beginRound() {
+    clearWaitTimer();
+    state = "waiting";
+    roundStart = performance.now();
+
+    showScreen(
+      "waiting",
+      "🛑",
+      "Wait for Green...",
+      "Do not click yet! Clicking early counts as a false start."
+    );
+
+    const delay = 1500 + Math.random() * 3500;
+
+    timer = setTimeout(() => {
+      if (state !== "waiting") return;
+
+      state = "ready";
+      greenAt = performance.now();
+
+      showScreen(
+        "ready",
+        "🟢",
+        "CLICK NOW!",
+        "Tap or click anywhere in this green area!"
+      );
+    }, delay);
+  }
+
+  function handleArenaAction() {
+    if (state === "idle") {
+      message.textContent = "Press Start Test to begin.";
+      return;
+    }
+
+    if (state === "waiting") {
+      clearWaitTimer();
+      state = "falseStart";
+      showScreen(
+        "result",
+        "❌",
+        "Too Early!",
+        "You clicked before green appeared. Press Try Again to restart."
+      );
+      message.textContent = "False start! Wait until the screen turns green.";
+      startBtn.textContent = "↻ Try Again";
+      return;
+    }
+
+    if (state === "ready") {
+      const reaction = Math.round(performance.now() - greenAt);
+      scores.push(reaction);
+      attempts++;
+      state = "result";
+
+      lastTimeEl.textContent = reaction + " ms";
+
+      if (best === null || reaction < best) {
+        best = reaction;
+        bestTimeEl.textContent = best + " ms";
+        try {
+          localStorage.setItem("reactionTestBest", String(best));
+        } catch (e) {}
+      }
+
+      updateStats();
+
+      if (attempts >= TOTAL_ROUNDS) {
+        const average = Math.round(
+          scores.reduce((sum, score) => sum + score, 0) / scores.length
+        );
+        const roundBest = Math.min(...scores);
+
+        showScreen(
+          "result",
+          "🏆",
+          average + " ms Average",
+          "Best this round: " + roundBest +
+          " ms. You completed all 5 reactions!"
+        );
+        message.textContent =
+          "Round complete! Press Play Again to challenge yourself.";
+        startBtn.textContent = "▶ Play Again";
+      } else {
+        showScreen(
+          "result",
+          reaction < 250 ? "🔥" : "⚡",
+          reaction + " ms",
+          reaction < 200
+            ? "Lightning fast! Get ready for the next round."
+            : reaction < 300
+              ? "Great reaction! Keep going."
+              : "Nice try! See if you can react faster next time."
+        );
+        message.textContent =
+          "Round " + attempts + " complete. " +
+          (TOTAL_ROUNDS - attempts) + " reaction(s) remaining.";
+        startBtn.textContent = "▶ Next Round";
+      }
+    }
+  }
+
+  function resetScores() {
+    clearWaitTimer();
+    state = "idle";
+    attempts = 0;
+    scores = [];
+    best = null;
+
+    try {
+      localStorage.removeItem("reactionTestBest");
+    } catch (e) {}
+
+    lastTimeEl.textContent = "— ms";
+    bestTimeEl.textContent = "— ms";
+    updateStats();
+    showScreen(
+      "idle",
+      "⚡",
+      "Ready to Test?",
+      "Press Start Test, then wait for the screen to turn green."
+    );
+    startBtn.textContent = "▶ Start Test";
+    message.textContent = "Scores reset. Ready for a fresh challenge!";
+  }
+
+  arena.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    handleArenaAction();
+  });
+
+  arena.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleArenaAction();
+    }
+  });
+
+  startBtn.addEventListener("click", () => {
+    if (state === "waiting" || state === "ready") {
+      clearWaitTimer();
+    }
+    startTest();
+    startBtn.textContent = "↻ Restart Test";
+  });
+
+  resetBtn.addEventListener("click", resetScores);
+
+  showScreen(
+    "idle",
+    "⚡",
+    "Ready to Test?",
+    "Press Start Test, then wait for the screen to turn green."
+  );
+})();
+</script>
+</body>
+</html>
