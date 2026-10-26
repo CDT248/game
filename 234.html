@@ -1,362 +1,398 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chattogram Traffic Driver</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Bangladesh Rickshaw & Bus 3D</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#17221d;color:white;font-family:Arial,sans-serif}
-header{padding:12px;text-align:center;background:#075b40}
-header h2{margin:0;font-size:21px}
-header p{margin:5px 0 0;font-size:12px}
-#panel{display:flex;gap:7px;padding:9px;flex-wrap:wrap;
-justify-content:center;background:#102c25}
-button,select{padding:10px;border:0;border-radius:8px;
-font-weight:bold;background:#f3c746;color:#18251e}
-#game{display:block;width:100%;height:calc(100dvh - 220px);
-min-height:320px;touch-action:none;background:#8abf73}
-#info{display:flex;justify-content:space-around;padding:8px;
-background:#102c25;font-size:13px}
-#controls{display:flex;justify-content:center;gap:12px;
-padding:10px;background:#17221d}
-#controls button{width:65px;height:55px;font-size:23px}
-#hint{text-align:center;font-size:12px;padding:0 8px 10px}
+body{margin:0;background:#101a20;color:white;font-family:Arial,sans-serif;overflow:hidden}
+#game{position:fixed;inset:0}
+canvas{display:block}
+#top{position:fixed;top:0;left:0;right:0;padding:10px;
+background:linear-gradient(#07151de8,transparent);pointer-events:none}
+#top h3{margin:0 0 6px;font-size:17px}
+#stats{display:flex;gap:15px;font-size:13px;flex-wrap:wrap}
+#menu{position:fixed;top:90px;left:10px;display:flex;gap:6px}
+button,select{border:1px solid #ffffff44;border-radius:12px;
+padding:12px;background:#153d37;color:white;font-weight:bold;font-size:14px}
+button:active{background:#e4b942;color:#17221b}
+#controls{position:fixed;bottom:15px;left:0;right:0;
+display:flex;justify-content:space-between;align-items:end;padding:0 12px;
+pointer-events:none}
+.group{display:flex;gap:8px;align-items:end;pointer-events:auto}
+.control{width:58px;height:58px;background:#102b29d9;font-size:22px;
+border:2px solid #ffffff55;touch-action:none;user-select:none}
+#gas{height:78px;background:#13754d}
+#brake{height:68px;background:#8e3430}
+#horn{width:52px;height:52px}
+#message{position:fixed;top:42%;width:100%;text-align:center;
+font-size:19px;font-weight:bold;text-shadow:0 2px 5px #000;pointer-events:none}
+#maplink{position:fixed;right:8px;top:8px;font-size:11px;color:white;
+background:#132b25b8;padding:7px;border-radius:8px;text-decoration:none}
+#help{position:fixed;bottom:108px;left:0;right:0;text-align:center;
+font-size:11px;color:white;text-shadow:0 1px 3px black;pointer-events:none}
 </style>
 </head>
 <body>
-<header>
-<h2>🇧🇩 Chattogram Traffic Driver</h2>
-<p>Pahartali • Bangladesh Driving Simulator</p>
-</header>
-
-<div id="panel">
-<select id="vehicle" aria-label="গাড়ি নির্বাচন">
-<option value="rickshaw">🛺 প্যাডেল রিকশা</option>
-<option value="cng">🟢 CNG অটোরিকশা</option>
-<option value="bus">🚌 লোকাল বাস</option>
-<option value="truck">🚚 ট্রাক</option>
-<option value="car">🚗 প্রাইভেট কার</option>
-</select>
-<button id="start">▶ শুরু</button>
-<button id="pause">Ⅱ বিরতি</button>
-<button id="reset">↻ আবার</button>
-</div>
-
-<div id="info">
-<span>গতি: <b id="speed">0</b></span>
+<div id="game"></div>
+<div id="top">
+<h3>🇧🇩 Chattogram Traffic Driver 3D</h3>
+<div id="stats">
+<span>গাড়ি: <b id="vname">রিকশা</b></span>
+<span>গতি: <b id="spd">0</b> km/h</span>
+<span>দূরত্ব: <b id="dist">0</b> m</span>
 <span>স্কোর: <b id="score">0</b></span>
-<span>দূরত্ব: <b id="distance">0</b> মি.</span>
+</div>
 </div>
 
-<canvas id="game"></canvas>
+<div id="menu">
+<select id="vehicle" aria-label="গাড়ি">
+<option value="rickshaw">🛺 রিকশা</option>
+<option value="bus">🚌 লোকাল বাস</option>
+<option value="cng">🟢 CNG</option>
+<option value="truck">🚚 ট্রাক</option>
+<option value="car">🚗 কার</option>
+</select>
+<button id="pause">Ⅱ বিরতি</button>
+<button id="restart">↻</button>
+</div>
+
+<a id="maplink" href="https://www.openstreetmap.org/#map=16/22.359/91.778"
+target="_blank" rel="noopener">📍 পাহাড়তলী ম্যাপ ↗</a>
+
+<div id="message">লোড হচ্ছে...</div>
+<div id="help">◀ ▶ স্টিয়ারিং · ▲ গতি · ▼ ব্রেক · H হর্ন</div>
 
 <div id="controls">
-<button id="left" aria-label="বামে">◀</button>
-<button id="brake" aria-label="ব্রেক">▼</button>
-<button id="gas" aria-label="গতি বাড়ান">▲</button>
-<button id="right" aria-label="ডানে">▶</button>
+<div class="group">
+<button class="control" id="left">◀</button>
+<button class="control" id="right">▶</button>
 </div>
-<div id="hint">কীবোর্ড: ← → দিয়ে স্টিয়ারিং, ↑ গতি, ↓ ব্রেক। মোবাইলে বোতাম চাপুন।</div>
+<div class="group">
+<button class="control" id="horn">📣</button>
+<button class="control" id="brake">▼</button>
+<button class="control" id="gas">▲</button>
+</div>
+</div>
 
-<script>
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
-const $=id=>document.getElementById(id);
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 
-let W=0,H=0;
-let running=false,crashed=false;
-let playerX=0,speed=0,score=0,distance=0,roadOffset=0;
-let traffic=[],decor=[],spawn=0;
-const keys={};
-const vehicles={
- rickshaw:{name:"রিকশা",w:30,h:48,max:5,color:"#e5b52b"},
- cng:{name:"CNG",w:37,h:48,max:7,color:"#159c54"},
- bus:{name:"বাস",w:48,h:85,max:6,color:"#f1c744"},
- truck:{name:"ট্রাক",w:46,h:76,max:6,color:"#e56c32"},
- car:{name:"কার",w:37,h:57,max:9,color:"#e33e39"}
+const root=document.getElementById('game');
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x9ed5ef);
+scene.fog=new THREE.Fog(0x9ed5ef,65,230);
+
+const camera=new THREE.PerspectiveCamera(
+68,innerWidth/innerHeight,.1,500);
+camera.position.set(0,4,9);
+
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+root.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xe4f4ff,0x536548,2));
+const sun=new THREE.DirectionalLight(0xffffff,2.2);
+sun.position.set(-15,28,10);
+sun.castShadow=true;
+scene.add(sun);
+
+const mat=(color)=>new THREE.MeshStandardMaterial({color,roughness:.82});
+const grass=mat(0x659957), asphalt=mat(0x41464b);
+const white=mat(0xf0ead0), red=mat(0xc92e2e);
+const glass=mat(0x7ec7d7), black=mat(0x202426);
+const yellow=mat(0xe5b839), green=mat(0x16864b);
+
+function cube(parent,x,y,z,w,h,d,material){
+ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);
+ m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;
+ parent.add(m);return m;
+}
+function cylinder(parent,x,y,z,r,h,material,rot=0){
+ const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,12),material);
+ m.position.set(x,y,z);m.rotation.z=rot;m.castShadow=true;
+ parent.add(m);return m;
+}
+
+// Ground and road
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,500),grass);
+ground.rotation.x=-Math.PI/2;ground.position.z=-170;
+ground.receiveShadow=true;scene.add(ground);
+
+const road=cube(scene,0,-.08,-170,12,.12,500,asphalt);
+
+// Road edges and broken centre line
+for(const x of [-5.75,5.75]){
+ cube(scene,x,.01,-170,.12,.04,500,white);
+}
+const stripes=[];
+for(let i=0;i<30;i++){
+ const s=cube(scene,0,.015,-i*10, .13,.04,4,white);
+ stripes.push(s);
+}
+
+// Shops, homes, trees
+const buildings=[];
+const shopNames=['চায়ের দোকান','মুদি স্টোর','ফার্মেসি',
+'গ্যারেজ','হোটেল','মোবাইল সার্ভিস','কনফেকশনারি'];
+
+function makeBuilding(x,z,i){
+ const g=new THREE.Group();g.position.set(x,0,z);
+ const colors=[0xd9b991,0xd8d4ba,0xd29b91,0xc1cbb7,0xe1c779];
+ cube(g,0,2,0,4,4,4,mat(colors[i%colors.length]));
+ cube(g,0,4.1,0,4.3,.3,4.3,red);
+ cube(g,0,1.4,2.02,1.4,1.4,.08,glass);
+ cube(g,-1.1,2.8,2.02,.6,.7,.08,glass);
+ cube(g,1.1,2.8,2.02,.6,.7,.08,glass);
+ cube(g,0,2.05,2.1,2.7,.5,.1,yellow);
+ buildings.push(g);scene.add(g);
+
+ // Shop sign
+ const c=document.createElement('canvas');
+ c.width=256;c.height=64;
+ const ctx=c.getContext('2d');
+ ctx.fillStyle='#164e39';ctx.fillRect(0,0,256,64);
+ ctx.fillStyle='white';ctx.font='bold 25px sans-serif';
+ ctx.textAlign='center';ctx.fillText(shopNames[i%shopNames.length],128,41);
+ const tex=new THREE.CanvasTexture(c);
+ const sign=new THREE.Mesh(
+  new THREE.PlaneGeometry(2.6,.65),
+  new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));
+ sign.position.set(x,2.05,z+2.17);
+ scene.add(sign);
+}
+
+function makeTree(x,z){
+ const g=new THREE.Group();g.position.set(x,0,z);
+ cylinder(g,0,.8,0,.15,1.6,mat(0x765032));
+ const crown=new THREE.Mesh(
+  new THREE.SphereGeometry(1.05,8,7),mat(0x277642));
+ crown.position.y=2;crown.castShadow=true;g.add(crown);
+ scene.add(g);
+}
+for(let i=0;i<34;i++){
+ const z=-i*13-5;
+ makeBuilding(-9,z,i);
+ if(i%2===0)makeBuilding(9,z-5,i+2);
+ makeTree(-6.8,z-6);
+ if(i%2)makeTree(6.8,z-8);
+}
+
+// Create vehicles with primitive 3D parts
+const vehicleTypes={
+ rickshaw:{label:'রিকশা',max:15,w:1.25,length:2.25},
+ bus:{label:'বাস',max:34,w:2.15,length:5.5},
+ cng:{label:'CNG',max:24,w:1.45,length:2.4},
+ truck:{label:'ট্রাক',max:29,w:2,length:4.4},
+ car:{label:'কার',max:38,w:1.65,length:3.4}
 };
-let chosen="rickshaw";
 
-function resize(){
- const r=canvas.getBoundingClientRect();
- W=canvas.width=Math.round(r.width*devicePixelRatio);
- H=canvas.height=Math.round(r.height*devicePixelRatio);
- ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- W=r.width;H=r.height;
-}
-addEventListener("resize",resize);
-resize();
+function makeVehicle(type){
+ const g=new THREE.Group();
+ const v=vehicleTypes[type];
 
-function road(){
- const unit=W/400;
- const cx=W/2;
- const rw=Math.min(W*.76,340);
- const left=cx-rw/2;
- const right=cx+rw/2;
-
- // সবুজ মাঠ ও রাস্তার পাশ
- ctx.fillStyle="#85b873";ctx.fillRect(0,0,W,H);
- for(let y=-30;y<H+40;y+=95){
-  let yy=(y+roadOffset*.35)% (H+95);
-  ctx.fillStyle="#6d9e61";
-  ctx.fillRect(4,yy,Math.max(5,left-8),40);
-  ctx.fillRect(right+4,yy,Math.max(5,W-right-8),40);
- }
-
- // দোকান ও বাড়ি
- for(let side of [-1,1]){
-  for(let i=0;i<5;i++){
-   let yy=((i*145+roadOffset*.65)%(H+145))-65;
-   let x=side<0?Math.max(3,left-75):right+8;
-   let ww=Math.min(65,Math.max(20,(side<0?left:W-right)-12));
-   if(ww<24)continue;
-   ctx.fillStyle=["#d9b28a","#e4d3a7","#b7c6b5","#d7a5a0"][i%4];
-   ctx.fillRect(x,yy,ww,56);
-   ctx.fillStyle="#9a4430";ctx.fillRect(x,yy,ww,10);
-   ctx.fillStyle="#6cdbd7";
-   ctx.fillRect(x+5,yy+17,12,13);
-   ctx.fillRect(x+ww-19,yy+17,12,13);
-   ctx.fillStyle="#fff";
-   ctx.fillRect(x+3,yy+36,ww-6,13);
-   ctx.fillStyle="#173e2c";
-   ctx.font="bold 8px Arial";
-   ctx.textAlign="center";
-   const names=["চায়ের দোকান","মুদি স্টোর","ফার্মেসি","হোটেল","গ্যারেজ"];
-   ctx.fillText(names[i%names.length],x+ww/2,yy+45,ww-5);
-  }
- }
-
- // রাস্তা
- ctx.fillStyle="#555a5b";ctx.fillRect(left,0,rw,H);
- ctx.fillStyle="#bdb8a4";
- ctx.fillRect(left,0,4,H);ctx.fillRect(right-4,0,4,H);
-
- // রাস্তার লেন মার্কিং
- ctx.strokeStyle="#f8edbc";ctx.lineWidth=2;
- ctx.setLineDash([25,20]);
- ctx.lineDashOffset=-roadOffset%45;
- ctx.beginPath();
- ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
- ctx.setLineDash([]);
-
- // রাস্তার পাশের ফুটপাত
- ctx.fillStyle="#d2c8ad";
- ctx.fillRect(left-7,0,7,H);
- ctx.fillRect(right,0,7,H);
-
- return {left,right,cx,rw};
-}
-
-function drawVehicle(x,y,type,colorOverride){
- const v=vehicles[type];
- const w=v.w,h=v.h;
- ctx.save();ctx.translate(x,y);
-
- // ছায়া
- ctx.fillStyle="#20202055";
- ctx.fillRect(-w/2+3,-h/2+4,w,h);
-
- if(type==="rickshaw"){
-  // রিকশার পেছনের চাকা
-  ctx.fillStyle="#222";
-  ctx.beginPath();ctx.arc(0,h*.29,5,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle="#d8a42d";
-  ctx.fillRect(-w*.48,-h*.28,w*.96,h*.55);
-  ctx.fillStyle="#c72f2b";
-  ctx.fillRect(-w*.43,-h*.23,w*.86,h*.16);
-  ctx.fillStyle="#eac55b";
-  ctx.fillRect(-w*.34,-h*.06,w*.68,h*.25);
-  ctx.strokeStyle="#333";ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(-w*.4,h*.22);
-  ctx.lineTo(-w*.7,h*.38);ctx.moveTo(w*.4,h*.22);
-  ctx.lineTo(w*.7,h*.38);ctx.stroke();
-  ctx.fillStyle="#333";
-  ctx.fillRect(-w*.27,-h*.42,w*.54,7);
- }else{
-  ctx.fillStyle="#242424";
-  ctx.fillRect(-w/2-2,-h*.30,5,h*.19);
-  ctx.fillRect(w/2-3,-h*.30,5,h*.19);
-  ctx.fillRect(-w/2-2,h*.18,5,h*.19);
-  ctx.fillRect(w/2-3,h*.18,5,h*.19);
-
-  ctx.fillStyle=colorOverride||v.color;
-  ctx.fillRect(-w/2,-h/2,w,h);
-  ctx.fillStyle="#b9e4eb";
-  ctx.fillRect(-w*.35,-h*.32,w*.70,h*.18);
-  ctx.fillRect(-w*.35,h*.04,w*.70,h*.17);
-  ctx.fillStyle="#f9f2c9";
-  ctx.fillRect(-w*.40,-h*.46,w*.23,4);
-  ctx.fillRect(w*.17,-h*.46,w*.23,4);
-  ctx.fillStyle="#b92f26";
-  ctx.fillRect(-w*.40,h*.39,w*.23,4);
-  ctx.fillRect(w*.17,h*.39,w*.23,4);
-  if(type==="bus"){
-   ctx.fillStyle="#ffe07a";
-   ctx.fillRect(-w/2,h*.27,w,5);
-   ctx.fillStyle="#fff";
-   ctx.font="bold 8px Arial";ctx.textAlign="center";
-   ctx.fillText("LOCAL BUS",0,h*.18);
-  }
-  if(type==="truck"){
-   ctx.fillStyle="#b95a27";
-   ctx.fillRect(-w*.43,-h*.16,w*.86,h*.34);
-   ctx.strokeStyle="#e9bd86";ctx.lineWidth=1;
-   for(let yy=-h*.12;yy<h*.13;yy+=7){
-    ctx.beginPath();ctx.moveTo(-w*.4,yy);
-    ctx.lineTo(w*.4,yy);ctx.stroke();
+ if(type==='rickshaw'){
+  cube(g,0,.65,0,1.15,.35,1.5,yellow);
+  cube(g,0,1.02,-.18,.92,.45,.72,red);
+  cube(g,0,1.36,-.12,.8,.12,.72,yellow);
+  cube(g,0,.94,.55,.7,.35,.45,mat(0x7d3027));
+  // canopy
+  cube(g,0,1.55,-.18,1.15,.12,.9,red);
+  cylinder(g,0,.42,-.83,.32,.12,black,Math.PI/2);
+  cylinder(g,-.48,.42,.62,.27,.12,black,Math.PI/2);
+  cylinder(g,.48,.42,.62,.27,.12,black,Math.PI/2);
+  cube(g,0,.75,-1.05,.7,.12,.2,black);
+ } else {
+  const color=type==='bus'?0xe9b938:
+   type==='cng'?0x168d4a:type==='truck'?0xc66a34:0xc73535;
+  cube(g,0,.85,0,v.w,.65,v.length,color);
+  const cabZ=type==='bus'?-v.length*.25:-v.length*.18;
+  cube(g,0,1.4,cabZ,v.w*.9,.75,v.length*.45,color);
+  cube(g,0,1.53,cabZ-v.length*.23,v.w*.72,.4,.05,glass);
+  cube(g,0,1.03,cabZ-v.length*.24,v.w*.7,.25,.06,glass);
+  if(type==='bus'){
+   for(let i=0;i<5;i++){
+    cube(g,-v.w*.38+i*v.w*.19,1.42,.2, .22,.38,.04,glass);
    }
+   cube(g,0,1.05,.4,v.w,.12,.12,yellow);
   }
-  if(type==="cng"){
-   ctx.fillStyle="#e6f0c4";
-   ctx.fillRect(-w*.38,h*.22,w*.76,5);
+  if(type==='truck'){
+   cube(g,0,1.45,.65,v.w*.9,.9,v.length*.38,mat(0xa9542d));
+  }
+  const axleZ=[-v.length*.32,v.length*.32];
+  for(const z of axleZ){
+   cylinder(g,-v.w*.53,.48,z,.28,.17,black,Math.PI/2);
+   cylinder(g,v.w*.53,.48,z,.28,.17,black,Math.PI/2);
   }
  }
- ctx.restore();
+ return g;
 }
 
-function drawDecorations(){
- // ছোট গাছ
- for(let i=0;i<8;i++){
-  let y=((i*100+roadOffset*.8)%(H+100))-35;
-  let side=i%2===0?-1:1;
-  let x=side<0?W*.07:W*.93;
-  ctx.fillStyle="#795331";ctx.fillRect(x-2,y,4,12);
-  ctx.fillStyle="#28783c";
-  ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.fill();
- }
+let currentType='rickshaw';
+let player=makeVehicle(currentType);
+player.position.set(0,0,2);
+scene.add(player);
+
+const traffic=[];
+function spawnTraffic(){
+ const types=['rickshaw','cng','bus','truck','car'];
+ const type=types[Math.floor(Math.random()*types.length)];
+ const g=makeVehicle(type);
+ const lane=[-3.7,-1.4,1.4,3.7][Math.floor(Math.random()*4)];
+ g.position.set(lane,0,-100-Math.random()*60);
+ scene.add(g);
+ traffic.push({g,type,lane});
+}
+for(let i=0;i<9;i++)spawnTraffic();
+
+const input={left:false,right:false,gas:false,brake:false};
+let speed=0,meters=0,score=0,paused=true;
+let spawnTimer=0;
+let hornAudio;
+
+function horn(){
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!hornAudio)hornAudio=new AC();
+  const osc=hornAudio.createOscillator();
+  const gain=hornAudio.createGain();
+  osc.type='sawtooth';osc.frequency.value=420;
+  gain.gain.value=.045;
+  osc.connect(gain);gain.connect(hornAudio.destination);
+  osc.start();osc.stop(hornAudio.currentTime+.22);
+ }catch(e){}
 }
 
-function draw(){
- ctx.clearRect(0,0,W,H);
- const r=road();
- drawDecorations();
-
- // ট্রাফিকের অন্যান্য যান
- for(const t of traffic){
-  drawVehicle(t.x,t.y,t.type);
- }
-
- // খেলোয়াড়ের গাড়ি
- drawVehicle(playerX,H*.77,chosen);
-
- // রাস্তার নাম
- ctx.fillStyle="#ffffffdd";
- ctx.fillRect(8,8,Math.min(W-16,205),25);
- ctx.fillStyle="#183b2b";
- ctx.font="bold 12px Arial";ctx.textAlign="left";
- ctx.fillText("📍 পাহাড়তলী, চট্টগ্রাম",15,25);
-
- if(!running){
-  ctx.fillStyle="#0009";ctx.fillRect(0,0,W,H);
-  ctx.textAlign="center";
-  ctx.fillStyle="white";
-  ctx.font="bold 23px Arial";
-  ctx.fillText(crashed?"দুর্ঘটনা!":"গেম শুরু করুন",W/2,H/2-8);
-  ctx.font="14px Arial";
-  ctx.fillText(crashed?"আবার বোতাম চাপুন":"আপনার গাড়ি বেছে নিন",W/2,H/2+20);
- }
+function changeVehicle(type){
+ scene.remove(player);
+ currentType=type;
+ player=makeVehicle(type);
+ player.position.set(0,0,2);
+ scene.add(player);
+ document.getElementById('vname').textContent=vehicleTypes[type].label;
 }
 
-function reset(){
- speed=0;score=0;distance=0;roadOffset=0;
- traffic=[];spawn=0;crashed=false;
- playerX=W/2;running=false;
- updateInfo();draw();
-}
-
-function updateInfo(){
- $("speed").textContent=Math.round(speed*12);
- $("score").textContent=score;
- $("distance").textContent=Math.floor(distance);
-}
-
-function step(){
- if(running){
-  const v=vehicles[chosen];
-  if(keys.ArrowUp||keys.gas)speed=Math.min(v.max,speed+.055);
-  else speed=Math.max(1.2,speed-.018);
-  if(keys.ArrowDown||keys.brake)speed=Math.max(0,speed-.13);
-  if(keys.ArrowLeft||keys.left)playerX-=3.4;
-  if(keys.ArrowRight||keys.right)playerX+=3.4;
-
-  const roadW=Math.min(W*.76,340);
-  playerX=Math.max(W/2-roadW/2+vehicles[chosen].w/2+4,
-    Math.min(W/2+roadW/2-vehicles[chosen].w/2-4,playerX));
-
-  roadOffset+=speed*2;
-  distance+=speed*.025;
-  score+=Math.floor(speed/4);
-
-  spawn++;
-  if(spawn>Math.max(25,75-speed*5)){
-   spawn=0;
-   const types=["rickshaw","cng","bus","truck","car"];
-   const type=types[Math.floor(Math.random()*types.length)];
-   const offset=(Math.random()-.5)*Math.min(W*.58,240);
-   traffic.push({
-    x:W/2+offset,
-    y:-90,
-    type,
-    color:vehicles[type].color,
-    vy:1+Math.random()*1.5
-   });
-  }
-
-  for(const t of traffic){
-   t.y+=t.vy+speed*.75;
-
-   const p=vehicles[chosen],o=vehicles[t.type];
-   if(Math.abs(t.x-playerX)<(p.w+o.w)*.38 &&
-      Math.abs(t.y-H*.77)<(p.h+o.h)*.40){
-    running=false;crashed=true;speed=0;
-   }
-   if(t.y>H+100)t.remove=true;
-  }
-  traffic=traffic.filter(t=>!t.remove);
-  updateInfo();
- }
- draw();
- requestAnimationFrame(step);
-}
-
-$("start").onclick=()=>{
- if(!crashed)running=true;
+document.getElementById('vehicle').onchange=e=>changeVehicle(e.target.value);
+document.getElementById('pause').onclick=()=>{
+ paused=!paused;
+ document.getElementById('pause').textContent=paused?'▶ চালাও':'Ⅱ বিরতি';
+ document.getElementById('message').textContent=paused?'গেম বিরতিতে':'';
 };
-$("pause").onclick=()=>{running=false;};
-$("reset").onclick=reset;
-$("vehicle").onchange=e=>{
- chosen=e.target.value;
- playerX=W/2;
- draw();
+document.getElementById('restart').onclick=()=>{
+ speed=0;meters=0;score=0;player.position.x=0;
+ traffic.forEach(t=>scene.remove(t.g));
+ traffic.length=0;
+ for(let i=0;i<9;i++)spawnTraffic();
+ paused=false;
+ document.getElementById('pause').textContent='Ⅱ বিরতি';
+ document.getElementById('message').textContent='';
 };
 
-function bindButton(id,key){
- const b=$(id);
- const down=e=>{e.preventDefault();keys[key]=true;};
- const up=e=>{e.preventDefault();keys[key]=false;};
- b.addEventListener("pointerdown",down);
- b.addEventListener("pointerup",up);
- b.addEventListener("pointerleave",up);
- b.addEventListener("pointercancel",up);
+function bind(id,key){
+ const el=document.getElementById(id);
+ const down=e=>{e.preventDefault();input[key]=true;};
+ const up=e=>{e.preventDefault();input[key]=false;};
+ el.addEventListener('pointerdown',down);
+ el.addEventListener('pointerup',up);
+ el.addEventListener('pointercancel',up);
+ el.addEventListener('pointerleave',up);
 }
-bindButton("left","left");
-bindButton("right","right");
-bindButton("gas","gas");
-bindButton("brake","brake");
+bind('left','left');bind('right','right');
+bind('gas','gas');bind('brake','brake');
+document.getElementById('horn').addEventListener('pointerdown',horn);
 
-addEventListener("keydown",e=>{
- if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key))
- e.preventDefault();
- keys[e.key]=true;
- if(e.key==="Enter"&&!crashed)running=true;
+addEventListener('keydown',e=>{
+ if(e.key==='ArrowLeft'||e.key==='a')input.left=true;
+ if(e.key==='ArrowRight'||e.key==='d')input.right=true;
+ if(e.key==='ArrowUp'||e.key==='w')input.gas=true;
+ if(e.key==='ArrowDown'||e.key==='s')input.brake=true;
+ if(e.key.toLowerCase()==='h')horn();
 });
-addEventListener("keyup",e=>keys[e.key]=false);
-addEventListener("blur",()=>Object.keys(keys).forEach(k=>keys[k]=false));
+addEventListener('keyup',e=>{
+ if(['ArrowLeft','a'].includes(e.key))input.left=false;
+ if(['ArrowRight','d'].includes(e.key))input.right=false;
+ if(['ArrowUp','w'].includes(e.key))input.gas=false;
+ if(['ArrowDown','s'].includes(e.key))input.brake=false;
+});
+addEventListener('blur',()=>Object.keys(input).forEach(k=>input[k]=false));
 
-reset();
-step();
+const clock=new THREE.Clock();
+
+function animate(){
+ requestAnimationFrame(animate);
+ const dt=Math.min(clock.getDelta(),.05);
+
+ if(!paused){
+  const v=vehicleTypes[currentType];
+  if(input.gas)speed=Math.min(v.max,speed+12*dt);
+  else speed=Math.max(0,speed-2.5*dt);
+  if(input.brake)speed=Math.max(0,speed-25*dt);
+
+  if(input.left)player.position.x-=5*dt;
+  if(input.right)player.position.x+=5*dt;
+  player.position.x=THREE.MathUtils.clamp(player.position.x,-4.6,4.6);
+  player.rotation.z=THREE.MathUtils.damp(
+   player.rotation.z,input.left?.08:input.right?-.08:0,5,dt);
+
+  const move=speed*dt;
+  meters+=move;
+  score=Math.floor(meters/2);
+
+  stripes.forEach(s=>{
+   s.position.z+=move;
+   if(s.position.z>8)s.position.z-=300;
+  });
+  buildings.forEach(b=>{
+   b.position.z+=move;
+   if(b.position.z>15)b.position.z-=440;
+  });
+
+  spawnTimer+=dt;
+  if(spawnTimer>2.2){
+   spawnTimer=0;
+   spawnTraffic();
+  }
+
+  for(let i=traffic.length-1;i>=0;i--){
+   const t=traffic[i];
+   t.g.position.z+=move*.7+dt*3;
+   if(t.g.position.z>12){
+    scene.remove(t.g);traffic.splice(i,1);continue;
+   }
+   const dx=Math.abs(t.g.position.x-player.position.x);
+   const dz=Math.abs(t.g.position.z-player.position.z);
+   if(dx<(v.w+vehicleTypes[t.type].w)*.42 && dz<1.6 && speed>4){
+    speed=0;
+    paused=true;
+    document.getElementById('message').textContent='ধাক্কা লেগেছে! আবার চালাতে ▶ চাপুন';
+    document.getElementById('pause').textContent='▶ চালাও';
+   }
+  }
+  document.getElementById('spd').textContent=Math.round(speed*3.6);
+  document.getElementById('dist').textContent=Math.floor(meters);
+  document.getElementById('score').textContent=score;
+ }
+
+ // Camera follows behind the selected vehicle
+ const desired=new THREE.Vector3(
+  player.position.x*.48,3.5,8.5);
+ camera.position.lerp(desired,.09);
+ camera.lookAt(player.position.x*.65,1,-9);
+
+ renderer.render(scene,camera);
+}
+addEventListener('resize',()=>{
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+document.getElementById('message').textContent='▶ চালাও চাপুন';
+animate();
 </script>
 </body>
 </html>
